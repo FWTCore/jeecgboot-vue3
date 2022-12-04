@@ -175,8 +175,6 @@ export interface GlobEnvConfig {
   //单点服务端地址
   VITE_GLOB_APP_CAS_BASE_URL: string;
   VITE_GLOB_DOMAIN_URL: string;
-  // Upload url
-  VITE_GLOB_UPLOAD_URL?: string;
   // view url
   VITE_GLOB_ONLINE_VIEW_URL?: string;
   // 校验签名变量

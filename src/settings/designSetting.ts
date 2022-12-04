@@ -1,6 +1,6 @@
 import { ThemeEnum } from '../enums/appEnum';
 
-export const prefixCls = 'jeecg';
+export const prefixCls = 'xcom';
 
 export const darkMode = ThemeEnum.LIGHT;
 
