@@ -153,6 +153,10 @@ export interface GlobConfig {
   urlPrefix?: string;
   // Project abbreviation
   shortName: string;
+  // 校验签名变量
+  signatureVerify?: string;
+  // 服务名称
+  serviceName?: string;
 }
 export interface GlobEnvConfig {
   // Site title
@@ -175,4 +179,8 @@ export interface GlobEnvConfig {
   VITE_GLOB_UPLOAD_URL?: string;
   // view url
   VITE_GLOB_ONLINE_VIEW_URL?: string;
+  // 校验签名变量
+  VITE_GLOB_SIGNATURE_VERIFY?: string;
+  // 服务名称
+  VITE_GLOB_SERVICE_NAME?: string;
 }

@@ -33,6 +33,8 @@ export function getAppEnvConfig() {
     VITE_GLOB_APP_CAS_BASE_URL,
     VITE_GLOB_DOMAIN_URL,
     VITE_GLOB_ONLINE_VIEW_URL,
+    VITE_GLOB_SIGNATURE_VERIFY,
+    VITE_GLOB_SERVICE_NAME,
   } = ENV;
 
   if (!/^[a-zA-Z\_]*$/.test(VITE_GLOB_APP_SHORT_NAME)) {
@@ -52,6 +54,8 @@ export function getAppEnvConfig() {
     VITE_GLOB_APP_CAS_BASE_URL,
     VITE_GLOB_DOMAIN_URL,
     VITE_GLOB_ONLINE_VIEW_URL,
+    VITE_GLOB_SIGNATURE_VERIFY,
+    VITE_GLOB_SERVICE_NAME,
   };
 }
 
