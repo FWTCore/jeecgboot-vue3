@@ -14,7 +14,6 @@ import {
   APP_SESSION_CACHE_KEY,
   MULTIPLE_TABS_KEY,
   DB_DICT_DATA_KEY,
-  TENANT_ID,
   LOGIN_INFO_KEY,
 } from '/@/enums/cacheEnum';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
@@ -29,7 +28,6 @@ interface BasicStore {
   [PROJ_CFG_KEY]: ProjectConfig;
   [MULTIPLE_TABS_KEY]: RouteLocationNormalized[];
   [DB_DICT_DATA_KEY]: string;
-  [TENANT_ID]: string;
   [LOGIN_INFO_KEY]: LoginInfo;
 }
 

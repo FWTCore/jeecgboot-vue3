@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, LOGIN_INFO_KEY, DB_DICT_DATA_KEY, TENANT_ID } from '/@/enums/cacheEnum';
+import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, LOGIN_INFO_KEY, DB_DICT_DATA_KEY} from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
 import { doLogout, getUserInfo, loginApi, phoneLoginApi, thirdLogin } from '/@/api/sys/user';
@@ -71,9 +71,6 @@ export const useUserStore = defineStore({
     getLastUpdateTime(): number {
       return this.lastUpdateTime;
     },
-    getTenant(): string | number {
-      return this.tenantid || getAuthCache<string | number>(TENANT_ID);
-    },
   },
   actions: {
     setToken(info: string | undefined) {
@@ -96,10 +93,6 @@ export const useUserStore = defineStore({
     setAllDictItems(dictItems) {
       this.dictItems = dictItems;
       setAuthCache(DB_DICT_DATA_KEY, dictItems);
-    },
-    setTenant(id) {
-      this.tenantid = id;
-      setAuthCache(TENANT_ID, id);
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;

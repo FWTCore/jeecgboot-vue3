@@ -1,8 +1,36 @@
 import md5 from 'md5';
 //签名密钥串(前后端要一致，正式发布请自行修改)
-const signatureSecret = 'dd05f1c54d63749eda95f9fa6d49v442a';
+const signatureSecret = 'd3f5cebe9f3746d586d467a4b39a4a1f';
+
 
 export default class signMd5Utils {
+
+/**
+ * XCOMMS method start
+ */
+  /**
+   * 获取签名
+   * @param {*} noncestr 随机字符串
+   * @param {*} timestamp 时间戳
+   * @returns 获取签名
+   */
+   static getXMSign(noncestr, timestamp) {
+    let data = noncestr + timestamp + signatureSecret;
+    return md5(data).toUpperCase();
+  }
+ /**
+   * md5加密
+   * @param {*} text
+   * @returns
+   */
+  static encryptMd5(text) {
+    return md5(text).toUpperCase();
+  }
+/**
+ * XCOMMS method end
+ */
+
+
   /**
    * json参数升序
    * @param jsonObj 发送参数

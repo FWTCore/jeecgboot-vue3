@@ -36,15 +36,17 @@ export enum ContentTypeEnum {
  */
 export enum ConfigEnum {
   // TOKEN
-  TOKEN = 'X-Access-Token',
+  TOKEN = 'XM-Authorization',
+  // SignatureVerify
+  SIGNATURE_VERIFY = 'XM-Verify',
+  // Noncestr
+  NONCESTR = 'XM-Noncestr',
   // TIMESTAMP
-  TIMESTAMP = 'X-TIMESTAMP',
-  // Sign
-  Sign = 'X-Sign',
-  // 租户id
-  TENANT_ID = 'tenant-id',
-  // 版本
-  VERSION = 'X-Version',
-  // 低代码应用ID
-  X_LOW_APP_ID = 'X-Low-App-ID',
+  TIMESTAMP = 'XM-Timestamp',
+  // Signature
+  SIGNATURE = 'XM-Signature',
+  // RequestId
+  REQUEST_ID = 'XM-RequestId',
+  // ReferServiceName
+  REFER_SERVICE_NAME = 'XM-ReferServiceName',
 }

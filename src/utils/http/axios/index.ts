@@ -11,13 +11,14 @@ import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { RequestEnum, ResultEnum, ContentTypeEnum, ConfigEnum } from '/@/enums/httpEnum';
 import { isString } from '/@/utils/is';
-import { getToken, getTenantId } from '/@/utils/auth';
+import { getToken } from '/@/utils/auth';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
 import signMd5Utils from '/@/utils/encryption/signMd5Utils';
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
+import { buildUUID } from '/@/utils/uuid';
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal } = useMessage();
@@ -137,47 +138,20 @@ const transform: AxiosTransform = {
    * @description: 请求拦截器处理
    */
   requestInterceptors: (config: Recordable, options) => {
-    // 请求之前处理config
-    const token = getToken();
-    let tenantid = getTenantId();
-    if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
-      // jwt token
-      config.headers.Authorization = options.authenticationScheme ? `${options.authenticationScheme} ${token}` : token;
-      config.headers[ConfigEnum.TOKEN] = token;
-      //--update-begin--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
-
-      // update-begin--author:taoyan---date:20220421--for: VUEN-410【签名改造】 X-TIMESTAMP牵扯
-      config.headers[ConfigEnum.TIMESTAMP] = signMd5Utils.getTimestamp();
-      // update-end--author:taoyan---date:20220421--for: VUEN-410【签名改造】 X-TIMESTAMP牵扯
-
-      config.headers[ConfigEnum.Sign] = signMd5Utils.getSign(config.url, config.params);
-      //--update-end--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
-      //--update-begin--author:liusq---date:20211105---for: for:将多租户id，添加在请求接口 Header
-      if (!tenantid) {
-        tenantid = 0;
-      }
-      config.headers[ConfigEnum.TENANT_ID] = tenantid;
-      //--update-begin--author:liusq---date:20220325---for: 增加vue3标记
-      config.headers[ConfigEnum.VERSION] = 'v3';
-      //--update-end--author:liusq---date:20220325---for:增加vue3标记
-      //--update-end--author:liusq---date:20211105---for:将多租户id，添加在请求接口 Header
-
-      // ========================================================================================
-      // update-begin--author:sunjianlei---date:20220624--for: 添加低代码应用ID
-      let routeParams = router.currentRoute.value.params;
-      if (routeParams.appId) {
-        config.headers[ConfigEnum.X_LOW_APP_ID] = routeParams.appId;
-        // lowApp自定义筛选条件
-        if (routeParams.lowAppFilter) {
-          config.params = { ...config.params, ...JSON.parse(routeParams.lowAppFilter as string) };
-          delete routeParams.lowAppFilter;
-        }
-      }
-      // update-end--author:sunjianlei---date:20220624--for: 添加低代码应用ID
-      // ========================================================================================
-
-    }
-    return config;
+     // 请求之前处理config
+     const token = getToken();
+     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
+       // jwt token
+       config.headers.Authorization = options.authenticationScheme ? `${options.authenticationScheme} ${token}` : token;
+       config.headers[ConfigEnum.TOKEN] = token;
+     }
+     config.headers[ConfigEnum.SIGNATURE_VERIFY] = globSetting.signatureVerify;
+     config.headers[ConfigEnum.NONCESTR] = signMd5Utils.encryptMd5(signMd5Utils.getTimestamp());
+     config.headers[ConfigEnum.TIMESTAMP] = signMd5Utils.getTimestamp();
+     config.headers[ConfigEnum.SIGNATURE] = signMd5Utils.getXMSign(config.headers[ConfigEnum.NONCESTR], config.headers[ConfigEnum.TIMESTAMP]);
+     config.headers[ConfigEnum.REQUEST_ID] = buildUUID();
+     config.headers[ConfigEnum.REFER_SERVICE_NAME] = globSetting.serviceName;
+     return config;
   },
 
   /**
