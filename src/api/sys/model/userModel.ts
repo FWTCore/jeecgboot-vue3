@@ -2,7 +2,7 @@
  * @description: Login interface parameters
  */
 export interface LoginParams {
-  username: string;
+  loginName: string;
   password: string;
 }
 
@@ -20,9 +20,13 @@ export interface RoleInfo {
  * @description: Login interface return value
  */
 export interface LoginResultModel {
-  userId: string | number;
   token: string;
-  role: RoleInfo;
+  loginId: string | number;
+  loginName: string;
+  realName: string;
+  PhoneNumber: string;
+  avatar: string;
+  workNumber: string;
 }
 
 /**

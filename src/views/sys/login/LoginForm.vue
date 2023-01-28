@@ -129,7 +129,7 @@
   const randCodeData = reactive({
     randCodeImage: '',
     requestCodeSuccess: false,
-    checkKey: null,
+    checkKey: 1629428467008,
   });
 
   const { validForm } = useFormValid(formRef);
@@ -146,7 +146,7 @@
       const { userInfo } = await userStore.login(
         toRaw({
           password: data.password,
-          username: data.account,
+          loginName: data.account,
           captcha: data.inputCode,
           checkKey: randCodeData.checkKey,
           mode: 'none', //不要默认的错误提示
@@ -175,7 +175,8 @@
   function handleChangeCheckCode() {
     formData.inputCode = '';
     //TODO 兼容mock和接口，暂时这样处理
-    randCodeData.checkKey = 1629428467008; //new Date().getTime();
+    //randCodeData.checkKey = 1629428467008; 
+    randCodeData.checkKey = new Date().getTime();
     getCodeInfo(randCodeData.checkKey).then((res) => {
       randCodeData.randCodeImage = res;
       randCodeData.requestCodeSuccess = true;

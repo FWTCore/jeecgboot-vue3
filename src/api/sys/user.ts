@@ -11,7 +11,7 @@ import { PageEnum } from '/@/enums/pageEnum';
 
 const { createErrorModal } = useMessage();
 enum Api {
-  Login = '/sys/login',
+  Login = '/Account/Login',
   phoneLogin = '/sys/phoneLogin',
   Logout = '/sys/logout',
   GetUserInfo = '/sys/user/getUserInfo',
@@ -21,7 +21,7 @@ enum Api {
   // 3、系统安全模式
   GetPermCode = '/sys/permission/getPermCode',
   //新加的获取图形验证码的接口
-  getInputCode = '/sys/randomImage',
+  getInputCode = '/Account/RandomImage',
   //获取短信验证码的接口
   getCaptcha = '/sys/sms',
   //注册接口
@@ -78,6 +78,9 @@ export function phoneLoginApi(params: LoginParams, mode: ErrorMessageMode = 'mod
  * @description: getUserInfo
  */
 export function getUserInfo() {
+
+
+  
   return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' }).catch((e) => {
     // update-begin--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
     if (e && (e.message.includes('timeout') || e.message.includes('401'))) {

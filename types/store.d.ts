@@ -32,15 +32,13 @@ export interface ErrorLogInfo {
 
 export interface UserInfo {
   id: string | number;
-  userId: string | number;
-  username: string;
-  realname: string;
+  loginName: string;
+  realName: string;
+  phoneNumber: string;
+  workNumber: string;
   avatar: string;
-  desc?: string;
-  homePath?: string;
-  tenantid?: string | number;
-  roles: RoleInfo[];
-  orgCode?: string;
+  lastLoginTime: Date;
+  lastLoginTimeText: string;
 }
 
 export interface LoginInfo {
