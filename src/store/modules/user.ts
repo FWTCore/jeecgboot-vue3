@@ -144,8 +144,9 @@ export const useUserStore = defineStore({
       if (!this.getToken) return null;
       //获取用户信息
       const userOwnInfo = await this.getOwnInfoAction();
-
       const userInfo = await this.getUserInfoAction();
+
+
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
         this.setSessionTimeout(false);
@@ -160,7 +161,7 @@ export const useUserStore = defineStore({
           permissionStore.setDynamicAddedRoute(true);
         }
         await this.setLoginInfo({ ...data, isLogin: true });
-        //update-begin-author:liusq date:2022-5-5 for:登录成功后缓存拖拽模块的接口前缀
+        //update-begin-author:liusq date:2022-5-5 for:登录成功后 缓存 拖拽模块的接口前缀
         localStorage.setItem(JDragConfigEnum.DRAG_BASE_URL, useGlobSetting().domainUrl);
         //update-end-author:liusq date:2022-5-5 for: 登录成功后缓存拖拽模块的接口前缀
         goHome && (await router.replace((userInfo && userInfo.homePath) || PageEnum.BASE_HOME));

@@ -38,13 +38,13 @@ interface AuthItem {
 }
 
 interface PermissionState {
-  // Permission code list
+  // 权限代码列表
   permCodeList: string[] | number[];
-  // Whether the route has been dynamically added
+  // 路由是否已动态添加
   isDynamicAddedRoute: boolean;
-  // To trigger a menu update
+  // 触发菜单更新
   lastBuildMenuTime: number;
-  // Backstage menu list
+  // 后台菜单列表
   backMenuList: Menu[];
   frontMenuList: Menu[];
   // 用户所拥有的权限
@@ -60,13 +60,13 @@ export const usePermissionStore = defineStore({
   id: 'app-permission',
   state: (): PermissionState => ({
     permCodeList: [],
-    // Whether the route has been dynamically added
+    // 路由是否已动态添加
     isDynamicAddedRoute: false,
-    // To trigger a menu update
+    // 触发菜单更新
     lastBuildMenuTime: 0,
-    // Backstage menu list
+    // 后台菜单列表
     backMenuList: [],
-    // menu List
+    // 菜单列表
     frontMenuList: [],
     authList: [],
     allAuthList: [],
@@ -219,41 +219,6 @@ export const usePermissionStore = defineStore({
           try {
             this.changePermissionCode();
             routeList = (await getMenuList()) as AppRouteRecordRaw[];
-            // update-begin----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
-            let hasIndex: boolean = false;
-            let hasIcon: boolean = false;
-            for (let menuItem of routeList) {
-              // 条件1：判断组件是否是 layouts/default/index
-              if (!hasIndex) {
-                hasIndex = menuItem.component === 'layouts/default/index';
-              }
-              // 条件2：判断图标是否带有 冒号
-              if (!hasIcon) {
-                hasIcon = !!menuItem.meta?.icon?.includes(':');
-              }
-              // 满足任何一个条件都直接跳出循环
-              if (hasIcon || hasIndex) {
-                break;
-              }
-            }
-            // 两个条件都不满足，就弹出提示框
-            if (!hasIcon && !hasIndex) {
-              // 延迟1.5秒之后再出现提示，否则提示框出不来
-              setTimeout(
-                () =>
-                  createWarningModal({
-                    title: '检测提示',
-                    content:
-                      '当前菜单表是 <b>Vue2版本</b>，导致菜单加载异常!<br>点击确认，切换到Vue3版菜单！',
-                    onOk:function () {
-                      switchVue3Menu();
-                      location.reload();
-                    }
-                  }),
-                100
-              );
-            }
-            // update-end----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
           } catch (error) {
             console.error(error);
           }

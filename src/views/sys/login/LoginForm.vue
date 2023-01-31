@@ -28,10 +28,9 @@
       </ACol>
     </ARow>
 
-    <ARow class="enter-x">
+    <!-- <ARow class="enter-x">
       <ACol :span="12">
         <FormItem>
-          <!-- No logic, you need to deal with it yourself -->
           <Checkbox v-model:checked="rememberMe" size="small">
             {{ t('sys.login.rememberMe') }}
           </Checkbox>
@@ -39,13 +38,12 @@
       </ACol>
       <ACol :span="12">
         <FormItem :style="{ 'text-align': 'right' }">
-          <!-- No logic, you need to deal with it yourself -->
           <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">
             {{ t('sys.login.forgetPassword') }}
           </Button>
         </FormItem>
       </ACol>
-    </ARow>
+    </ARow> -->
 
     <FormItem class="enter-x">
       <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
@@ -55,7 +53,7 @@
               {{ t('sys.login.registerButton') }}
             </Button> -->
     </FormItem>
-    <ARow class="enter-x">
+    <!-- <ARow class="enter-x">
       <ACol :md="8" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
@@ -71,19 +69,19 @@
           {{ t('sys.login.registerButton') }}
         </Button>
       </ACol>
-    </ARow>
+    </ARow> -->
 
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <!-- <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider> -->
 
-    <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
+    <!-- <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
       <a @click="onThirdLogin('github')" title="github"><GithubFilled /></a>
       <a @click="onThirdLogin('wechat_enterprise')" title="企业微信"> <icon-font class="item-icon" type="icon-qiyeweixin3" /></a>
       <a @click="onThirdLogin('dingtalk')" title="钉钉"><DingtalkCircleFilled /></a>
       <a @click="onThirdLogin('wechat_open')" title="微信"><WechatFilled /></a>
-    </div>
+    </div> -->
   </Form>
   <!-- 第三方登录相关弹框 -->
-  <ThirdModal ref="thirdModalRef"></ThirdModal>
+  <!-- <ThirdModal ref="thirdModalRef"></ThirdModal> -->
 </template>
 <script lang="ts" setup>
   import { reactive, ref, toRaw, unref, computed, onMounted } from 'vue';
@@ -99,6 +97,7 @@
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { getCodeInfo } from '/@/api/sys/user';
+  import signMd5Utils from '/@/utils/encryption/signMd5Utils';
   //import { onKeyStroke } from '@vueuse/core';
 
   const ACol = Col;
@@ -145,8 +144,8 @@
       loading.value = true;
       const { userInfo } = await userStore.login(
         toRaw({
-          password: data.password,
           loginName: data.account,
+          password: signMd5Utils.encryptMd5(data.password),
           captcha: data.inputCode,
           checkKey: randCodeData.checkKey,
           mode: 'none', //不要默认的错误提示

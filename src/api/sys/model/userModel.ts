@@ -24,16 +24,17 @@ export interface LoginResultModel {
   loginId: string | number;
   loginName: string;
   realName: string;
-  PhoneNumber: string;
+  telephone: string;
   avatar: string;
   workNumber: string;
+  sex: number;
+  sexText: string;
 }
 
 /**
  * @description: Get user information return value
  */
 export interface GetUserInfoModel {
-  roles: RoleInfo[];
   // 用户id
   userId: string | number;
   // 用户名

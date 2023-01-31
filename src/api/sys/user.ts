@@ -19,7 +19,7 @@ enum Api {
   // 1、查询用户拥有的按钮/表单访问权限
   // 2、所有权限
   // 3、系统安全模式
-  GetPermCode = '/sys/permission/getPermCode',
+  GetPermCode = '/Permission/GetPermData',
   //新加的获取图形验证码的接口
   getInputCode = '/Account/RandomImage',
   //获取短信验证码的接口
@@ -95,7 +95,7 @@ export function getUserInfo() {
 }
 
 export function getPermCode() {
-  return defHttp.get({ url: Api.GetPermCode });
+  return defHttp.post({ url: Api.GetPermCode });
 }
 
 export function doLogout() {
