@@ -6,8 +6,7 @@
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
       <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
       <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-      <a-button type="primary" @click="handlerRefreshCache" preIcon="ant-design:sync-outlined"> 刷新缓存</a-button>
-      <a-button type="primary" @click="openRecycleModal(true)" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
+      <!-- <a-button type="primary" @click="openRecycleModal(true)" preIcon="ant-design:hdd-outlined"> 回收站</a-button> -->
 
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
@@ -18,8 +17,8 @@
             </a-menu-item>
           </a-menu>
         </template>
-        <a-button
-          >批量操作
+        <a-button>
+          批量操作
           <Icon icon="ant-design:down-outlined"></Icon>
         </a-button>
       </a-dropdown>
@@ -29,12 +28,8 @@
       <TableAction :actions="getTableAction(record)" />
     </template>
   </BasicTable>
-  <!--字典弹窗-->
-  <DictModal @register="registerModal" @success="handleSuccess" />
-  <!--字典配置抽屉-->
-  <DictItemList @register="registerDrawer" />
-  <!--回收站弹窗-->
-  <DictRecycleBinModal @register="registerModal1" @success="reload" />
+  <TemplateModal @register="registerDrawer" @success="handleSuccess" />
+  <TemplateStageList @register="registerModal" />
 </template>
 
 <script lang="ts" name="system-dict" setup>
@@ -43,30 +38,25 @@
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/src/components/Drawer';
   import { useModal } from '/src/components/Modal';
-  import DictItemList from './components/DictItemList.vue';
-  import DictModal from './components/DictModal.vue';
-  import DictRecycleBinModal from './components/DictRecycleBinModal.vue';
+  import TemplateStageList from './components/TemplateStageList.vue';
+  import TemplateModal from './components/TemplateModal.vue';
   import { useMessage } from '/src/hooks/web/useMessage';
-  import { removeAuthCache, setAuthCache } from '/src/utils/auth';
-  import { columns, searchFormSchema } from './dict.data';
-  import { list, deleteDict, batchDeleteDict, getExportUrl, getImportUrl, refreshCache, queryAllDictItems } from './dict.api';
-  import { DB_DICT_DATA_KEY } from '/src/enums/cacheEnum';
+  import { columns, searchFormSchema } from './Template.data';
+  import { list, deleteData, batchDeleteData, getExportUrl, getImportUrl, refreshCache, queryAllDictItems } from './Template.api';
   import { useListPage } from '/@/hooks/system/useListPage';
-
+  
   const { createMessage } = useMessage();
-  //字典model
+  //model
   const [registerModal, { openModal }] = useModal();
-  //字典配置drawer
+  //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
 
-  //回收站model
-  const [registerModal1, { openModal: openRecycleModal }] = useModal();
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     designScope: 'dict-template',
     tableProps: {
-      title: '数据字典',
+      title: '项目进度模板',
       api: list,
       columns: columns,
       formConfig: {
@@ -76,15 +66,13 @@
         width: 240,
       },
     },
-    //update-begin---author:wangshuai ---date:20220616  for：[issues/I5AMDD]导入/导出功能，操作后提示没有传递 export.url/import.url 参数------------
     exportConfig: {
-      name: '数据字典列表',
+      name: '项目进度模板列表',
       url: getExportUrl,
     },
     importConfig: {
       url: getImportUrl,
     },
-    //update-end---author:wangshuai ---date:20220616  for：[issues/I5AMDD]导入/导出功能，操作后提示没有传递 export.url/import.url 参数--------------
   });
 
   //注册table数据
@@ -94,7 +82,7 @@
    * 新增事件
    */
   function handleCreate() {
-    openModal(true, {
+    openDrawer(true, {
       isUpdate: false,
     });
   }
@@ -102,31 +90,23 @@
    * 编辑事件
    */
   async function handleEdit(record: Recordable) {
-    openModal(true, {
+    openDrawer(true, {
       record,
       isUpdate: true,
     });
   }
-  /**
-   * 详情
-   */
-  async function handleDetail(record) {
-    openModal(true, {
-      record,
-      isUpdate: true,
-    });
-  }
+
   /**
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteDict({ id: record.id }, reload);
+    await deleteData({ id: record.id }, reload);
   }
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteDict({ ids: selectedRowKeys.value }, reload);
+    await batchDeleteData({ ids: selectedRowKeys.value }, reload);
   }
   /**
    * 成功回调
@@ -138,26 +118,14 @@
       reload();
     }
   }
+
   /**
-   * 刷新缓存
+   * 阶段配置
    */
-  async function handlerRefreshCache() {
-    const result = await refreshCache();
-    if (result.success) {
-      const res = await queryAllDictItems();
-      removeAuthCache(DB_DICT_DATA_KEY);
-      setAuthCache(DB_DICT_DATA_KEY, res.result);
-      createMessage.success('刷新缓存完成！');
-    } else {
-      createMessage.error('刷新缓存失败！');
-    }
-  }
-  /**
-   * 字典配置
-   */
-  function handleItem(record) {
-    openDrawer(true, {
+  function handleStage(record) {
+    openModal(true, {
       id: record.id,
+      scheduleTemplateName: record.scheduleTemplateName,
     });
   }
   /**
@@ -170,8 +138,8 @@
         onClick: handleEdit.bind(null, record),
       },
       {
-        label: '字典配置',
-        onClick: handleItem.bind(null, record),
+        label: '阶段配置',
+        onClick: handleStage.bind(null, record),
       },
       {
         label: '删除',
@@ -183,5 +151,3 @@
     ];
   }
 </script>
-
-<style scoped></style>
