@@ -219,18 +219,18 @@ export const formSchema: FormSchema[] = [
       };
     },
   },
-  {
-    label: '租户',
-    field: 'relTenantIds',
-    component: 'ApiSelect',
-    componentProps: {
-      mode: 'multiple',
-      api: getAllTenantList,
-      numberToString: true,
-      labelField: 'name',
-      valueField: 'id',
-    },
-  },
+  // {
+  //   label: '租户',
+  //   field: 'relTenantIds',
+  //   component: 'ApiSelect',
+  //   componentProps: {
+  //     mode: 'multiple',
+  //     api: getAllTenantList,
+  //     numberToString: true,
+  //     labelField: 'name',
+  //     valueField: 'id',
+  //   },
+  // },
   {
     label: '身份',
     field: 'userIdentity',
@@ -303,17 +303,17 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     rules: [{ pattern: /^0\d{2,3}-[1-9]\d{6,7}$/, message: '请输入正确的座机号码' }],
   },
-  {
-    label: '工作流引擎',
-    field: 'activitiSync',
-    defaultValue: 1,
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'activiti_sync',
-      type: 'radio',
-      stringToNumber: true,
-    },
-  },
+  // {
+  //   label: '工作流引擎',
+  //   field: 'activitiSync',
+  //   defaultValue: 1,
+  //   component: 'JDictSelectTag',
+  //   componentProps: {
+  //     dictCode: 'activiti_sync',
+  //     type: 'radio',
+  //     stringToNumber: true,
+  //   },
+  // },
 ];
 
 export const formPasswordSchema: FormSchema[] = [
