@@ -3,7 +3,7 @@
     <BasicTable @register="registerTable">
       <template #id="{ record }"> ID: {{ record.id }} </template>
       <template #no="{ record }">
-        <Tag color="green">
+        <Tag color="brea">
           {{ record.no }}
         </Tag>
       </template>
