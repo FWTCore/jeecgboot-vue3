@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios';
 enum Api {
   list = '/customer/list',
-  syncuft = '/customer/syncUFT',
+  syncuft = '/customer/syncuft',
   edit = '/customer/edit',
   save = '/customer/save',
 }

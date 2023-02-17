@@ -1,5 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
+
 export const columns: BasicColumn[] = [
   {
     title: '模板名称',

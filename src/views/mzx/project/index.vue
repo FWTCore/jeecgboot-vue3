@@ -1,0 +1,157 @@
+<template>
+  <!--引用表格-->
+  <BasicTable @register="registerTable" :rowSelection="rowSelection">
+    <!--插槽:table标题-->
+    <template #tableTitle>
+      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+      <a-dropdown v-if="selectedRowKeys.length > 0">
+        <template #overlay>
+          <a-menu>
+            <a-menu-item key="1" @click="batchHandleDelete">
+              <Icon icon="ant-design:delete-outlined" />
+              删除
+            </a-menu-item>
+          </a-menu>
+        </template>
+        <a-button>
+          批量操作
+          <Icon icon="ant-design:down-outlined" />
+        </a-button>
+      </a-dropdown>
+    </template>
+    <!--操作栏-->
+    <template #action="{ record }">
+      <TableAction :actions="getTableAction(record)" />
+    </template>
+  </BasicTable>
+  <ProjectDrawer @register="registerDrawer" @success="handleSuccess" />
+  <!-- <ProjectModel @register="registerModel" @success="handleSuccess" /> -->
+  <!-- <ProjectMemberListModel @register="registerModel" @success="handleSuccess" /> -->
+</template>
+
+<script lang="ts" name="biz-project" setup>
+  //ts语法
+  import { ref, computed, unref } from 'vue';
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { BasicTable, TableAction } from '/src/components/Table';
+  import { useDrawer } from '/@/components/Drawer';
+  import { useModal } from '/src/components/Modal';
+  import ProjectDrawer from './componets/ProjectDrawer.vue';
+  // import ProjectModel from './componets/ProjectModel.vue';
+  // import ProjectModel from './componets/ProjectModel.vue';
+  import { columns, searchFormSchema } from './Project.data';
+  import { list, deleteData, batchDeleteData } from './Project.api';
+
+  //drawer
+  const [registerDrawer, { openDrawer }] = useDrawer();
+
+  //model
+  const [registerModel, { openModal }] = useModal();
+
+  // 列表页面公共参数、方法
+  const { tableContext } = useListPage({
+    designScope: 'project-page',
+    tableProps: {
+      title: '项目列表',
+      api: list,
+      columns: columns,
+      formConfig: {
+        schemas: searchFormSchema,
+      },
+      actionColumn: {
+        width: 240,
+      },
+    },
+  });
+
+  //注册table数据
+  const [registerTable, { reload, updateTableDataRecord }, { rowSelection, selectedRowKeys }] = tableContext;
+
+  /**
+   * 新增事件
+   */
+  function handleCreate(record: Recordable) {
+    // openModal(true, {
+    //   record,
+    //   isUpdate: true,
+    // });
+    openDrawer(true, {
+      isUpdate: false,
+      showFooter: true,
+    });
+  }
+  /**
+   * 编辑事件
+   */
+  async function handleEdit(record: Recordable) {
+    // openModel(true, {
+    //   record,
+    //   isUpdate: true,
+    // });
+  }
+  /**
+   * 详情事件
+   */
+  async function handleDetail(record: Recordable) {
+    // openModel(true, {
+    //   record,
+    //   isUpdate: true,
+    // });
+  }
+  /**
+   * 配置团队成员
+   */
+  async function handleMember(record: Recordable) {
+    // openModel(true, {
+    //   record,
+    //   isUpdate: true,
+    // });
+  }
+
+  /**
+   * 删除事件
+   */
+  async function handleDelete(record) {
+    await deleteData({ id: record.id }, reload);
+  }
+  /**
+   * 批量删除事件
+   */
+  async function batchHandleDelete() {
+    await batchDeleteData({ ids: selectedRowKeys.value }, reload);
+  }
+  /**
+   * 成功回调
+   */
+  function handleSuccess() {
+    console.log('handleSuccess');
+    reload();
+  }
+
+  /**
+   * 操作栏
+   */
+  function getTableAction(record) {
+    return [
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
+        label: '编辑',
+        onClick: handleEdit.bind(null, record),
+      },
+      {
+        label: '配置团队成员',
+        onClick: handleMember.bind(null, record),
+      },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '确定删除吗?',
+          confirm: handleDelete.bind(null, record),
+        },
+      },
+    ];
+  }
+</script>
