@@ -1,21 +1,21 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit" width="800px">
+  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" width="500px" @ok="handleSubmit">
     <BasicForm @register="registerForm" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { defineProps, ref, computed, unref, reactive } from 'vue';
+  import { ref, computed, unref } from 'vue';
   import { BasicModal, useModalInner } from '/src/components/Modal';
   import { BasicForm, useForm } from '/src/components/Form';
-  import { stageFormSchema } from '../Template.data';
+  import { detailFormSchema } from '../Template.data';
   import { saveOrUpdateItem } from '../Template.api';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
-  const props = defineProps({ projectScheduleTemplateId: String });
+  const props = defineProps({ parentId: String, projectScheduleTemplateId: String });
   const isUpdate = ref(true);
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
-    schemas: stageFormSchema,
+    schemas: detailFormSchema,
     showActionButtonGroup: false,
     mergeDynamicData: props,
     labelCol: {
@@ -40,14 +40,13 @@
       });
     }
   });
-
   //设置标题
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
-
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增项目进度阶段明细' : '编辑项目进度阶段明细'));
   //表单提交事件
   async function handleSubmit() {
     try {
-      const values = await validate();
+      let values = await validate();
+      values.parentId = props.parentId;
       values.projectScheduleTemplateId = props.projectScheduleTemplateId;
       setModalProps({ confirmLoading: true });
       //提交表单

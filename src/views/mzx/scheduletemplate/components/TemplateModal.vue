@@ -8,7 +8,7 @@
   import { BasicModal, useModalInner } from '/src/components/Modal';
   import { BasicForm, useForm } from '/src/components/Form';
   import { formSchema } from '../Template.data';
-  import { saveOrUpdateDict } from '../Template.api';
+  import { saveOrUpdateTemplate } from '../Template.api';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const isUpdate = ref(true);
@@ -38,7 +38,7 @@
       let values = await validate();
       setModalProps({ confirmLoading: true });
       //提交表单
-      await saveOrUpdateDict(values, isUpdate.value);
+      await saveOrUpdateTemplate(values, isUpdate.value);
       //关闭弹窗
       closeModal();
       //刷新列表

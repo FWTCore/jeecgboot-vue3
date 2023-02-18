@@ -49,7 +49,7 @@
   const [registerModal, { openModal }] = useModal();
 
   // 列表页面公共参数、方法
-  const { tableContext, onExportXls, onImportXls } = useListPage({
+  const { tableContext, onExportXls, onImportXls, doRequest } = useListPage({
     designScope: 'schedule-template',
     tableProps: {
       title: '项目进度模板',
@@ -101,8 +101,11 @@
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    setItemData(null);
-    await batchDeleteData({ ids: selectedRowKeys.value }, reload);
+    await batchDeleteData({ ids: selectedRowKeys.value }, () => {
+      selectedRowKeys.value = [];
+      reload();
+      setItemData(null);
+    });
   }
   /**
    * 成功回调
@@ -123,7 +126,11 @@
    * 设置条目模板
    */
   function setItemData(record) {
-    emit('select', record.id);
+    if (record === null) {
+      emit('select', null);
+    } else {
+      emit('select', record.id);
+    }
   }
   /**
    * 操作栏

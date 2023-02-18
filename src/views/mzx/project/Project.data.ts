@@ -1,7 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { rules } from './validator';
-import { getAllUserList } from './Project.api';
 
 export const columns: BasicColumn[] = [
   {
@@ -139,7 +138,6 @@ export const formSchema: FormSchema[] = [
     dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
-    defaultValue: '',
   },
   {
     label: '客户名称',
@@ -147,7 +145,6 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'Input',
     slot: 'remoteSearchCustomer',
-    defaultValue: '',
   },
   {
     label: '合同金额',
@@ -191,11 +188,17 @@ export const formSchema: FormSchema[] = [
     label: '预计结束时间',
     field: 'estimatedEndTime',
     component: 'DatePicker',
+    componentProps: {
+      valueFormat: 'YYYY-MM-DD',
+    },
   },
   {
     label: '结束时间',
     field: 'endTime',
     component: 'DatePicker',
+    componentProps: {
+      valueFormat: 'YYYY-MM-DD',
+    },
   },
   {
     label: '提成比例%',
@@ -211,11 +214,6 @@ export const formSchema: FormSchema[] = [
 
 export const memberColumns: BasicColumn[] = [
   {
-    title: '项目名称',
-    dataIndex: 'projectName',
-    width: 200,
-  },
-  {
     title: '项目成员',
     dataIndex: 'servicer',
     width: 200,
@@ -224,10 +222,9 @@ export const memberColumns: BasicColumn[] = [
 
 export const searchMemberFormSchema: FormSchema[] = [
   {
-    label: '项目成员',
+    label: '成员',
     field: 'servicer',
     component: 'Input',
-    colProps: { span: 6 },
   },
 ];
 
@@ -239,23 +236,15 @@ export const memberFormSchema: FormSchema[] = [
     show: false,
   },
   {
-    label: '项目名称',
-    field: 'projectName',
-    component: 'Input',
-    dynamicDisabled: () => {
-      return true;
-    },
-  },
-  {
     label: '项目成员',
     field: 'servicerId',
     required: true,
-    component: 'ApiSelect',
+    component: 'JSelectUser',
     componentProps: {
-      api: getAllUserList,
-      numberToString: true,
-      labelField: 'name',
-      valueField: 'id',
+      labelKey: 'realname',
+      rowKey: 'id',
+      showSelectTable: false,
+      isRadioSelection: true,
     },
   },
 ];

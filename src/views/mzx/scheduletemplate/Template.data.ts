@@ -82,12 +82,12 @@ export const stageColumns: BasicColumn[] = [
 
 export const itemSearchFormSchema: FormSchema[] = [
   {
-    label: '阶段名称',
+    label: '名称',
     field: 'itemName',
     component: 'Input',
   },
   {
-    label: '阶段状态',
+    label: '状态',
     field: 'status',
     component: 'JDictSelectTag',
     componentProps: {
@@ -121,25 +121,19 @@ export const stageFormSchema: FormSchema[] = [
     field: 'id',
     component: 'Input',
     show: false,
-    colProps: {
-      span: 8,
-    },
   },
   {
     label: '阶段名称',
     field: 'itemName',
     required: true,
     component: 'Input',
-    colProps: {
-      span: 8,
-    },
   },
   {
     label: '可选值',
     field: 'defaultText',
     component: 'Input',
-    colProps: {
-      span: 8,
+    componentProps: {
+      placeholder: 'eg：["选项1","选项2"]',
     },
   },
   {
@@ -147,9 +141,6 @@ export const stageFormSchema: FormSchema[] = [
     field: 'sortOrder',
     component: 'InputNumber',
     defaultValue: 1,
-    colProps: {
-      span: 8,
-    },
   },
   {
     field: 'status',
@@ -160,9 +151,6 @@ export const stageFormSchema: FormSchema[] = [
       type: 'radioButton',
       dictCode: 'dict_item_status',
       stringToNumber: true,
-    },
-    colProps: {
-      span: 8,
     },
   },
   {
@@ -184,34 +172,25 @@ export const detailFormSchema: FormSchema[] = [
     field: 'itemName',
     required: true,
     component: 'Input',
-    colProps: {
-      span: 8,
-    },
   },
   {
     label: '可选值',
     field: 'defaultText',
     component: 'Input',
-    colProps: {
-      span: 8,
+    componentProps: {
+      placeholder: 'eg：["选项1","选项2"]',
     },
   },
   {
     label: '说明',
     field: 'directions',
     component: 'InputTextArea',
-    colProps: {
-      span: 8,
-    },
   },
   {
     label: '排序',
     field: 'sortOrder',
     component: 'InputNumber',
     defaultValue: 1,
-    colProps: {
-      span: 8,
-    },
   },
   {
     field: 'status',
@@ -222,9 +201,6 @@ export const detailFormSchema: FormSchema[] = [
       type: 'radioButton',
       dictCode: 'dict_item_status',
       stringToNumber: true,
-    },
-    colProps: {
-      span: 8,
     },
   },
 ];

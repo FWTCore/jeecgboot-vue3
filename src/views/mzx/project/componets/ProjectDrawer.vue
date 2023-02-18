@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" showFooter :width="adaptiveWidth" :title="getTitle" @ok="handleSubmit">
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" showFooter :width="adaptiveWidth" :title="getTitle" @ok="handleSubmit" destroyOnClose>
     <BasicForm @register="registerForm">
       <template #remoteSearchCustomer="{ model, field }">
         <ApiSelect
@@ -38,14 +38,14 @@
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import { ApiSelect } from '/@/components/Form/index';
   import { formSchema } from '../Project.data';
-  import { saveOrUpdateProject, getAllScheduleTemplateList, getAllCustomerList } from '../Project.api';
+  import { saveOrUpdateProject, getScheduleTemplate, getAllScheduleTemplateList, getAllCustomerList } from '../Project.api';
   // 声明Emits
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
   const rowId = ref('');
   const showFooter = ref(true);
   //表单配置
-  const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
+  const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
     schemas: formSchema,
     showActionButtonGroup: false,
   });
@@ -58,10 +58,21 @@
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
       rowId.value = data.record.id;
+      try {
+        const template = await getScheduleTemplate({ projectId: data.record.id });
+        if (template) {
+          data.record.projectScheduleTemplateId = template.projectScheduleTemplateId;
+          data.record.scheduleTemplateName = template.scheduleTemplateName;
+        }
+      } catch (error) {}
       //表单赋值
       await setFieldsValue({
         ...data.record,
       });
+      setTimeout(() => {}, 1000 * 2);
+      data.record.projectScheduleTemplateId && (await setFieldsValue({ projectScheduleTemplateId: data.record.projectScheduleTemplateId }));
+      setProps({ disabled: !showFooter.value });
+      console.log(data.record);
     }
   });
   //设置标题

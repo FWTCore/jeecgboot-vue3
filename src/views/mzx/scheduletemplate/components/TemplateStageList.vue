@@ -1,15 +1,9 @@
 <template>
   <!--引用表格-->
-  <BasicTable
-    @register="registerTable"
-    :expandedRowKeys="expandedRowKeys"
-    :rowSelection="rowSelection"
-    @expand="handleExpand"
-    @fetch-success="clickFetchSuccess"
-  >
+  <BasicTable @register="registerTable" :rowSelection="rowSelection">
     <!--插槽:table标题-->
     <template #tableTitle>
-      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="createItem">新建</a-button>
+      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="createItem">新增</a-button>
       <template v-if="selectedRowKeys.length > 0">
         <a-dropdown>
           <template #overlay>
@@ -27,35 +21,30 @@
         </a-dropdown>
       </template>
     </template>
-    <template #expandedRowRender>
-      <BasicTable bordered size="middle" rowKey="id" :canResize="false" :columns="detailColumns" :pagination="false" />
-    </template>
     <!-- 插槽：行内操作按钮 -->
     <template #action="{ record }">
-      <TableAction :actions="getTableAction(record)" />
+      <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
     </template>
   </BasicTable>
-  <TemplateItemModal @register="registerModal" @success="onUserDrawerSuccess" />
+  <TemplateStageModal @register="registerModal" @success="onUserDrawerSuccess" />
+  <TemplateDetailList @register="registerDrawer" />
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, watch } from 'vue';
+  import { computed, watch } from 'vue';
   import { ActionItem, BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
+  import { useDrawer } from '/src/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import TemplateItemModal from './TemplateItemModal.vue';
+  import TemplateStageModal from './TemplateStageModal.vue';
+  import TemplateDetailList from './TemplateDetailList.vue';
   import { ColEx } from '/@/components/Form/src/types';
-  import { stageColumns, itemSearchFormSchema, detailColumns } from '../Template.data';
-  import { itemList } from '../Template.api';
+  import { stageColumns, itemSearchFormSchema } from '../Template.data';
+  import { itemList, deleteItem, deleteBatchItem } from '../Template.api';
 
   const props = defineProps({
     templateId: { require: true, type: String },
   });
-
-  // 展开key
-  const expandedRowKeys = ref<any[]>([]);
-  // 子表数据
-  const innerData = ref<any>();
 
   // 当前选中的模板Id
   const templateId = computed(() => props.templateId);
@@ -102,14 +91,16 @@
   });
 
   // 注册 ListTable
-  const [registerTable, { reload, updateTableDataRecord }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
 
   watch(
     () => props.templateId,
     () => reload()
   );
-  //注册drawer
+  //注册Modal
   const [registerModal, { openModal }] = useModal();
+  //注册Drawer
+  const [registerDrawer, { openDrawer }] = useDrawer();
 
   // 创建
   function createItem() {
@@ -125,8 +116,8 @@
   /**
    * 成功回调
    */
-  function onUserDrawerSuccess({ isUpdate, values }) {
-    isUpdate ? updateTableDataRecord(values.id, values) : reload();
+  function onUserDrawerSuccess() {
+    reload();
   }
 
   /**
@@ -138,10 +129,23 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
+    ];
+  }
+
+  /**
+   * 操作栏
+   */
+  function getDropDownAction(record): ActionItem[] {
+    return [
+      {
+        label: '添加明细',
+        onClick: handleAddDetail.bind(null, record),
+      },
       {
         label: '删除',
+        color: 'error',
         popConfirm: {
-          title: '确定删除吗?',
+          title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
       },
@@ -161,30 +165,24 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    // await deleteData({ id: record.id }, reload);
+    await deleteItem({ id: record.id }, reload);
   }
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    // await batchDeleteData({ ids: selectedRowKeys.value }, reload);
+    await deleteBatchItem({ ids: selectedRowKeys.value }, () => {
+      selectedRowKeys.value = [];
+      reload();
+    });
   }
   /**
-   * 展开事件
-   * */
-  function handleExpand(expanded, record) {
-    innerData.value = [];
-    expandedRowKeys.value = [];
-    if (expanded === true) {
-      expandedRowKeys.value.push(record.id);
-      innerData.value = itemList({ parentId: record.id, projectScheduleTemplateId: templateId.value });
-    }
-  }
-  /**
-   * 加载完成事件
+   * 编辑事件
    */
-  function clickFetchSuccess() {
-    innerData.value = [];
-    expandedRowKeys.value = [];
+  async function handleAddDetail(record: Recordable) {
+    openDrawer(true, {
+      id: record.id,
+      templateId: templateId,
+    });
   }
 </script>

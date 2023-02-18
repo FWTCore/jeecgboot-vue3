@@ -10,6 +10,11 @@ enum Api {
   allCustomerList = '/customer/queryall',
   allScheduleTemplateList = '/project/schedule/template/queryall',
   allUserList = '/project/queryuserall',
+  getScheduleTemplate = '/project/schedule/queryByProjectId',
+  memberList = '/project/member/list',
+  deleteMember = '/project/member/delete',
+  editMember = '/project/member/edit',
+  saveMember = '/project/member/add',
 }
 /**
  * 列表接口
@@ -65,7 +70,29 @@ export const getAllCustomerList = (params) => defHttp.get({ url: Api.allCustomer
  */
 export const getAllScheduleTemplateList = (params) => defHttp.get({ url: Api.allScheduleTemplateList, params });
 /**
- * 获取全部项目模板
+ * 获取项目模板
  * @param params
  */
-export const getAllUserList = (params) => defHttp.get({ url: Api.allUserList, params });
+export const getScheduleTemplate = (params) => defHttp.get({ url: Api.getScheduleTemplate, params });
+
+/**
+ * 成员列表接口
+ * @param params
+ */
+export const memberList = (params) => defHttp.get({ url: Api.memberList, params });
+/**
+ * 删除
+ */
+export const deleteMember = (params, handleSuccess) => {
+  return defHttp.delete({ url: Api.deleteMember, params }, { joinParamsToUrl: true }).then(() => {
+    handleSuccess();
+  });
+};
+/**
+ * 保存或者更新
+ * @param params
+ */
+export const saveOrUpdateMember = (params, isUpdate) => {
+  const url = isUpdate ? Api.editMember : Api.saveMember;
+  return defHttp.post({ url: url, params });
+};

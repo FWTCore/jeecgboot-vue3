@@ -25,8 +25,7 @@
     </template>
   </BasicTable>
   <ProjectDrawer @register="registerDrawer" @success="handleSuccess" />
-  <!-- <ProjectModel @register="registerModel" @success="handleSuccess" /> -->
-  <!-- <ProjectMemberListModel @register="registerModel" @success="handleSuccess" /> -->
+  <ProjectMemberList @register="registerMemberDrawer" />
 </template>
 
 <script lang="ts" name="biz-project" setup>
@@ -35,18 +34,16 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
-  import { useModal } from '/src/components/Modal';
   import ProjectDrawer from './componets/ProjectDrawer.vue';
-  // import ProjectModel from './componets/ProjectModel.vue';
-  // import ProjectModel from './componets/ProjectModel.vue';
+  import ProjectMemberList from './componets/ProjectMemberList.vue';
   import { columns, searchFormSchema } from './Project.data';
   import { list, deleteData, batchDeleteData } from './Project.api';
 
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
 
-  //model
-  const [registerModel, { openModal }] = useModal();
+  //drawer
+  const [registerMemberDrawer, { openDrawer: openMemberDrawer }] = useDrawer();
 
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
@@ -65,16 +62,12 @@
   });
 
   //注册table数据
-  const [registerTable, { reload, updateTableDataRecord }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
 
   /**
    * 新增事件
    */
-  function handleCreate(record: Recordable) {
-    // openModal(true, {
-    //   record,
-    //   isUpdate: true,
-    // });
+  function handleCreate() {
     openDrawer(true, {
       isUpdate: false,
       showFooter: true,
@@ -84,28 +77,29 @@
    * 编辑事件
    */
   async function handleEdit(record: Recordable) {
-    // openModel(true, {
-    //   record,
-    //   isUpdate: true,
-    // });
+    openDrawer(true, {
+      isUpdate: true,
+      showFooter: true,
+      record: record,
+    });
   }
   /**
    * 详情事件
    */
   async function handleDetail(record: Recordable) {
-    // openModel(true, {
-    //   record,
-    //   isUpdate: true,
-    // });
+    openDrawer(true, {
+      isUpdate: true,
+      showFooter: false,
+      record: record,
+    });
   }
   /**
    * 配置团队成员
    */
   async function handleMember(record: Recordable) {
-    // openModel(true, {
-    //   record,
-    //   isUpdate: true,
-    // });
+    openMemberDrawer(true, {
+      record: record,
+    });
   }
 
   /**
@@ -118,13 +112,15 @@
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteData({ ids: selectedRowKeys.value }, reload);
+    await batchDeleteData({ ids: selectedRowKeys.value }, () => {
+      selectedRowKeys.value = [];
+      reload();
+    });
   }
   /**
    * 成功回调
    */
   function handleSuccess() {
-    console.log('handleSuccess');
     reload();
   }
 
