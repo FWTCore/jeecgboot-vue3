@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="成员列表" width="800px">
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="服务记录列表" width="70%">
     <BasicTable @register="registerTable" :rowClassName="getRowClassName">
       <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增</a-button>
@@ -9,7 +9,7 @@
       </template>
     </BasicTable>
   </BasicDrawer>
-  <ProjectMemberModel @register="registerModal" @success="reload" :projectId="projectId" />
+  <CustomerServiceLogModel @register="registerModal" @success="reload" :customerId="customerId" />
 </template>
 <script lang="ts" setup>
   import { ref, unref } from 'vue';
@@ -17,18 +17,21 @@
   import { BasicTable, useTable, TableAction } from '/src/components/Table';
   import { useModal } from '/src/components/Modal';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import ProjectMemberModel from './ProjectMemberModel.vue';
-  import { memberColumns, searchMemberFormSchema } from '../Project.data';
-  import { memberList, deleteMember } from '../Project.api';
+  import CustomerServiceLogModel from './CustomerServiceLogModel.vue';
+  import { serviceLogColumns, serviceLogSearchFormSchema } from '../Customer.data';
+  import { serviceList, serviceDelete } from '../Customer.api';
   import { ColEx } from '/@/components/Form/src/types';
 
   const { prefixCls } = useDesign('row-invalid');
-  const projectId = ref('');
+  const customerId = ref('');
+  const customerName = ref('');
+
   //字典配置model
   const [registerModal, { openModal }] = useModal();
   const [registerDrawer] = useDrawerInner(async (data) => {
-    projectId.value = data.record.id;
-    setProps({ searchInfo: { projectId: unref(projectId) } });
+    customerId.value = data.record.id;
+    customerName.value = data.record.customerName;
+    setProps({ searchInfo: { customerId: unref(customerId) } });
     reload();
   });
   // 自适应列配置
@@ -41,8 +44,8 @@
     xxl: 8, // ≥1600px
   };
   const [registerTable, { reload, setProps }] = useTable({
-    api: memberList,
-    columns: memberColumns,
+    api: serviceList,
+    columns: serviceLogColumns,
     formConfig: {
       baseColProps: adaptiveColProps,
       labelAlign: 'right',
@@ -56,7 +59,7 @@
         xxl: 4,
       },
       wrapperCol: {},
-      schemas: searchMemberFormSchema,
+      schemas: serviceLogSearchFormSchema,
       autoSubmitOnEnter: true,
     },
     striped: true,
@@ -80,6 +83,7 @@
   function handleCreate() {
     openModal(true, {
       isUpdate: false,
+      customerName: customerName.value,
     });
   }
 
@@ -87,14 +91,27 @@
    * 删除
    */
   async function handleDelete(record) {
-    await deleteMember({ id: record.id }, reload);
+    await serviceDelete({ id: record.id }, reload);
   }
-
+  /**
+   * 编辑
+   */
+  async function handleEdit(record) {
+    openModal(true, {
+      isUpdate: true,
+      record: record,
+      customerName: customerName.value,
+    });
+  }
   /**
    * 操作栏
    */
   function getTableAction(record) {
     return [
+      {
+        label: '编辑',
+        onClick: handleEdit.bind(null, record),
+      },
       {
         label: '删除',
         popConfirm: {

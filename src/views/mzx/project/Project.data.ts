@@ -215,7 +215,7 @@ export const formSchema: FormSchema[] = [
 export const memberColumns: BasicColumn[] = [
   {
     title: '项目成员',
-    dataIndex: 'servicer',
+    dataIndex: 'staff',
     width: 200,
   },
 ];
@@ -223,7 +223,7 @@ export const memberColumns: BasicColumn[] = [
 export const searchMemberFormSchema: FormSchema[] = [
   {
     label: '成员',
-    field: 'servicer',
+    field: 'staff',
     component: 'Input',
   },
 ];
@@ -237,7 +237,7 @@ export const memberFormSchema: FormSchema[] = [
   },
   {
     label: '项目成员',
-    field: 'servicerId',
+    field: 'staffId',
     required: true,
     component: 'JSelectUser',
     componentProps: {

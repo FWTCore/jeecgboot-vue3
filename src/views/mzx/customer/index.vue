@@ -11,6 +11,7 @@
     </template>
   </BasicTable>
   <CustomerModel @register="registerModal" @success="handleSuccess" />
+  <CustomerServcieLogList @register="registerDrawer" />
 </template>
 
 <script lang="ts" name="system-dict" setup>
@@ -18,12 +19,16 @@
   import { ref, computed, unref } from 'vue';
   import { BasicTable, TableAction, ActionItem } from '/src/components/Table';
   import { useModal } from '/src/components/Modal';
+  import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import CustomerModel from './componets/CustomerModel.vue';
+  import CustomerServcieLogList from './componets/CustomerServcieLogList.vue';
   import { columns, searchFormSchema } from './Customer.data';
   import { syncuft, list } from './Customer.api';
 
   const [registerModal, { openModal }] = useModal();
+  //drawer
+  const [registerDrawer, { openDrawer }] = useDrawer();
 
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
@@ -59,6 +64,10 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
+      {
+        label: '服务记录',
+        onClick: handleServiceLog.bind(null, record),
+      },
     ];
   }
   /**
@@ -68,6 +77,14 @@
     openModal(true, {
       record,
       isUpdate: true,
+    });
+  }
+  /**
+   * 服务记录事件
+   */
+  async function handleServiceLog(record: Recordable) {
+    openDrawer(true, {
+      record,
     });
   }
   /**

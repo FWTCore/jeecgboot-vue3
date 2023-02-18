@@ -8,11 +8,12 @@
   import { BasicModal, useModalInner } from '/src/components/Modal';
   import { BasicForm, useForm } from '/src/components/Form';
   import { formSchema } from '../Customer.data';
-  import { saveOrUpdateDict } from '../Customer.api';
+  import { saveOrUpdate } from '../Customer.api';
   // 声明Emits
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
   const rowId = ref('');
+
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     schemas: formSchema,
@@ -41,7 +42,7 @@
       let values = await validate();
       setModalProps({ confirmLoading: true });
       //提交表单
-      await saveOrUpdateDict(values, isUpdate.value);
+      await saveOrUpdate(values, isUpdate.value);
       //关闭弹窗
       closeModal();
       //刷新列表
