@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" width="70%">
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" width="80%">
     <BasicTable @register="registerTable" :rowClassName="getRowClassName">
       <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增</a-button>
@@ -9,34 +9,35 @@
       </template>
     </BasicTable>
   </BasicDrawer>
-  <CustomerServiceLogModel @register="registerModal" @success="reload" :customerId="customerId" />
+  <PeojectScheduleModel @register="registerModal" @success="reload" :projectId="projectId" />
 </template>
 <script lang="ts" setup>
-  import { ref, computed, unref } from 'vue';
+  import { ref, unref, computed } from 'vue';
   import { BasicDrawer, useDrawerInner } from '/src/components/Drawer';
   import { BasicTable, useTable, TableAction } from '/src/components/Table';
   import { useModal } from '/src/components/Modal';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import CustomerServiceLogModel from './CustomerServiceLogModel.vue';
-  import { serviceLogColumns, serviceLogSearchFormSchema } from '../Customer.data';
-  import { serviceList, serviceDelete } from '../Customer.api';
+  import PeojectScheduleModel from './PeojectScheduleModel.vue';
+  import { scheduleColumns, searchScheduleFormSchema } from '../Project.data';
+  import { listSchedule, deleteSchedule } from '../Project.api';
   import { ColEx } from '/@/components/Form/src/types';
-import { right } from 'inquirer/lib/utils/readline';
 
   const { prefixCls } = useDesign('row-invalid');
-  const customerId = ref('');
-  const customerName = ref('');
+  const projectId = ref('');
+  const projectName = ref('');
 
   //字典配置model
   const [registerModal, { openModal }] = useModal();
   const [registerDrawer] = useDrawerInner(async (data) => {
-    customerId.value = data.record.id;
-    customerName.value = data.record.customerName;
-    setProps({ searchInfo: { customerId: unref(customerId) } });
+    projectId.value = data.record.id;
+    projectName.value = data.record.projectName;
+    setProps({ searchInfo: { projectId: unref(projectId) } });
     reload();
   });
+
   //设置标题
-  const getTitle = computed(() => unref(customerName) + '--服务记录列表');
+  const getTitle = computed(() => unref(projectName) + '--服务记录列表');
+
   // 自适应列配置
   const adaptiveColProps: Partial<ColEx> = {
     xs: 24, // <576px
@@ -47,8 +48,8 @@ import { right } from 'inquirer/lib/utils/readline';
     xxl: 8, // ≥1600px
   };
   const [registerTable, { reload, setProps }] = useTable({
-    api: serviceList,
-    columns: serviceLogColumns,
+    api: listSchedule,
+    columns: scheduleColumns,
     formConfig: {
       baseColProps: adaptiveColProps,
       labelAlign: 'right',
@@ -62,7 +63,7 @@ import { right } from 'inquirer/lib/utils/readline';
         xxl: 4,
       },
       wrapperCol: {},
-      schemas: serviceLogSearchFormSchema,
+      schemas: searchScheduleFormSchema,
       autoSubmitOnEnter: true,
     },
     striped: true,
@@ -72,7 +73,6 @@ import { right } from 'inquirer/lib/utils/readline';
     canResize: false,
     immediate: false,
     actionColumn: {
-      width: 100,
       title: '操作',
       dataIndex: 'action',
       slots: { customRender: 'action' },
@@ -86,7 +86,6 @@ import { right } from 'inquirer/lib/utils/readline';
   function handleCreate() {
     openModal(true, {
       isUpdate: false,
-      customerName: customerName.value,
     });
   }
 
@@ -94,18 +93,9 @@ import { right } from 'inquirer/lib/utils/readline';
    * 删除
    */
   async function handleDelete(record) {
-    await serviceDelete({ id: record.id }, reload);
+    await deleteSchedule({ id: record.id }, reload);
   }
-  /**
-   * 编辑
-   */
-  async function handleEdit(record) {
-    openModal(true, {
-      isUpdate: true,
-      record: record,
-      customerName: customerName.value,
-    });
-  }
+
   /**
    * 操作栏
    */
@@ -113,7 +103,10 @@ import { right } from 'inquirer/lib/utils/readline';
     return [
       {
         label: '编辑',
-        onClick: handleEdit.bind(null, record),
+        popConfirm: {
+          title: '是否确认删除',
+          confirm: handleDelete.bind(null, record),
+        },
       },
       {
         label: '删除',

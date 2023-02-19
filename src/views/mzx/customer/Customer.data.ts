@@ -94,11 +94,6 @@ export const formSchema: FormSchema[] = [
 
 export const serviceLogColumns: BasicColumn[] = [
   {
-    title: '客户名称',
-    dataIndex: 'customerName',
-    width: 400,
-  },
-  {
     title: '服务人',
     dataIndex: 'staff',
     width: 120,
@@ -106,6 +101,11 @@ export const serviceLogColumns: BasicColumn[] = [
   {
     title: '服务时间',
     dataIndex: 'createTime',
+    width: 100,
+  },
+  {
+    title: '工时',
+    dataIndex: 'workHours',
     width: 100,
   },
   {
@@ -175,8 +175,8 @@ export const serviceLogFormSchema: FormSchema[] = [
     },
   },
   {
-    field: 'serviceContent',
     label: '服务内容',
+    field: 'serviceContent',
     component: 'InputTextArea',
   },
   {

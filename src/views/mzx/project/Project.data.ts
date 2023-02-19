@@ -1,6 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { rules } from './validator';
+import { getAllUsageSchedule } from './Project.api';
 
 export const columns: BasicColumn[] = [
   {
@@ -245,6 +246,422 @@ export const memberFormSchema: FormSchema[] = [
       rowKey: 'id',
       showSelectTable: false,
       isRadioSelection: true,
+    },
+  },
+];
+
+export const scheduleColumns: BasicColumn[] = [
+  {
+    title: '项目名称',
+    dataIndex: 'projectName',
+    width: 200,
+    fixed: 'left',
+  },
+  {
+    title: '条目名称',
+    dataIndex: 'scheduleName',
+    width: 200,
+    fixed: 'left',
+  },
+  {
+    title: '服务人',
+    dataIndex: 'staff',
+    width: 100,
+  },
+  {
+    title: '服务方式',
+    dataIndex: 'serviceType_dictText',
+    width: 100,
+  },
+  {
+    title: '服务时间',
+    dataIndex: 'createTime',
+    width: 100,
+  },
+  {
+    title: '工时',
+    dataIndex: 'workHours',
+    width: 50,
+  },
+  {
+    title: '服务内容',
+    dataIndex: 'serviceContent',
+    width: 200,
+  },
+  {
+    title: '是否加班',
+    dataIndex: 'overtimeFlag',
+    width: 80,
+  },
+  {
+    title: '加班时长',
+    dataIndex: 'overtime',
+    width: 50,
+  },
+  {
+    title: '是否完成',
+    dataIndex: 'doneFlag',
+    width: 80,
+  },
+  {
+    title: '是否归档',
+    dataIndex: 'archiveFlag',
+    width: 80,
+  },
+  {
+    title: '下次服务时间',
+    dataIndex: 'nextPlanTime',
+    width: 100,
+  },
+  {
+    title: '下次服务内容',
+    dataIndex: 'nextPlanContent',
+    width: 200,
+  },
+];
+
+export const searchScheduleFormSchema: FormSchema[] = [
+  {
+    label: '服务人',
+    field: 'staff',
+    component: 'Input',
+  },
+  {
+    label: '服务时间',
+    field: 'createTime',
+    component: 'RangePicker',
+    componentProps: {
+      valueType: 'Date',
+      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+    },
+  },
+  {
+    label: '服务内容',
+    field: 'serviceContent',
+    component: 'Input',
+  },
+];
+
+export const scheduleFormSchema: FormSchema[] = [
+  {
+    label: '',
+    field: 'id',
+    component: 'Input',
+    show: false,
+  },
+  {
+    label: '项目名称',
+    field: 'projectName',
+    required: true,
+    component: 'Input',
+    dynamicDisabled: ({}) => {
+      return true;
+    },
+  },
+  {
+    label: '项目进度阶段',
+    field: 'projectScheduleUsageItemId',
+    required: true,
+    component: 'Input',
+    slot: 'remoteSearchSchedule',
+    componentProps: {
+      placeholder: '请选择项目进度阶段',
+      onChange: (e: any) => {
+        console.log(e);
+        // formModel.city = undefined; //  reset city value
+        // const { updateSchema } = formActionType;
+        // updateSchema({
+        //   field: 'city',
+        //   componentProps: {
+        //     options: citiesOptions,
+        //   },
+        // });
+      },
+    },
+    dynamicDisabled: ({ values }) => {
+      return !!values.id;
+    },
+  },
+  // {
+  //   label: '项目进度阶段',
+  //   field: 'projectScheduleUsageItemId',
+  //   required: true,
+  //   component: 'Select',
+  //   componentProps: ({ formModel, formActionType }) => {
+  //     return {
+  //       options: getAllUsageSchedule,
+  //       placeholder: '请选择项目进度阶段',
+  //       onChange: (e: any) => {
+  //         console.log(e);
+  //         // formModel.city = undefined; //  reset city value
+  //         // const { updateSchema } = formActionType;
+  //         // updateSchema({
+  //         //   field: 'city',
+  //         //   componentProps: {
+  //         //     options: citiesOptions,
+  //         //   },
+  //         // });
+  //       },
+  //     };
+  //   },
+  //   dynamicDisabled: ({ values }) => {
+  //     return !!values.id;
+  //   },
+  // },
+  {
+    label: '服务方式',
+    field: 'serviceType',
+    component: 'JDictSelectTag',
+    componentProps: {
+      dictCode: 'project_schedule_service_type',
+      stringToNumber: true,
+    },
+  },
+  {
+    label: '服务内容',
+    field: 'serviceContent',
+    component: 'InputTextArea',
+  },
+  {
+    label: '工时',
+    field: 'workHours',
+    component: 'InputNumber',
+  },
+  {
+    label: '是否加班',
+    field: 'overtimeFlag',
+    component: 'Switch',
+  },
+  {
+    label: '加班时长',
+    field: 'overtime',
+    component: 'InputNumber',
+    ifShow: ({ values }) => {
+      return values.overtimeFlag;
+    },
+  },
+  {
+    label: '是否完成',
+    field: 'doneFlag',
+    component: 'Switch',
+  },
+  {
+    label: '是否归档',
+    field: 'archiveFlag',
+    component: 'Switch',
+  },
+  {
+    label: '下次服务时间',
+    field: 'nextPlanTime',
+    component: 'DatePicker',
+    componentProps: {
+      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+    },
+    dynamicDisabled: ({ values }) => {
+      return !values.editPlan;
+    },
+  },
+  {
+    label: '下次服务内容',
+    field: 'nextPlanContent',
+    component: 'InputTextArea',
+    dynamicDisabled: ({ values }) => {
+      return !values.editPlan;
+    },
+  },
+];
+
+export const costColumns: BasicColumn[] = [
+  {
+    title: '项目名称',
+    dataIndex: 'projectName',
+    width: 200,
+    fixed: 'left',
+  },
+  {
+    title: '条目名称',
+    dataIndex: 'scheduleName',
+    width: 200,
+    fixed: 'left',
+  },
+  {
+    title: '服务人',
+    dataIndex: 'staff',
+    width: 100,
+  },
+  {
+    title: '服务方式',
+    dataIndex: 'serviceType_dictText',
+    width: 100,
+  },
+  {
+    title: '服务时间',
+    dataIndex: 'createTime',
+    width: 100,
+  },
+  {
+    title: '工时',
+    dataIndex: 'workHours',
+    width: 50,
+  },
+  {
+    title: '服务内容',
+    dataIndex: 'serviceContent',
+    width: 200,
+  },
+  {
+    title: '是否加班',
+    dataIndex: 'overtimeFlag',
+    width: 80,
+  },
+  {
+    title: '加班时长',
+    dataIndex: 'overtime',
+    width: 50,
+  },
+  {
+    title: '是否完成',
+    dataIndex: 'doneFlag',
+    width: 80,
+  },
+  {
+    title: '是否归档',
+    dataIndex: 'archiveFlag',
+    width: 80,
+  },
+  {
+    title: '下次服务时间',
+    dataIndex: 'nextPlanTime',
+    width: 100,
+  },
+  {
+    title: '下次服务内容',
+    dataIndex: 'nextPlanContent',
+    width: 200,
+  },
+];
+
+export const searchCostFormSchema: FormSchema[] = [
+  {
+    label: '服务人',
+    field: 'staff',
+    component: 'Input',
+  },
+  {
+    label: '服务时间',
+    field: 'createTime',
+    component: 'RangePicker',
+    componentProps: {
+      valueType: 'Date',
+      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+    },
+  },
+  {
+    label: '服务内容',
+    field: 'serviceContent',
+    component: 'Input',
+  },
+];
+
+export const costFormSchema: FormSchema[] = [
+  {
+    label: '',
+    field: 'id',
+    component: 'Input',
+    show: false,
+  },
+  {
+    label: '项目名称',
+    field: 'projectName',
+    required: true,
+    component: 'Input',
+    dynamicDisabled: ({}) => {
+      return true;
+    },
+  },
+  {
+    label: '项目进度阶段',
+    field: 'projectScheduleUsageItemId',
+    required: true,
+    component: 'Input',
+    slot: 'remoteSearchSchedule',
+    componentProps: {
+      placeholder: '请选择项目进度阶段',
+      onChange: (e: any) => {
+        console.log(e);
+        // formModel.city = undefined; //  reset city value
+        // const { updateSchema } = formActionType;
+        // updateSchema({
+        //   field: 'city',
+        //   componentProps: {
+        //     options: citiesOptions,
+        //   },
+        // });
+      },
+    },
+    dynamicDisabled: ({ values }) => {
+      return !!values.id;
+    },
+  },
+  {
+    label: '服务方式',
+    field: 'serviceType',
+    component: 'JDictSelectTag',
+    componentProps: {
+      dictCode: 'project_schedule_service_type',
+      stringToNumber: true,
+    },
+  },
+  {
+    label: '服务内容',
+    field: 'serviceContent',
+    component: 'InputTextArea',
+  },
+  {
+    label: '工时',
+    field: 'workHours',
+    component: 'InputNumber',
+  },
+  {
+    label: '是否加班',
+    field: 'overtimeFlag',
+    component: 'Switch',
+  },
+  {
+    label: '加班时长',
+    field: 'overtime',
+    component: 'InputNumber',
+    ifShow: ({ values }) => {
+      return values.overtimeFlag;
+    },
+  },
+  {
+    label: '是否完成',
+    field: 'doneFlag',
+    component: 'Switch',
+  },
+  {
+    label: '是否归档',
+    field: 'archiveFlag',
+    component: 'Switch',
+  },
+  {
+    label: '下次服务时间',
+    field: 'nextPlanTime',
+    component: 'DatePicker',
+    componentProps: {
+      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+    },
+    dynamicDisabled: ({ values }) => {
+      return !values.editPlan;
+    },
+  },
+  {
+    label: '下次服务内容',
+    field: 'nextPlanContent',
+    component: 'InputTextArea',
+    dynamicDisabled: ({ values }) => {
+      return !values.editPlan;
     },
   },
 ];

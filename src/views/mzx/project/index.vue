@@ -21,11 +21,13 @@
     </template>
     <!--操作栏-->
     <template #action="{ record }">
-      <TableAction :actions="getTableAction(record)" />
+      <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
     </template>
   </BasicTable>
   <ProjectDrawer @register="registerDrawer" @success="handleSuccess" />
   <ProjectMemberList @register="registerMemberDrawer" />
+  <PeojectScheduleList @register="registerScheduleDrawer" />
+  <ProjectCostList @register="registerCostDrawer" />
 </template>
 
 <script lang="ts" name="biz-project" setup>
@@ -36,6 +38,8 @@
   import { useDrawer } from '/@/components/Drawer';
   import ProjectDrawer from './componets/ProjectDrawer.vue';
   import ProjectMemberList from './componets/ProjectMemberList.vue';
+  import PeojectScheduleList from './componets/PeojectScheduleList.vue';
+  import ProjectCostList from './componets/ProjectCostList.vue';
   import { columns, searchFormSchema } from './Project.data';
   import { list, deleteData, batchDeleteData } from './Project.api';
 
@@ -44,6 +48,8 @@
 
   //drawer
   const [registerMemberDrawer, { openDrawer: openMemberDrawer }] = useDrawer();
+  const [registerScheduleDrawer, { openDrawer: openScheduleDrawer }] = useDrawer();
+  const [registerCostDrawer, { openDrawer: openCostDrawer }] = useDrawer();
 
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
@@ -103,6 +109,23 @@
   }
 
   /**
+   * 项目进度
+   */
+  function handleSchedule(record) {
+    openScheduleDrawer(true, {
+      record: record,
+    });
+  }
+  /**
+   * 项目费用
+   */
+  function handleCost(record) {
+    openCostDrawer(true, {
+      record: record,
+    });
+  }
+
+  /**
    * 删除事件
    */
   async function handleDelete(record) {
@@ -130,16 +153,32 @@
   function getTableAction(record) {
     return [
       {
-        label: '详情',
-        onClick: handleDetail.bind(null, record),
-      },
-      {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
+    ];
+  }
+
+  /**
+   * 操作栏
+   */
+  function getDropDownAction(record) {
+    return [
       {
-        label: '配置团队成员',
+        label: '项目成员',
         onClick: handleMember.bind(null, record),
+      },
+      {
+        label: '项目进度',
+        onClick: handleSchedule.bind(null, record),
+      },
+      {
+        label: '项目费用',
+        onClick: handleCost.bind(null, record),
+      },
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
       },
       {
         label: '删除',
@@ -150,4 +189,5 @@
       },
     ];
   }
+  
 </script>

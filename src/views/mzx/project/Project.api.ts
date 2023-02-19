@@ -9,12 +9,16 @@ enum Api {
   duplicateCheck = '/sys/duplicate/check',
   allCustomerList = '/customer/queryall',
   allScheduleTemplateList = '/project/schedule/template/queryall',
-  allUserList = '/project/queryuserall',
   getScheduleTemplate = '/project/schedule/queryByProjectId',
   memberList = '/project/member/list',
   deleteMember = '/project/member/delete',
   editMember = '/project/member/edit',
   saveMember = '/project/member/add',
+  listSchedule = '/project/schedule/scheduleLoglist',
+  saveSchedule = '/project/schedule/add',
+  editSchedule = '/project/schedule/edit',
+  deleteSchedule = '/project/schedule/edit',
+  allUsageSchedule = '/project/schedule/queryusageschedule',
 }
 /**
  * 列表接口
@@ -96,3 +100,30 @@ export const saveOrUpdateMember = (params, isUpdate) => {
   const url = isUpdate ? Api.editMember : Api.saveMember;
   return defHttp.post({ url: url, params });
 };
+
+/**
+ * 成员列表接口
+ * @param params
+ */
+export const listSchedule = (params) => defHttp.get({ url: Api.listSchedule, params });
+/**
+ * 删除
+ */
+export const deleteSchedule = (params, handleSuccess) => {
+  return defHttp.delete({ url: Api.deleteSchedule, params }, { joinParamsToUrl: true }).then(() => {
+    handleSuccess();
+  });
+};
+/**
+ * 保存或者更新
+ * @param params
+ */
+export const saveOrUpdateSchedule = (params, isUpdate) => {
+  const url = isUpdate ? Api.editSchedule : Api.saveSchedule;
+  return defHttp.post({ url: url, params });
+};
+/**
+ * 获取项目阶段
+ * @param params
+ */
+export const getAllUsageSchedule = (params) => defHttp.get({ url: Api.allUsageSchedule, params });
