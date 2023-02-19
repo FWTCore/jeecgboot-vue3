@@ -9,7 +9,7 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { Description, useDescription } from '/@/components/Description/index';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
-  import { descItems } from './Service.data';
+  import { descItems } from './ServiceLog.data';
 
   const detailData = ref([]);
 

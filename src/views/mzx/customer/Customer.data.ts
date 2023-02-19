@@ -73,6 +73,9 @@ export const formSchema: FormSchema[] = [
     label: '第三方id',
     field: 'thirdId',
     component: 'Input',
+    dynamicDisabled: ({ values }) => {
+      return !!values.id;
+    },
   },
   {
     label: '客户概况',

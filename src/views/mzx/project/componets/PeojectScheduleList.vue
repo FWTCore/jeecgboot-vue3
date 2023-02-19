@@ -9,12 +9,12 @@
       </template>
     </BasicTable>
   </BasicDrawer>
-  <PeojectScheduleModel @register="registerModal" @success="reload" :projectId="projectId" />
+  <PeojectScheduleModel @register="registerModal" @success="reload" :projectId="projectId" :projectName="projectName" />
 </template>
 <script lang="ts" setup>
   import { ref, unref, computed } from 'vue';
   import { BasicDrawer, useDrawerInner } from '/src/components/Drawer';
-  import { BasicTable, useTable, TableAction } from '/src/components/Table';
+  import { BasicTable, useTable, TableAction, ActionItem } from '/src/components/Table';
   import { useModal } from '/src/components/Modal';
   import { useDesign } from '/@/hooks/web/useDesign';
   import PeojectScheduleModel from './PeojectScheduleModel.vue';
@@ -88,7 +88,15 @@
       isUpdate: false,
     });
   }
-
+  /**
+   * 新增
+   */
+  function handleEdit(reload) {
+    openModal(true, {
+      isUpdate: true,
+      reload,
+    });
+  }
   /**
    * 删除
    */
@@ -99,14 +107,11 @@
   /**
    * 操作栏
    */
-  function getTableAction(record) {
+  function getTableAction(record): ActionItem[] {
     return [
       {
         label: '编辑',
-        popConfirm: {
-          title: '是否确认删除',
-          confirm: handleDelete.bind(null, record),
-        },
+        onClick: handleEdit.bind(null, record),
       },
       {
         label: '删除',

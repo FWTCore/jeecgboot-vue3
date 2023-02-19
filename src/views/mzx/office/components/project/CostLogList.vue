@@ -24,8 +24,8 @@
       <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
     </template>
   </BasicTable>
-  <ScheduleDetail @register="registerDrawer" />
-  <ScheduleDrawer @register="registerEditDrawer" @success="handleSuccess" />
+  <ScheduleLogDetail @register="registerDrawer" />
+  <ScheduleLogDrawer @register="registerEditDrawer" @success="handleSuccess" />
 </template>
 
 <script lang="ts" name="work-log" setup>
@@ -34,10 +34,10 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
-  import ScheduleDetail from './ScheduleDetail.vue';
-  import ScheduleDrawer from './ScheduleDrawer.vue';
-  import { scheduleColumns, searchScheduleFormSchema } from './Schedule.data';
-  import { scheduleList, deleteSchedule, batchScheduleDelete } from './Schedule.api';
+  import ScheduleLogDetail from './ScheduleLogDetail.vue';
+  import ScheduleLogDrawer from './ScheduleLogDrawer.vue';
+  import { scheduleColumns, searchScheduleFormSchema } from './ScheduleLog.data';
+  import { scheduleList, deleteSchedule, batchScheduleDelete } from './ScheduleLog.api';
 
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();

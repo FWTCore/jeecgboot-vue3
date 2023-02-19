@@ -28,7 +28,7 @@
   import { saveOrUpdateSchedule, getAllUsageSchedule } from '../Project.api';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
-  const props = defineProps({ projectId: String });
+  const props = defineProps({ projectId: String, projectName: String });
   const isUpdate = ref(true);
   const scheduleParams = ref({});
   //表单配置
@@ -55,12 +55,12 @@
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
-      data.record.editPlan = new Date(data.record.nextPlanTime) > new Date();
       //表单赋值
       await setFieldsValue({
         ...data.record,
       });
     }
+    await setFieldsValue({ projectName: props.projectName });
   });
   //设置标题
   const getTitle = computed(() => (!unref(isUpdate) ? '新增服务记录' : '编辑服务记录'));

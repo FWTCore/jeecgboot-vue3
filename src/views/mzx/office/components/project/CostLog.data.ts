@@ -75,7 +75,7 @@ export const scheduleColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1'){
+        if (text === '1') {
           return '是';
         } else {
           return '否';
@@ -103,7 +103,7 @@ export const scheduleColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1'){
+        if (text === '1') {
           return '是';
         } else {
           return '否';
@@ -119,7 +119,7 @@ export const scheduleColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1'){
+        if (text === '1') {
           return '是';
         } else {
           return '否';
@@ -216,5 +216,142 @@ export const searchScheduleFormSchema: FormSchema[] = [
     field: 'archiveFlag',
     component: 'Switch',
     colProps: { span: 6 },
+  },
+];
+
+export const scheduleDescItems: DescItem[] = [
+  {
+    label: '项目名称',
+    field: 'projectName',
+  },
+  {
+    label: '条目名称',
+    field: 'scheduleName',
+  },
+  {
+    label: '服务人',
+    field: 'staff',
+  },
+  {
+    label: '服务方式',
+    field: 'serviceType',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '服务时间',
+    field: 'createTime',
+    render: (curVal, data) => {
+      if (curVal) {
+        return dayjs(curVal).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '工时',
+    field: 'workHours',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '服务内容',
+    field: 'serviceContent',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '是否加班',
+    field: 'overtimeFlag',
+    render: (curVal, data) => {
+      if (curVal) {
+        if (curVal === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '加班时长',
+    field: 'overtime',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '是否完成',
+    field: 'doneFlag',
+    render: (curVal, data) => {
+      if (curVal) {
+        if (curVal === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '是否归档',
+    field: 'archiveFlag',
+    render: (curVal, data) => {
+      if (curVal) {
+        if (curVal === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '下次服务时间',
+    field: 'nextPlanTime',
+    render: (curVal, data) => {
+      if (curVal) {
+        return dayjs(curVal).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '下次服务内容',
+    field: 'nextPlanContent',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
   },
 ];

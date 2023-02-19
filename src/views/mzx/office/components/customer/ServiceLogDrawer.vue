@@ -25,8 +25,8 @@
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import { useUserStore } from '/@/store/modules/user';
   import { ApiSelect } from '/@/components/Form/index';
-  import { customerFormSchema } from './Service.data';
-  import { saveOrUpdateCustomer, getAllCustomerList } from './Service.api';
+  import { customerFormSchema } from './ServiceLog.data';
+  import { saveOrUpdateCustomer, getAllCustomerList } from './ServiceLog.api';
   // 声明Emits
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);

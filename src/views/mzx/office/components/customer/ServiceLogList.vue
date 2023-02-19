@@ -24,8 +24,8 @@
       <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
     </template>
   </BasicTable>
-  <ServiceDetail @register="registerDrawer" />
-  <ServiceDrawer @register="registerEditDrawer" @success="handleSuccess" />
+  <ServiceLogDetail @register="registerDrawer" />
+  <ServiceLogDrawer @register="registerEditDrawer" @success="handleSuccess" />
 </template>
 
 <script lang="ts" name="work-log" setup>
@@ -34,10 +34,10 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
-  import ServiceDetail from './ServiceDetail.vue';
-  import ServiceDrawer from './ServiceDrawer.vue';
-  import { customerColumns, searchCustomerFormSchema } from './Service.data';
-  import { customerList, deleteCustomer, batchWorkLogDelete } from './Service.api';
+  import ServiceLogDetail from './ServiceLogDetail.vue';
+  import ServiceLogDrawer from './ServiceLogDrawer.vue';
+  import { customerColumns, searchCustomerFormSchema } from './ServiceLog.data';
+  import { customerList, deleteCustomer, batchWorkLogDelete } from './ServiceLog.api';
 
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();

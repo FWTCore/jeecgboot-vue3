@@ -39,18 +39,8 @@ export const columns: BasicColumn[] = [
     width: 70,
   },
   {
-    title: '项目状态',
-    dataIndex: 'projectStatus_dictText',
-    width: 60,
-  },
-  {
     title: '预计结束时间',
     dataIndex: 'estimatedEndTime',
-    width: 80,
-  },
-  {
-    title: '删除状态',
-    dataIndex: 'delFlag_dictText',
     width: 80,
   },
 ];
@@ -86,15 +76,6 @@ export const searchFormSchema: FormSchema[] = [
     component: 'JDictSelectTag',
     componentProps: {
       dictCode: 'project_payment_method',
-      stringToNumber: true,
-    },
-  },
-  {
-    label: '项目状态',
-    field: 'paymentMethod',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'project_project_status',
       stringToNumber: true,
     },
   },
@@ -291,6 +272,17 @@ export const scheduleColumns: BasicColumn[] = [
     title: '是否加班',
     dataIndex: 'overtimeFlag',
     width: 80,
+    customRender({ text }) {
+      if (text) {
+        if (text === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '加班时长',
@@ -301,11 +293,33 @@ export const scheduleColumns: BasicColumn[] = [
     title: '是否完成',
     dataIndex: 'doneFlag',
     width: 80,
+    customRender({ text }) {
+      if (text) {
+        if (text === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '是否归档',
     dataIndex: 'archiveFlag',
     width: 80,
+    customRender({ text }) {
+      if (text) {
+        if (text === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '下次服务时间',
@@ -351,7 +365,7 @@ export const scheduleFormSchema: FormSchema[] = [
   {
     label: '项目名称',
     field: 'projectName',
-    required: true,
+    required: false,
     component: 'Input',
     dynamicDisabled: ({}) => {
       return true;
@@ -381,32 +395,6 @@ export const scheduleFormSchema: FormSchema[] = [
       return !!values.id;
     },
   },
-  // {
-  //   label: '项目进度阶段',
-  //   field: 'projectScheduleUsageItemId',
-  //   required: true,
-  //   component: 'Select',
-  //   componentProps: ({ formModel, formActionType }) => {
-  //     return {
-  //       options: getAllUsageSchedule,
-  //       placeholder: '请选择项目进度阶段',
-  //       onChange: (e: any) => {
-  //         console.log(e);
-  //         // formModel.city = undefined; //  reset city value
-  //         // const { updateSchema } = formActionType;
-  //         // updateSchema({
-  //         //   field: 'city',
-  //         //   componentProps: {
-  //         //     options: citiesOptions,
-  //         //   },
-  //         // });
-  //       },
-  //     };
-  //   },
-  //   dynamicDisabled: ({ values }) => {
-  //     return !!values.id;
-  //   },
-  // },
   {
     label: '服务方式',
     field: 'serviceType',
@@ -430,24 +418,45 @@ export const scheduleFormSchema: FormSchema[] = [
     label: '是否加班',
     field: 'overtimeFlag',
     component: 'Switch',
+    defaultValue: 0,
+    componentProps: {
+      checkedChildren: '是',
+      unCheckedChildren: '否',
+      checkedValue: 1,
+      unCheckedValue: 0,
+    },
   },
   {
     label: '加班时长',
     field: 'overtime',
     component: 'InputNumber',
     ifShow: ({ values }) => {
-      return values.overtimeFlag;
+      return values.overtimeFlag === 1 ? true : false;
     },
   },
   {
     label: '是否完成',
     field: 'doneFlag',
     component: 'Switch',
+    defaultValue: 0,
+    componentProps: {
+      checkedChildren: '是',
+      unCheckedChildren: '否',
+      checkedValue: 1,
+      unCheckedValue: 0,
+    },
   },
   {
     label: '是否归档',
     field: 'archiveFlag',
     component: 'Switch',
+    defaultValue: 0,
+    componentProps: {
+      checkedChildren: '是',
+      unCheckedChildren: '否',
+      checkedValue: 1,
+      unCheckedValue: 0,
+    },
   },
   {
     label: '下次服务时间',
@@ -457,7 +466,15 @@ export const scheduleFormSchema: FormSchema[] = [
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
     },
     dynamicDisabled: ({ values }) => {
-      return !values.editPlan;
+      if (values.id && values && values.nextPlanTime) {
+        if (new Date(values.nextPlanTime) > new Date()) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
     },
   },
   {
@@ -465,7 +482,15 @@ export const scheduleFormSchema: FormSchema[] = [
     field: 'nextPlanContent',
     component: 'InputTextArea',
     dynamicDisabled: ({ values }) => {
-      return !values.editPlan;
+      if (values.id && values && values.nextPlanTime) {
+        if (new Date(values.nextPlanTime) > new Date()) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
     },
   },
 ];
@@ -512,6 +537,17 @@ export const costColumns: BasicColumn[] = [
     title: '是否加班',
     dataIndex: 'overtimeFlag',
     width: 80,
+    customRender({ text }) {
+      if (text) {
+        if (text === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '加班时长',
@@ -522,11 +558,33 @@ export const costColumns: BasicColumn[] = [
     title: '是否完成',
     dataIndex: 'doneFlag',
     width: 80,
+    customRender({ text }) {
+      if (text) {
+        if (text === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '是否归档',
     dataIndex: 'archiveFlag',
     width: 80,
+    customRender({ text }) {
+      if (text) {
+        if (text === '1') {
+          return '是';
+        } else {
+          return '否';
+        }
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '下次服务时间',
