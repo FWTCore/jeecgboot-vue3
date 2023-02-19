@@ -1,98 +1,14 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import dayjs from 'dayjs';
 
-export const columns: BasicColumn[] = [
-  {
-    title: '客户编码',
-    dataIndex: 'customerCode',
-    width: 200,
-  },
+export const customerColumns: BasicColumn[] = [
   {
     title: '客户名称',
     dataIndex: 'customerName',
-    width: 400,
-  },
-  {
-    title: '数据源',
-    dataIndex: 'dataSource_dictText',
     width: 120,
   },
-  {
-    title: '客户概况',
-    dataIndex: 'overview',
-  },
-];
-
-export const searchFormSchema: FormSchema[] = [
-  {
-    label: '客户编码',
-    field: 'customerCode',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
-    label: '客户名称',
-    field: 'customerName',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
-    label: '数据源',
-    field: 'dataSource',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'customer_data_source',
-      stringToNumber: true,
-    },
-  },
-];
-
-export const formSchema: FormSchema[] = [
-  {
-    label: '',
-    field: 'id',
-    component: 'Input',
-    show: false,
-  },
-  {
-    label: '客户编码',
-    field: 'customerCode',
-    required: true,
-    component: 'Input',
-    dynamicDisabled: ({ values }) => {
-      return !!values.id;
-    },
-  },
-  {
-    label: '客户名称',
-    field: 'customerName',
-    required: true,
-    component: 'Input',
-  },
-  {
-    label: '第三方id',
-    field: 'thirdId',
-    component: 'Input',
-  },
-  {
-    label: '客户概况',
-    field: 'overview',
-    component: 'InputTextArea',
-  },
-  {
-    field: 'dataSource',
-    label: '数据源',
-    defaultValue: 1,
-    component: 'JDictSelectTag',
-    componentProps: {
-      type: 'radioButton',
-      dictCode: 'customer_data_source',
-      stringToNumber: true,
-    },
-  },
-];
-
-export const serviceLogColumns: BasicColumn[] = [
   {
     title: '服务人',
     dataIndex: 'staff',
@@ -102,30 +18,71 @@ export const serviceLogColumns: BasicColumn[] = [
     title: '服务时间',
     dataIndex: 'createTime',
     width: 100,
+    customRender({ text }) {
+      if (text) {
+        return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '工时',
     dataIndex: 'workHours',
     width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '服务内容',
     dataIndex: 'serviceContent',
-    width: 100,
+    width: 300,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '下次服务时间',
     dataIndex: 'nextPlanTime',
     width: 100,
+    customRender({ text }) {
+      if (text) {
+        return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '下次服务内容',
     dataIndex: 'nextPlanContent',
-    width: 100,
+    width: 300,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
   },
 ];
 
-export const serviceLogSearchFormSchema: FormSchema[] = [
+export const searchCustomerFormSchema: FormSchema[] = [
+  {
+    label: '客户名称',
+    field: 'customerName',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
   {
     label: '服务人',
     field: 'staff',
@@ -150,7 +107,73 @@ export const serviceLogSearchFormSchema: FormSchema[] = [
   },
 ];
 
-export const serviceLogFormSchema: FormSchema[] = [
+export const descItems: DescItem[] = [
+  {
+    label: '客户名称',
+    field: 'customerName',
+  },
+  {
+    label: '服务人',
+    field: 'staff',
+  },
+  {
+    label: '服务时间',
+    field: 'createTime',
+    render: (curVal, data) => {
+      if (curVal) {
+        return dayjs(curVal).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '工时',
+    field: 'workHours',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '服务内容',
+    field: 'serviceContent',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '下次服务时间',
+    field: 'nextPlanTime',
+    render: (curVal, data) => {
+      if (curVal) {
+        return dayjs(curVal).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '下次服务内容',
+    field: 'nextPlanContent',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+];
+
+export const customerFormSchema: FormSchema[] = [
   {
     label: '',
     field: 'id',
@@ -159,12 +182,10 @@ export const serviceLogFormSchema: FormSchema[] = [
   },
   {
     label: '客户名称',
-    field: 'customerName',
+    field: 'customerId',
     required: true,
     component: 'Input',
-    dynamicDisabled: ({}) => {
-      return true;
-    },
+    slot: 'remoteSearchCustomer',
   },
   {
     label: '服务人员',

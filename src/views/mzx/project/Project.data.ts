@@ -1,7 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { rules } from './validator';
-import { getAllUsageSchedule } from './Project.api';
 
 export const columns: BasicColumn[] = [
   {
