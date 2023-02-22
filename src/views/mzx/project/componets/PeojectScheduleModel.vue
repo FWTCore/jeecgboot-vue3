@@ -55,6 +55,7 @@
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
+      console.log(data.record);
       //表单赋值
       await setFieldsValue({
         ...data.record,

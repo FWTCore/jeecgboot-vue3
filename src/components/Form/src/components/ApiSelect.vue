@@ -51,6 +51,7 @@
       labelField: propTypes.string.def('label'),
       valueField: propTypes.string.def('value'),
       immediate: propTypes.bool.def(true),
+      auto: propTypes.bool.def(true),
     },
     emits: ['options-change', 'change'],
     setup(props, { emit }) {
@@ -92,6 +93,9 @@
       );
 
       async function fetch() {
+        if (!unref(props.auto)) {
+          return;
+        }
         const api = props.api;
         if (!api || !isFunction(api)) return;
         options.value = [];
@@ -130,6 +134,7 @@
 
       function handleChange(_, ...args) {
         emitData.value = args;
+        emit('change', unref(emitData.value));
       }
 
       return { state, attrs, getOptions, loading, t, handleFetch, handleChange };

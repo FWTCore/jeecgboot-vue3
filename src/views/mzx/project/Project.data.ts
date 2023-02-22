@@ -1,6 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { rules } from './validator';
+import dayjs from 'dayjs';
 
 export const columns: BasicColumn[] = [
   {
@@ -20,7 +21,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '付款方式',
-    dataIndex: 'paymentMethod_dictText',
+    dataIndex: 'paymentMethod',
     width: 70,
   },
   {
@@ -73,11 +74,7 @@ export const searchFormSchema: FormSchema[] = [
   {
     label: '付款方式',
     field: 'paymentMethod',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'project_payment_method',
-      stringToNumber: true,
-    },
+    component: 'Input',
   },
   {
     label: '删除状态',
@@ -135,11 +132,7 @@ export const formSchema: FormSchema[] = [
   {
     label: '付款方式',
     field: 'paymentMethod',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'project_payment_method',
-      stringToNumber: true,
-    },
+    component: 'Input',
   },
   {
     label: '签单人',
@@ -257,6 +250,13 @@ export const scheduleColumns: BasicColumn[] = [
     title: '服务时间',
     dataIndex: 'createTime',
     width: 100,
+    customRender({ text }) {
+      if (text) {
+        return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '工时',
@@ -325,6 +325,13 @@ export const scheduleColumns: BasicColumn[] = [
     title: '下次服务时间',
     dataIndex: 'nextPlanTime',
     width: 100,
+    customRender({ text }) {
+      if (text) {
+        return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '下次服务内容',
@@ -381,18 +388,10 @@ export const scheduleFormSchema: FormSchema[] = [
       placeholder: '请选择项目进度阶段',
       onChange: (e: any) => {
         console.log(e);
-        // formModel.city = undefined; //  reset city value
-        // const { updateSchema } = formActionType;
-        // updateSchema({
-        //   field: 'city',
-        //   componentProps: {
-        //     options: citiesOptions,
-        //   },
-        // });
       },
-    },
-    dynamicDisabled: ({ values }) => {
-      return !!values.id;
+      dynamicDisabled: ({ values }) => {
+        return !!values.id;
+      },
     },
   },
   {

@@ -24,7 +24,7 @@
       <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
     </template>
   </BasicTable>
-  <!-- <ScheduleLogDetail @register="registerDrawer" /> -->
+  <ScheduleLogDetail @register="registerDrawer" />
   <ScheduleLogDrawer @register="registerEditDrawer" @success="handleSuccess" />
 </template>
 
@@ -34,7 +34,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
-  // import ScheduleLogDetail from './ScheduleLogDetail.vue';
+  import ScheduleLogDetail from './ScheduleLogDetail.vue';
   import ScheduleLogDrawer from './ScheduleLogDrawer.vue';
   import { scheduleColumns, searchScheduleFormSchema, getBasicColumns } from './ScheduleLog.data';
   import { scheduleList, deleteSchedule, batchScheduleDelete } from './ScheduleLog.api';
@@ -44,18 +44,13 @@
   //drawer
   const [registerEditDrawer, { openDrawer: openEditDrawer }] = useDrawer();
 
-  const ddd = getBasicColumns([
-    { title: '字段1', dataIndex: 'field1' },
-    { title: '字段2', dataIndex: 'field2' },
-  ]);
-
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
     designScope: 'worklog-page',
     tableProps: {
       title: '项目服务日志列表',
       api: scheduleList,
-      columns: ddd,//scheduleColumns
+      columns: scheduleColumns,
       formConfig: {
         schemas: searchScheduleFormSchema,
       },
@@ -67,9 +62,6 @@
       },
     },
   });
-
-
-  console.log(ddd);
 
   //注册table数据
   const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;

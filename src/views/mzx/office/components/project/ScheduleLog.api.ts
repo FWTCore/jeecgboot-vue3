@@ -7,6 +7,8 @@ enum Api {
   scheduleEdit = '/project/schedule/edit',
   scheduleDelete = '/project/schedule/delete',
   batchScheduleDelete = '/project/schedule/delete',
+  allUsageSchedule = '/project/schedule/queryusageschedule',
+  allProject = '/project/queryall',
 }
 
 /**
@@ -49,3 +51,13 @@ export const batchScheduleDelete = (params, handleSuccess) => {
     },
   });
 };
+/**
+ * 获取项目阶段
+ * @param params
+ */
+export const getAllUsageSchedule = (params) => defHttp.get({ url: Api.allUsageSchedule, params });
+/**
+ * 获取项目
+ * @param params
+ */
+export const getAllProject = (params) => defHttp.get({ url: Api.allProject, params });

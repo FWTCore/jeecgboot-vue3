@@ -24,35 +24,57 @@
       <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
     </template>
   </BasicTable>
-  <ScheduleLogDetail @register="registerDrawer" />
-  <ScheduleLogDrawer @register="registerEditDrawer" @success="handleSuccess" />
+  <!-- <ScheduleLogDetail @register="registerDrawer" /> -->
+  <!-- <ScheduleLogDrawer @register="registerEditDrawer" @success="handleSuccess" /> -->
 </template>
 
-<script lang="ts" name="work-log" setup>
+<script lang="ts" name="cost-log" setup>
   //ts语法
-  import { ref, computed, unref } from 'vue';
+  import { onBeforeMount, ref, computed, unref, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
+  import { initDictOptions } from '/@/utils/dict';
   import ScheduleLogDetail from './ScheduleLogDetail.vue';
   import ScheduleLogDrawer from './ScheduleLogDrawer.vue';
-  import { scheduleColumns, searchScheduleFormSchema } from './ScheduleLog.data';
-  import { scheduleList, deleteSchedule, batchScheduleDelete } from './ScheduleLog.api';
+  import { searchFormSchema, getBasicColumns } from './CostLog.data';
+  import { costList, deleteCost, batchCostDelete } from './CostLog.api';
 
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
   //drawer
   const [registerEditDrawer, { openDrawer: openEditDrawer }] = useDrawer();
 
+  const columns = ref<any[]>([]);
+
+  async function initDictData(): Promise<[]> {
+    //根据字典Code, 初始化字典数组
+    const dictData = await initDictOptions('project_cost_key');
+    return dictData.reduce((prev, next) => {
+      if (next) {
+        prev.push({
+          title: next['text'] || next['label'],
+          dataIndex: +next['value'],
+        });
+      }
+      return prev;
+    }, []);
+  }
+
+  //初始化字典选项
+  initDictData().then((res) => {
+    columns.value = getBasicColumns(res);
+  });
+  // ;
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
-    designScope: 'worklog-page',
+    designScope: 'costlog-page',
     tableProps: {
-      title: '项目服务日志列表',
-      api: scheduleList,
-      columns: scheduleColumns,
+      title: '项目费用列表',
+      api: costList,
+      columns: columns,
       formConfig: {
-        schemas: searchScheduleFormSchema,
+        schemas: searchFormSchema,
       },
       actionColumn: {
         title: '操作',
@@ -97,13 +119,13 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteSchedule({ id: record.id }, reload);
+    await deleteCost({ id: record.id }, reload);
   }
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchScheduleDelete({ ids: selectedRowKeys.value }, () => {
+    await batchCostDelete({ ids: selectedRowKeys.value }, () => {
       selectedRowKeys.value = [];
       reload();
     });

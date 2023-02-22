@@ -155,7 +155,7 @@ export const scheduleColumns: BasicColumn[] = [
   },
 ];
 
-export const searchScheduleFormSchema: FormSchema[] = [
+export const searchFormSchema: FormSchema[] = [
   {
     label: '项目名称',
     field: 'projectName',
@@ -163,58 +163,9 @@ export const searchScheduleFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
-    label: '条目名称',
-    field: 'scheduleName',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
     label: '服务人',
     field: 'staff',
     component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
-    label: '服务时间',
-    field: 'createTime',
-    component: 'RangePicker',
-    colProps: { span: 6 },
-    componentProps: {
-      valueType: 'Date',
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
-    },
-  },
-  {
-    label: '服务方式',
-    field: 'serviceType',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'project_schedule_service_type',
-      stringToNumber: true,
-    },
-  },
-  {
-    label: '服务内容',
-    field: 'serviceContent',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
-    label: '是否加班',
-    field: 'overtimeFlag',
-    component: 'Switch',
-    colProps: { span: 6 },
-  },
-  {
-    label: '是否完成',
-    field: 'doneFlag',
-    component: 'Switch',
-    colProps: { span: 6 },
-  },
-  {
-    label: '是否归档',
-    field: 'archiveFlag',
-    component: 'Switch',
     colProps: { span: 6 },
   },
 ];
@@ -355,3 +306,46 @@ export const scheduleDescItems: DescItem[] = [
     },
   },
 ];
+
+export function getBasicColumns(data): BasicColumn[] {
+  const result: BasicColumn[] = [
+    {
+      title: '项目名称',
+      dataIndex: 'projectName',
+      width: 200,
+      fixed: 'left',
+    },
+    {
+      title: '服务人',
+      dataIndex: 'staff',
+      width: 200,
+      fixed: 'left',
+    },
+    {
+      title: '时间',
+      dataIndex: 'createTime',
+      width: 200,
+      fixed: 'left',
+      customRender({ text }) {
+        if (text) {
+          return dayjs(text).format('YYYY-MM-DD');
+        } else {
+          return '-';
+        }
+      },
+    },
+  ];
+  data.forEach((value) => {
+    result.push({
+      title: value.title,
+      dataIndex: value.dataIndex,
+      width: 200,
+    });
+    result.push({
+      title: value.title + '备注',
+      dataIndex: value.dataIndex + '_remark',
+      width: 200,
+    });
+  });
+  return result;
+}

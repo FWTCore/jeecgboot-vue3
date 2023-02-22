@@ -186,6 +186,20 @@ export const customerFormSchema: FormSchema[] = [
     required: true,
     component: 'Input',
     slot: 'remoteSearchCustomer',
+    show: ({ values }) => {
+      return !values.id;
+    },
+  },
+  {
+    label: '客户名称',
+    field: 'customerName',
+    component: 'Input',
+    show: ({ values }) => {
+      return !!values.id;
+    },
+    dynamicDisabled: ({ values }) => {
+      return !!values.id;
+    },
   },
   {
     label: '服务人员',

@@ -89,12 +89,12 @@
     });
   }
   /**
-   * 新增
+   * 编辑
    */
-  function handleEdit(reload) {
+  function handleEdit(record) {
     openModal(true, {
       isUpdate: true,
-      reload,
+      record,
     });
   }
   /**

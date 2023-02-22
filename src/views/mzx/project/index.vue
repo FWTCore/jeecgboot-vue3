@@ -172,10 +172,10 @@
         label: '项目进度',
         onClick: handleSchedule.bind(null, record),
       },
-      {
-        label: '项目费用',
-        onClick: handleCost.bind(null, record),
-      },
+      // {
+      //   label: '项目费用',
+      //   onClick: handleCost.bind(null, record),
+      // },
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
