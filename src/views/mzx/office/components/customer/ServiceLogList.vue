@@ -53,6 +53,7 @@
       columns: customerColumns,
       formConfig: {
         schemas: searchCustomerFormSchema,
+        fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
       },
       actionColumn: {
         width: 240,

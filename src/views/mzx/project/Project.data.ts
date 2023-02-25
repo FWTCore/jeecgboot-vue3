@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { rules } from './validator';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const columns: BasicColumn[] = [
   {
@@ -463,6 +463,10 @@ export const scheduleFormSchema: FormSchema[] = [
     component: 'DatePicker',
     componentProps: {
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      disabledDate: (current: Dayjs) => {
+        // Can not select days before today and today
+        return current && current < dayjs().endOf('day');
+      },
     },
     dynamicDisabled: ({ values }) => {
       if (values.id && values && values.nextPlanTime) {
@@ -707,6 +711,10 @@ export const costFormSchema: FormSchema[] = [
     component: 'DatePicker',
     componentProps: {
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      disabledDate: (current: Dayjs) => {
+        // Can not select days before today and today
+        return current && current < dayjs().endOf('day');
+      },
     },
     dynamicDisabled: ({ values }) => {
       return !values.editPlan;

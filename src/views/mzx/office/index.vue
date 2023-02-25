@@ -5,7 +5,7 @@
         <a-tab-pane key="ServiceLogList" tab="客户服务日志" />
         <a-tab-pane key="ScheduleLogList" tab="项目服务日志" />
         <a-tab-pane key="CostLogList" tab="项目费用" />
-        <a-tab-pane key="WorkLogList" tab="日常日志" />
+        <a-tab-pane key="WorkLogList" tab="日常服务日志" />
       </a-tabs>
       <component :is="currentComponent" />
     </a-card>

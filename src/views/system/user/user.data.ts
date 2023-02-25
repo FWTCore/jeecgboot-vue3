@@ -166,13 +166,13 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'Input',
   },
-  {
-    label: '工号',
-    field: 'workNo',
-    required: true,
-    component: 'Input',
-    dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'work_no', model, schema, true),
-  },
+  // {
+  //   label: '工号',
+  //   field: 'workNo',
+  //   required: true,
+  //   component: 'Input',
+  //   dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'work_no', model, schema, true),
+  // },
   {
     label: '职务',
     field: 'post',
@@ -292,7 +292,7 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     dynamicRules: ({ model, schema }) => {
       return [
-        { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, true)[0] },
+        // { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, true)[0] },
         { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' },
       ];
     },

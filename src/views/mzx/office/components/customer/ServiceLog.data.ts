@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const customerColumns: BasicColumn[] = [
   {
@@ -96,7 +96,7 @@ export const searchCustomerFormSchema: FormSchema[] = [
     colProps: { span: 6 },
     componentProps: {
       valueType: 'Date',
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      valueFormat: 'YYYY-MM-DD',
     },
   },
   {
@@ -224,7 +224,10 @@ export const customerFormSchema: FormSchema[] = [
     field: 'nextPlanTime',
     component: 'DatePicker',
     componentProps: {
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      valueFormat: 'YYYY-MM-DD',
+      disabledDate: (current: Dayjs) => {
+        return current && current < dayjs().endOf('day');
+      },
     },
     dynamicDisabled: ({ values }) => {
       if (values.id && values && values.nextPlanTime) {

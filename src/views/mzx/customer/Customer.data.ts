@@ -1,5 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const columns: BasicColumn[] = [
   {
@@ -193,6 +194,10 @@ export const serviceLogFormSchema: FormSchema[] = [
     component: 'DatePicker',
     componentProps: {
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      disabledDate: (current: Dayjs) => {
+        // Can not select days before today and today
+        return current && current < dayjs().endOf('day');
+      },
     },
     dynamicDisabled: ({ values }) => {
       if (values.id && values && values.nextPlanTime) {

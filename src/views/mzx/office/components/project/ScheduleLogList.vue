@@ -53,6 +53,7 @@
       columns: scheduleColumns,
       formConfig: {
         schemas: searchScheduleFormSchema,
+        fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
       },
       actionColumn: {
         title: '操作',

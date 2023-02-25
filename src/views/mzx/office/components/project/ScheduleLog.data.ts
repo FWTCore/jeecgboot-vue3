@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { DescItem } from '/@/components/Description';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const scheduleColumns: BasicColumn[] = [
   {
@@ -202,20 +202,80 @@ export const searchScheduleFormSchema: FormSchema[] = [
   {
     label: '是否加班',
     field: 'overtimeFlag',
-    component: 'Switch',
+    component: 'Select',
     colProps: { span: 6 },
+    componentProps: {
+      options: [
+        {
+          label: '全部',
+          value: '',
+          key: '',
+        },
+        {
+          label: '是',
+          value: '1',
+          key: '1',
+        },
+        {
+          label: '否',
+          value: '0',
+          key: '0',
+        },
+      ],
+      defaultValue: '',
+    },
   },
   {
     label: '是否完成',
     field: 'doneFlag',
-    component: 'Switch',
+    component: 'Select',
     colProps: { span: 6 },
+    componentProps: {
+      options: [
+        {
+          label: '全部',
+          value: '',
+          key: '',
+        },
+        {
+          label: '是',
+          value: '1',
+          key: '1',
+        },
+        {
+          label: '否',
+          value: '0',
+          key: '0',
+        },
+      ],
+      defaultValue: '',
+    },
   },
   {
     label: '是否归档',
     field: 'archiveFlag',
-    component: 'Switch',
+    component: 'Select',
     colProps: { span: 6 },
+    componentProps: {
+      options: [
+        {
+          label: '全部',
+          value: '',
+          key: '',
+        },
+        {
+          label: '是',
+          value: '1',
+          key: '1',
+        },
+        {
+          label: '否',
+          value: '0',
+          key: '0',
+        },
+      ],
+      defaultValue: '',
+    },
   },
 ];
 
@@ -482,6 +542,10 @@ export const scheduleFormSchema: FormSchema[] = [
     component: 'DatePicker',
     componentProps: {
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      disabledDate: (current: Dayjs) => {
+        // Can not select days before today and today
+        return current && current < dayjs().endOf('day');
+      },
     },
     dynamicDisabled: ({ values }) => {
       if (values.id && values && values.nextPlanTime) {
