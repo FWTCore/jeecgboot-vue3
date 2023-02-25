@@ -275,7 +275,7 @@ export const searchScheduleFormSchema: FormSchema[] = [
         },
       ],
       defaultValue: '',
-    },
+    }, 
   },
 ];
 
