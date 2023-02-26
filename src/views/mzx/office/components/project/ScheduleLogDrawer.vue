@@ -68,8 +68,9 @@
       await setFieldsValue({
         ...data.record,
       });
+    } else {
+      await setFieldsValue({ staff: userinfo.value.realname });
     }
-    await setFieldsValue({ staff: userinfo.value.realname });
   });
   //设置标题
   const getTitle = computed(() => (!unref(isUpdate) ? '新增项目服务日志' : '编辑项目服务日志'));

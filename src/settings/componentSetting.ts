@@ -38,7 +38,7 @@ export default {
           sortInfoString: JSON.stringify(sortInfoArray)
         }
       }else{
-        let info = getSort(sortInfo)
+        console.log(info);
         return info || {}
       }
       //update-end-author:taoyan date:2022-10-21 for: VUEN-2199【表单设计器】多字段排序

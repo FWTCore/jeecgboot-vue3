@@ -3,10 +3,10 @@ import { Modal } from 'ant-design-vue';
 
 enum Api {
   costList = '/project/cost/list',
-  costSave = '/project/cost/add',
-  costEdit = '/project/cost/edit',
+  addOrEdit = '/project/cost/addOrEdit',
   costDelete = '/project/cost/delete',
   batchCostDelete = '/project/cost/delete',
+  allProject = '/project/queryall',
 }
 
 /**
@@ -19,9 +19,8 @@ export const costList = (params) => defHttp.get({ url: Api.costList, params });
  * 保存或者更新项目服务日志
  * @param params
  */
-export const saveOrUpdateCost = (params, isUpdate) => {
-  const url = isUpdate ? Api.costEdit : Api.costSave;
-  return defHttp.post({ url: url, params });
+export const saveOrUpdateCost = (params) => {
+  return defHttp.post({ url: Api.addOrEdit, params });
 };
 
 /**
@@ -49,3 +48,8 @@ export const batchCostDelete = (params, handleSuccess) => {
     },
   });
 };
+/**
+ * 获取项目
+ * @param params
+ */
+export const getAllProject = (params) => defHttp.get({ url: Api.allProject, params });

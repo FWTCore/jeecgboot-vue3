@@ -24,8 +24,8 @@
       <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
     </template>
   </BasicTable>
-  <!-- <ScheduleLogDetail @register="registerDrawer" /> -->
-  <!-- <ScheduleLogDrawer @register="registerEditDrawer" @success="handleSuccess" /> -->
+  <CostLogDetail @register="registerDrawer" />
+  <CostLogDrawer @register="registerEditDrawer" @success="handleSuccess" />
 </template>
 
 <script lang="ts" name="cost-log" setup>
@@ -35,9 +35,9 @@
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
   import { initDictOptions } from '/@/utils/dict';
-  import ScheduleLogDetail from './ScheduleLogDetail.vue';
-  import ScheduleLogDrawer from './ScheduleLogDrawer.vue';
-  import { searchFormSchema, getBasicColumns } from './CostLog.data';
+  import CostLogDetail from './CostLogDetail.vue';
+  import CostLogDrawer from './CostLogDrawer.vue';
+  import { searchFormSchema, getScheduleColumns } from './CostLog.data';
   import { costList, deleteCost, batchCostDelete } from './CostLog.api';
 
   //drawer
@@ -63,7 +63,7 @@
 
   //初始化字典选项
   initDictData().then((res) => {
-    columns.value = getBasicColumns(res);
+    columns.value = getScheduleColumns(res);
   });
   // ;
   // 列表页面公共参数、方法
@@ -75,6 +75,7 @@
       columns: columns,
       formConfig: {
         schemas: searchFormSchema,
+        fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
       },
       actionColumn: {
         title: '操作',
@@ -159,13 +160,13 @@
         label: '详情',
         onClick: handleDetail.bind(null, record),
       },
-      {
-        label: '删除',
-        popConfirm: {
-          title: '确定删除吗?',
-          confirm: handleDelete.bind(null, record),
-        },
-      },
+      // {
+      //   label: '删除',
+      //   popConfirm: {
+      //     title: '确定删除吗?',
+      //     confirm: handleDelete.bind(null, record),
+      //   },
+      // },
     ];
   }
 </script>

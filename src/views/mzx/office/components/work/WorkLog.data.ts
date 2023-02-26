@@ -85,7 +85,7 @@ export const searchWorkLogFormSchema: FormSchema[] = [
     colProps: { span: 6 },
     componentProps: {
       valueType: 'Date',
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      valueFormat: 'YYYY-MM-DD',
     },
   },
   {

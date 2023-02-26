@@ -53,6 +53,7 @@
       columns: workLogColumns,
       formConfig: {
         schemas: searchWorkLogFormSchema,
+        fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
       },
       actionColumn: {
         width: 240,

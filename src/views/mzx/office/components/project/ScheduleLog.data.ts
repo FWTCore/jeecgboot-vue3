@@ -181,7 +181,7 @@ export const searchScheduleFormSchema: FormSchema[] = [
     colProps: { span: 6 },
     componentProps: {
       valueType: 'Date',
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      valueFormat: 'YYYY-MM-DD',
     },
   },
   {
@@ -275,7 +275,7 @@ export const searchScheduleFormSchema: FormSchema[] = [
         },
       ],
       defaultValue: '',
-    }, 
+    },
   },
 ];
 
@@ -541,7 +541,7 @@ export const scheduleFormSchema: FormSchema[] = [
     field: 'nextPlanTime',
     component: 'DatePicker',
     componentProps: {
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      valueFormat: 'YYYY-MM-DD',
       disabledDate: (current: Dayjs) => {
         // Can not select days before today and today
         return current && current < dayjs().endOf('day');
