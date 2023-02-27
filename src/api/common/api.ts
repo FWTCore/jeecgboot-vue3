@@ -4,7 +4,7 @@ import { useGlobSetting } from '/@/hooks/setting';
 const globSetting = useGlobSetting();
 const baseUploadUrl = globSetting.uploadUrl;
 enum Api {
-  positionList = '/sys/position/list',
+  positionList = '/sys/position/list', 
   userList = '/sys/user/list',
   roleList = '/sys/role/list',
   queryDepartTreeSync = '/sys/sysDepart/queryDepartTreeSync',
