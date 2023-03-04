@@ -51,6 +51,10 @@
       title: '项目服务日志列表',
       api: scheduleList,
       size: 'small',
+      scroll: {
+        x: 2000,
+        y: 500,
+      },
       columns: scheduleColumns,
       formConfig: {
         schemas: searchScheduleFormSchema,

@@ -113,7 +113,9 @@
     let totals: any = { _row: '', projectName: '合计' };
     fieldKeys.forEach((key) => {
       totals[key] = tableData.reduce((prev, next) => {
-        prev += next[key];
+        if (!!next[key]) {
+          prev += next[key];
+        }
         return prev;
       }, 0);
     });
