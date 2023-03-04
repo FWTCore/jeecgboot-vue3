@@ -26,7 +26,7 @@ export function getScheduleColumns(data): BasicColumn[] {
         if (text) {
           return dayjs(text).format('YYYY-MM-DD');
         } else {
-          return '-';
+          return '';
         }
       },
     },

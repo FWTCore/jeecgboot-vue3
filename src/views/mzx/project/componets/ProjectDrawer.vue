@@ -69,7 +69,6 @@
       await setFieldsValue({
         ...data.record,
       });
-      setTimeout(() => {}, 1000 * 2);
       data.record.projectScheduleTemplateId && (await setFieldsValue({ projectScheduleTemplateId: data.record.projectScheduleTemplateId }));
       setProps({ disabled: !showFooter.value });
     }

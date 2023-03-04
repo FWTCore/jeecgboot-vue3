@@ -57,12 +57,17 @@
     tableProps: {
       title: '项目列表',
       api: list,
+      size: 'small',
       columns: columns,
       formConfig: {
         schemas: searchFormSchema,
       },
       actionColumn: {
-        width: 240,
+        title: '操作',
+        dataIndex: 'action',
+        slots: { customRender: 'action' },
+        fixed: 'right',
+        width: 180,
       },
     },
   });

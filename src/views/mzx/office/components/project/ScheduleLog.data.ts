@@ -11,7 +11,7 @@ export const scheduleColumns: BasicColumn[] = [
     fixed: 'left',
   },
   {
-    title: '条目名称',
+    title: '阶段名称',
     dataIndex: 'scheduleName',
     width: 200,
     fixed: 'left',
@@ -20,18 +20,7 @@ export const scheduleColumns: BasicColumn[] = [
     title: '服务人',
     dataIndex: 'staff',
     width: 100,
-  },
-  {
-    title: '服务方式',
-    dataIndex: 'serviceType_dictText',
-    width: 100,
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
-    },
+    fixed: 'left',
   },
   {
     title: '服务时间',
@@ -40,6 +29,18 @@ export const scheduleColumns: BasicColumn[] = [
     customRender({ text }) {
       if (text) {
         return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '服务方式',
+    dataIndex: 'serviceType_dictText',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
       } else {
         return '-';
       }
@@ -61,6 +62,7 @@ export const scheduleColumns: BasicColumn[] = [
     title: '服务内容',
     dataIndex: 'serviceContent',
     width: 200,
+    align: 'left',
     customRender({ text }) {
       if (text) {
         return text;
@@ -145,6 +147,7 @@ export const scheduleColumns: BasicColumn[] = [
     title: '下次服务内容',
     dataIndex: 'nextPlanContent',
     width: 200,
+    align: 'left',
     customRender({ text }) {
       if (text) {
         return text;
@@ -163,7 +166,7 @@ export const searchScheduleFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
-    label: '条目名称',
+    label: '阶段名称',
     field: 'scheduleName',
     component: 'Input',
     colProps: { span: 6 },
@@ -285,7 +288,7 @@ export const scheduleDescItems: DescItem[] = [
     field: 'projectName',
   },
   {
-    label: '条目名称',
+    label: '阶段名称',
     field: 'scheduleName',
   },
   {
@@ -445,7 +448,7 @@ export const scheduleFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '条目名称',
+    label: '阶段名称',
     field: 'projectScheduleUsageItemId',
     required: true,
     component: 'Input',
@@ -455,7 +458,7 @@ export const scheduleFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '条目名称',
+    label: '阶段名称',
     field: 'scheduleName',
     component: 'Input',
     show: ({ values }) => {
@@ -491,6 +494,9 @@ export const scheduleFormSchema: FormSchema[] = [
     label: '服务内容',
     field: 'serviceContent',
     component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
   },
   {
     label: '是否加班',
@@ -563,6 +569,9 @@ export const scheduleFormSchema: FormSchema[] = [
     label: '下次服务内容',
     field: 'nextPlanContent',
     component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
     dynamicDisabled: ({ values }) => {
       if (values.id && values && values.nextPlanTime) {
         if (new Date(values.nextPlanTime) > new Date()) {

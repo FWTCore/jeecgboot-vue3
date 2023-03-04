@@ -37,6 +37,7 @@ export const workLogColumns: BasicColumn[] = [
     title: '服务内容',
     dataIndex: 'serviceContent',
     width: 300,
+    align: 'left',
     customRender({ text }) {
       if (text) {
         return text;
@@ -61,6 +62,7 @@ export const workLogColumns: BasicColumn[] = [
     title: '下次服务内容',
     dataIndex: 'nextPlanContent',
     width: 300,
+    align: 'left',
     customRender({ text }) {
       if (text) {
         return text;
@@ -182,6 +184,9 @@ export const workLogFormSchema: FormSchema[] = [
     label: '服务内容',
     field: 'serviceContent',
     component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
   },
   {
     label: '下次服务时间',
@@ -206,6 +211,9 @@ export const workLogFormSchema: FormSchema[] = [
     label: '下次服务内容',
     field: 'nextPlanContent',
     component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
     dynamicDisabled: ({ values }) => {
       if (values.id && values && values.nextPlanTime) {
         if (new Date(values.nextPlanTime) > new Date()) {

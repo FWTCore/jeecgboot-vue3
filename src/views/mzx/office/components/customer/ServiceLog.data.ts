@@ -42,6 +42,7 @@ export const customerColumns: BasicColumn[] = [
     title: '服务内容',
     dataIndex: 'serviceContent',
     width: 300,
+    align: 'left',
     customRender({ text }) {
       if (text) {
         return text;
@@ -66,6 +67,7 @@ export const customerColumns: BasicColumn[] = [
     title: '下次服务内容',
     dataIndex: 'nextPlanContent',
     width: 300,
+    align: 'left',
     customRender({ text }) {
       if (text) {
         return text;
@@ -78,18 +80,6 @@ export const customerColumns: BasicColumn[] = [
 
 export const searchCustomerFormSchema: FormSchema[] = [
   {
-    label: '客户名称',
-    field: 'customerName',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
-    label: '服务人',
-    field: 'staff',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
     label: '服务时间',
     field: 'createTime',
     component: 'RangePicker',
@@ -100,8 +90,14 @@ export const searchCustomerFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '服务内容',
-    field: 'serviceContent',
+    label: '客户名称',
+    field: 'customerName',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
+  {
+    label: '服务人',
+    field: 'staff',
     component: 'Input',
     colProps: { span: 6 },
   },
@@ -218,6 +214,9 @@ export const customerFormSchema: FormSchema[] = [
     label: '服务内容',
     field: 'serviceContent',
     component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
   },
   {
     label: '下次服务时间',
@@ -245,6 +244,9 @@ export const customerFormSchema: FormSchema[] = [
     label: '下次服务内容',
     field: 'nextPlanContent',
     component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
     dynamicDisabled: ({ values }) => {
       if (values.id && values && values.nextPlanTime) {
         if (new Date(values.nextPlanTime) > new Date()) {

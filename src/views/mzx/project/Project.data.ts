@@ -8,41 +8,146 @@ export const columns: BasicColumn[] = [
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    fixed: 'left',
   },
   {
     title: '客户名称',
     dataIndex: 'customerName',
     width: 200,
-  },
-  {
-    title: '合同金额',
-    dataIndex: 'contractAmount',
-    width: 70,
-  },
-  {
-    title: '付款方式',
-    dataIndex: 'paymentMethod',
-    width: 70,
+    fixed: 'left',
   },
   {
     title: '签单人',
     dataIndex: 'signPerson',
-    width: 70,
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '负责人',
     dataIndex: 'leaderName',
-    width: 70,
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '付款方式',
+    dataIndex: 'paymentMethod',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '合同金额',
+    dataIndex: 'contractAmount',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '提成比例%',
     dataIndex: 'commissionRatio',
-    width: 70,
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '销售提成比例%',
+    dataIndex: 'saleCommissionRatio',
+    width: 150,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '实施提成比例%',
+    dataIndex: 'implementCommissionRatio',
+    width: 150,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '综合费用',
+    dataIndex: 'comprehensiveCost',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '综合费用说明',
+    dataIndex: 'comprehensiveRemark',
+    width: 150,
+    align: 'left',
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '预计结束时间',
     dataIndex: 'estimatedEndTime',
-    width: 80,
+    width: 200,
+    customRender({ text }) {
+      if (text) {
+        return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '信息来源',
+    dataIndex: 'source',
+    width: 200,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
   },
 ];
 
@@ -116,6 +221,20 @@ export const formSchema: FormSchema[] = [
     dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
+    show: ({ values }) => {
+      return !values.id;
+    },
+  },
+  {
+    label: '项目进度模板',
+    field: 'scheduleTemplateName',
+    component: 'Input',
+    show: ({ values }) => {
+      return !!values.id;
+    },
+    dynamicDisabled: ({ values }) => {
+      return !!values.id;
+    },
   },
   {
     label: '客户名称',
@@ -123,6 +242,20 @@ export const formSchema: FormSchema[] = [
     required: true,
     component: 'Input',
     slot: 'remoteSearchCustomer',
+    show: ({ values }) => {
+      return !values.id;
+    },
+  },
+  {
+    label: '客户名称',
+    field: 'customerName',
+    component: 'Input',
+    show: ({ values }) => {
+      return !!values.id;
+    },
+    dynamicDisabled: ({ values }) => {
+      return !!values.id;
+    },
   },
   {
     label: '合同金额',
@@ -178,11 +311,40 @@ export const formSchema: FormSchema[] = [
     label: '提成比例%',
     field: 'commissionRatio',
     component: 'InputNumber',
+    defaultValue: '8',
+    dynamicDisabled: ({}) => {
+      return true;
+    },
+  },
+  {
+    label: '销售提成比例%',
+    field: 'saleCommissionRatio',
+    component: 'InputNumber',
+  },
+  {
+    label: '实施提成比例%',
+    field: 'implementCommissionRatio',
+    component: 'InputNumber',
+  },
+  {
+    label: '综合费用',
+    field: 'comprehensiveCost',
+    component: 'InputNumber',
+  },
+  {
+    label: '综合费用说明',
+    field: 'comprehensiveRemark',
+    component: 'InputTextArea',
   },
   {
     label: '项目概况',
     field: 'overview',
     component: 'InputTextArea',
+  },
+  {
+    label: '信息来源',
+    field: 'source',
+    component: 'Input',
   },
 ];
 

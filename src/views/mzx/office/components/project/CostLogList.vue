@@ -21,7 +21,7 @@
     </template>
     <!--操作栏-->
     <template #action="{ record }">
-      <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
+      <TableAction :actions="getTableAction(record)" />
     </template>
   </BasicTable>
   <CostLogDetail @register="registerDrawer" />
@@ -35,6 +35,7 @@
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
   import { initDictOptions } from '/@/utils/dict';
+  import { mapTableTotalSummary } from '/@/utils/common/compUtils';
   import CostLogDetail from './CostLogDetail.vue';
   import CostLogDrawer from './CostLogDrawer.vue';
   import { searchFormSchema, getScheduleColumns } from './CostLog.data';
@@ -46,6 +47,7 @@
   const [registerEditDrawer, { openDrawer: openEditDrawer }] = useDrawer();
 
   const columns = ref<any[]>([]);
+  const columnsCost = ref<any[]>([]);
 
   async function initDictData(): Promise<[]> {
     //根据字典Code, 初始化字典数组
@@ -63,6 +65,7 @@
 
   //初始化字典选项
   initDictData().then((res) => {
+    columnsCost.value = res;
     columns.value = getScheduleColumns(res);
   });
   // ;
@@ -72,16 +75,24 @@
     tableProps: {
       title: '项目费用列表',
       api: costList,
+      size: 'small',
+      showTableSetting: false,
       columns: columns,
       formConfig: {
         schemas: searchFormSchema,
         fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
       },
+      rowKey: 'id',
+      bordered: true,
+      canResize: false,
+      showSummary: true,
+      summaryFunc: handleSummary,
       actionColumn: {
         title: '操作',
         dataIndex: 'action',
         slots: { customRender: 'action' },
         fixed: 'right',
+        width: 180,
       },
     },
   });
@@ -89,6 +100,25 @@
   //注册table数据
   const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
 
+  function handleSummary(tableData: Recordable[]) {
+    const fieldKeys = toRaw(columnsCost.value).reduce((prev, next) => {
+      if (next) {
+        prev.push(next['dataIndex'] + '_cost');
+      }
+      return prev;
+    }, []);
+    // 可用工具方法自动计算合计
+    // const totals = mapTableTotalSummary(tableData, fieldKeys);
+
+    let totals: any = { _row: '', projectName: '合计' };
+    fieldKeys.forEach((key) => {
+      totals[key] = tableData.reduce((prev, next) => {
+        prev += next[key];
+        return prev;
+      }, 0);
+    });
+    return [totals];
+  }
   /**
    * 新增事件
    */
@@ -148,25 +178,23 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
-    ];
-  }
-
-  /**
-   * 操作栏
-   */
-  function getDropDownAction(record) {
-    return [
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
       },
-      // {
-      //   label: '删除',
-      //   popConfirm: {
-      //     title: '确定删除吗?',
-      //     confirm: handleDelete.bind(null, record),
-      //   },
-      // },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '确定删除吗?',
+          confirm: handleDelete.bind(null, record),
+        },
+      },
     ];
   }
 </script>
+<style>
+  .ant-table.ant-table-middle .ant-table-footer {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+</style>

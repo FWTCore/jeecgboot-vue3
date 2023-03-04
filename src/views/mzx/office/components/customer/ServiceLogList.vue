@@ -21,7 +21,7 @@
     </template>
     <!--操作栏-->
     <template #action="{ record }">
-      <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
+      <TableAction :actions="getTableAction(record)" />
     </template>
   </BasicTable>
   <ServiceLogDetail @register="registerDrawer" />
@@ -50,7 +50,9 @@
     tableProps: {
       title: '客户服务日志列表',
       api: customerList,
+      size: 'small',
       columns: customerColumns,
+      showTableSetting: false,
       formConfig: {
         schemas: searchCustomerFormSchema,
         fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
@@ -123,14 +125,6 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
-    ];
-  }
-
-  /**
-   * 操作栏
-   */
-  function getDropDownAction(record) {
-    return [
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),

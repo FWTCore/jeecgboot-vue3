@@ -21,7 +21,7 @@
     </template>
     <!--操作栏-->
     <template #action="{ record }">
-      <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
+      <TableAction :actions="getTableAction(record)" />
     </template>
   </BasicTable>
   <ScheduleLogDetail @register="registerDrawer" />
@@ -50,6 +50,7 @@
     tableProps: {
       title: '项目服务日志列表',
       api: scheduleList,
+      size: 'small',
       columns: scheduleColumns,
       formConfig: {
         schemas: searchScheduleFormSchema,
@@ -60,6 +61,7 @@
         dataIndex: 'action',
         slots: { customRender: 'action' },
         fixed: 'right',
+        width: 180,
       },
     },
   });
@@ -126,14 +128,6 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
-    ];
-  }
-
-  /**
-   * 操作栏
-   */
-  function getDropDownAction(record) {
-    return [
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
@@ -147,4 +141,5 @@
       },
     ];
   }
+
 </script>

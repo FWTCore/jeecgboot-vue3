@@ -5,7 +5,7 @@ enum Api {
   costList = '/project/cost/list',
   addOrEdit = '/project/cost/addOrEdit',
   costDelete = '/project/cost/delete',
-  batchCostDelete = '/project/cost/delete',
+  batchCostDelete = '/project/cost/deleteBatch',
   allProject = '/project/queryall',
 }
 

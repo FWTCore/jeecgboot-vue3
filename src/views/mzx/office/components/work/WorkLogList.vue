@@ -21,7 +21,7 @@
     </template>
     <!--操作栏-->
     <template #action="{ record }">
-      <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
+      <TableAction :actions="getTableAction(record)" />
     </template>
   </BasicTable>
   <WorkLogDetail @register="registerDrawer" />
@@ -50,6 +50,8 @@
     tableProps: {
       title: '日常日志列表',
       api: workLogList,
+      size: 'small',
+      showTableSetting: false,
       columns: workLogColumns,
       formConfig: {
         schemas: searchWorkLogFormSchema,
@@ -123,14 +125,6 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
-    ];
-  }
-
-  /**
-   * 操作栏
-   */
-  function getDropDownAction(record) {
-    return [
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
@@ -144,4 +138,5 @@
       },
     ];
   }
+
 </script>
