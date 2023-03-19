@@ -36,7 +36,7 @@
   import { useDrawer } from '/@/components/Drawer';
   import ScheduleLogDetail from './ScheduleLogDetail.vue';
   import ScheduleLogDrawer from './ScheduleLogDrawer.vue';
-  import { scheduleColumns, searchScheduleFormSchema, getBasicColumns } from './ScheduleLog.data';
+  import { scheduleColumns, searchScheduleFormSchema } from './ScheduleLog.data';
   import { scheduleList, deleteSchedule, batchScheduleDelete } from './ScheduleLog.api';
 
   //drawer
@@ -46,16 +46,17 @@
 
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
-    designScope: 'worklog-page',
+    designScope: 'schedulelog-page',
     tableProps: {
       title: '项目服务日志列表',
       api: scheduleList,
       size: 'small',
-      scroll: {
-        x: 2000,
-        y: 500,
-      },
+      // scroll: {
+      //   x: 2000,
+      //   y: 500,
+      // },
       columns: scheduleColumns,
+      showTableSetting: false,
       formConfig: {
         schemas: searchScheduleFormSchema,
         fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
@@ -64,11 +65,11 @@
         pageSize: 50,
       },
       actionColumn: {
-        title: '操作',
-        dataIndex: 'action',
-        slots: { customRender: 'action' },
-        fixed: 'right',
-        width: 180,
+        // title: '操作',
+        // dataIndex: 'action',
+        // slots: { customRender: 'action' },
+        // fixed: 'right',
+        width: 60,
       },
     },
   });

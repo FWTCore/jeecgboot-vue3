@@ -5,43 +5,43 @@ import dayjs, { Dayjs } from 'dayjs';
 
 export const customerColumns: BasicColumn[] = [
   {
-    title: '客户名称',
-    dataIndex: 'customerName',
-    width: 120,
+    title: '服务时间',
+    dataIndex: 'createTime',
+    width: 60,
+    customRender({ text }) {
+      if (text) {
+        return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
   },
   {
     title: '服务人',
     dataIndex: 'staff',
-    width: 120,
+    width: 60,
   },
   {
-    title: '服务时间',
-    dataIndex: 'createTime',
+    title: '客户名称',
+    dataIndex: 'customerName',
     width: 100,
-    customRender({ text }) {
-      if (text) {
-        return dayjs(text).format('YYYY-MM-DD');
-      } else {
-        return '-';
-      }
-    },
   },
-  {
-    title: '工时',
-    dataIndex: 'workHours',
-    width: 100,
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
-    },
-  },
+  // {
+  //   title: '工时',
+  //   dataIndex: 'workHours',
+  //   width: 100,
+  //   customRender({ text }) {
+  //     if (text) {
+  //       return text;
+  //     } else {
+  //       return '-';
+  //     }
+  //   },
+  // },
   {
     title: '服务内容',
     dataIndex: 'serviceContent',
-    width: 300,
+    width: 200,
     align: 'left',
     customRender({ text }) {
       if (text) {
@@ -51,31 +51,31 @@ export const customerColumns: BasicColumn[] = [
       }
     },
   },
-  {
-    title: '下次服务时间',
-    dataIndex: 'nextPlanTime',
-    width: 100,
-    customRender({ text }) {
-      if (text) {
-        return dayjs(text).format('YYYY-MM-DD');
-      } else {
-        return '-';
-      }
-    },
-  },
-  {
-    title: '下次服务内容',
-    dataIndex: 'nextPlanContent',
-    width: 300,
-    align: 'left',
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
-    },
-  },
+  // {
+  //   title: '下次服务时间',
+  //   dataIndex: 'nextPlanTime',
+  //   width: 100,
+  //   customRender({ text }) {
+  //     if (text) {
+  //       return dayjs(text).format('YYYY-MM-DD');
+  //     } else {
+  //       return '-';
+  //     }
+  //   },
+  // },
+  // {
+  //   title: '下次服务内容',
+  //   dataIndex: 'nextPlanContent',
+  //   width: 300,
+  //   align: 'left',
+  //   customRender({ text }) {
+  //     if (text) {
+  //       return text;
+  //     } else {
+  //       return '-';
+  //     }
+  //   },
+  // },
 ];
 
 export const searchCustomerFormSchema: FormSchema[] = [

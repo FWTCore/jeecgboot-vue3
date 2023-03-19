@@ -61,7 +61,7 @@
         pageSize: 50,
       },
       actionColumn: {
-        width: 240,
+        width: 60,
       },
     },
   });

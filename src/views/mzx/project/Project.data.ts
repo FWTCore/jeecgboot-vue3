@@ -5,6 +5,19 @@ import dayjs, { Dayjs } from 'dayjs';
 
 export const columns: BasicColumn[] = [
   {
+    title: '创建时间',
+    dataIndex: 'createTime',
+    width: 100,
+    fixed: 'left',
+    customRender({ text }) {
+      if (text) {
+        return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
@@ -40,18 +53,18 @@ export const columns: BasicColumn[] = [
       }
     },
   },
-  {
-    title: '付款方式',
-    dataIndex: 'paymentMethod',
-    width: 100,
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
-    },
-  },
+  // {
+  //   title: '付款方式',
+  //   dataIndex: 'paymentMethod',
+  //   width: 100,
+  //   customRender({ text }) {
+  //     if (text) {
+  //       return text;
+  //     } else {
+  //       return '-';
+  //     }
+  //   },
+  // },
   {
     title: '合同金额',
     dataIndex: 'contractAmount',
@@ -436,7 +449,7 @@ export const scheduleColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1') {
+        if (text === 1) {
           return '是';
         } else {
           return '否';
@@ -457,7 +470,7 @@ export const scheduleColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1') {
+        if (text === 1) {
           return '是';
         } else {
           return '否';
@@ -473,7 +486,7 @@ export const scheduleColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1') {
+        if (text === 1) {
           return '是';
         } else {
           return '否';
@@ -704,7 +717,7 @@ export const costColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1') {
+        if (text === 1) {
           return '是';
         } else {
           return '否';
@@ -725,7 +738,7 @@ export const costColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1') {
+        if (text === 1) {
           return '是';
         } else {
           return '否';
@@ -741,7 +754,7 @@ export const costColumns: BasicColumn[] = [
     width: 80,
     customRender({ text }) {
       if (text) {
-        if (text === '1') {
+        if (text === 1) {
           return '是';
         } else {
           return '否';
