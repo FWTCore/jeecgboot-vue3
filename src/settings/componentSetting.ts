@@ -26,20 +26,21 @@ export default {
     // 默认排序方法
     defaultSortFn: (sortInfo: SorterResult) => {
       //update-begin-author:taoyan date:2022-10-21 for: VUEN-2199【表单设计器】多字段排序
-      if(sortInfo instanceof Array){
-        let sortInfoArray:any[] = []
-        for(let item of sortInfo){
+      if (sortInfo instanceof Array) {
+        let sortInfoArray: any[] = [];
+        for (let item of sortInfo) {
           let info = getSort(item);
-          if(info){
-            sortInfoArray.push(info)
+          if (info) {
+            sortInfoArray.push(info);
           }
         }
         return {
-          sortInfoString: JSON.stringify(sortInfoArray)
-        }
-      }else{
-        console.log(info);
-        return info || {}
+          sortInfoString: JSON.stringify(sortInfoArray),
+        };
+      } else {
+        // console.log(info);
+        // return info || {}
+        return {};
       }
       //update-end-author:taoyan date:2022-10-21 for: VUEN-2199【表单设计器】多字段排序
     },
