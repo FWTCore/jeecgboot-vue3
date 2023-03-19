@@ -37,11 +37,16 @@ export function getScheduleColumns(data): BasicColumn[] {
       dataIndex: value.dataIndex + '_cost',
       width: 200,
     });
-    result.push({
-      title: value.title + '备注',
-      dataIndex: value.dataIndex + '_remark',
-      width: 200,
-    });
+    // result.push({
+    //   title: value.title + '备注',
+    //   dataIndex: value.dataIndex + '_remark',
+    //   width: 200,
+    // });
+  });
+  result.push({
+    title: '费用备注',
+    dataIndex: 'cost_remark',
+    width: 200,
   });
   return result;
 }
@@ -168,7 +173,7 @@ export function getScheduleFormSchema(data): FormSchema[] {
     result.push({
       label: value.title,
       field: value.dataIndex + '_cost',
-      component: 'Input',
+      component: 'InputNumber',
     });
     result.push({
       label: value.title + '备注',

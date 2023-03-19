@@ -64,6 +64,9 @@
       api: itemList,
       columns: stageColumns,
       canResize: false,
+      pagination: {
+        pageSize: 50,
+      },
       formConfig: {
         schemas: itemSearchFormSchema,
         baseColProps: adaptiveColProps,

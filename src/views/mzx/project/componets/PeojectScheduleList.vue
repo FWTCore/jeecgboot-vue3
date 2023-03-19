@@ -50,6 +50,9 @@
   const [registerTable, { reload, setProps }] = useTable({
     api: listSchedule,
     columns: scheduleColumns,
+    pagination: {
+      pageSize: 50,
+    },
     formConfig: {
       baseColProps: adaptiveColProps,
       labelAlign: 'right',

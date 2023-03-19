@@ -57,6 +57,9 @@
         schemas: searchWorkLogFormSchema,
         fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
       },
+      pagination: {
+        pageSize: 50,
+      },
       actionColumn: {
         width: 240,
       },

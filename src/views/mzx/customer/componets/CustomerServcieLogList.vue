@@ -49,6 +49,9 @@ import { right } from 'inquirer/lib/utils/readline';
   const [registerTable, { reload, setProps }] = useTable({
     api: serviceList,
     columns: serviceLogColumns,
+    pagination: {
+      pageSize: 50,
+    },
     formConfig: {
       baseColProps: adaptiveColProps,
       labelAlign: 'right',

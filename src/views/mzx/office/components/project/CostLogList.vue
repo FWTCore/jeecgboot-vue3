@@ -74,6 +74,9 @@
     designScope: 'costlog-page',
     tableProps: {
       title: '项目费用列表',
+      pagination: {
+        pageSize: 50,
+      },
       api: costList,
       size: 'small',
       showTableSetting: false,

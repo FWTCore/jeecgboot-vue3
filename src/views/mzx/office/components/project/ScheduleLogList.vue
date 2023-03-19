@@ -60,6 +60,9 @@
         schemas: searchScheduleFormSchema,
         fieldMapToTime: [['createTime', ['beginDate', 'endDate'], 'YYYY-MM-DD']],
       },
+      pagination: {
+        pageSize: 50,
+      },
       actionColumn: {
         title: '操作',
         dataIndex: 'action',

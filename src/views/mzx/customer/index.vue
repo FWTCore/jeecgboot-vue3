@@ -40,6 +40,9 @@
       formConfig: {
         schemas: searchFormSchema,
       },
+      pagination: {
+        pageSize: 50,
+      },
       actionColumn: {
         title: '操作',
         dataIndex: 'action',

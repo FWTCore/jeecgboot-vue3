@@ -43,6 +43,9 @@
   const [registerTable, { reload, setProps }] = useTable({
     api: memberList,
     columns: memberColumns,
+    pagination: {
+      pageSize: 50,
+    },
     formConfig: {
       baseColProps: adaptiveColProps,
       labelAlign: 'right',

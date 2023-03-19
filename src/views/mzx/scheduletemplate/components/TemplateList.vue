@@ -54,6 +54,9 @@
     tableProps: {
       title: '项目进度模板',
       api: list,
+      pagination: {
+        pageSize: 50,
+      },
       showTableSetting: false,
       columns: columns,
       formConfig: {
