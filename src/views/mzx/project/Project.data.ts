@@ -152,7 +152,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '信息来源',
-    dataIndex: 'source',
+    dataIndex: 'source_dictText',
     width: 200,
     customRender({ text }) {
       if (text) {
@@ -333,11 +333,13 @@ export const formSchema: FormSchema[] = [
     label: '销售提成比例%',
     field: 'saleCommissionRatio',
     component: 'InputNumber',
+    defaultValue: '8',
   },
   {
     label: '实施提成比例%',
     field: 'implementCommissionRatio',
     component: 'InputNumber',
+    defaultValue: '8',
   },
   {
     label: '综合费用',
@@ -357,7 +359,12 @@ export const formSchema: FormSchema[] = [
   {
     label: '信息来源',
     field: 'source',
-    component: 'Input',
+    component: 'JDictSelectTag',
+    componentProps: {
+      dictCode: 'project_project_source',
+      placeholder: '请选择信息来源',
+      stringToNumber: true,
+    },
   },
 ];
 
