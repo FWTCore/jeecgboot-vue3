@@ -4,6 +4,7 @@
     <!--插槽:table标题-->
     <template #tableTitle>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -39,7 +40,7 @@
   import CostLogDetail from './CostLogDetail.vue';
   import CostLogDrawer from './CostLogDrawer.vue';
   import { searchFormSchema, getScheduleColumns } from './CostLog.data';
-  import { costList, deleteCost, batchCostDelete } from './CostLog.api';
+  import { costList, deleteCost, batchCostDelete, getExportUrl } from './CostLog.api';
 
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
@@ -70,7 +71,7 @@
   });
   // ;
   // 列表页面公共参数、方法
-  const { tableContext } = useListPage({
+  const { tableContext, onExportXls } = useListPage({
     designScope: 'costlog-page',
     tableProps: {
       title: '项目费用列表',
@@ -97,6 +98,10 @@
         fixed: 'right',
         width: 180,
       },
+    },
+    exportConfig: {
+      name: '项目费用列表',
+      url: getExportUrl,
     },
   });
 

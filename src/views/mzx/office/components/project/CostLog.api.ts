@@ -7,6 +7,7 @@ enum Api {
   costDelete = '/project/cost/delete',
   batchCostDelete = '/project/cost/deleteBatch',
   allProject = '/project/queryall',
+  exportXls = '/project/cost/exportXls',
 }
 
 /**
@@ -14,6 +15,11 @@ enum Api {
  * @param params
  */
 export const costList = (params) => defHttp.get({ url: Api.costList, params });
+/**
+ * 导出api
+ * @param params
+ */
+export const getExportUrl = Api.exportXls;
 
 /**
  * 保存或者更新项目服务日志
