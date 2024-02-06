@@ -26,10 +26,13 @@
   import { ApiSelect } from '/@/components/Form/index';
   import { scheduleFormSchema } from '../Project.data';
   import { saveOrUpdateSchedule, getAllUsageSchedule } from '../Project.api';
+  import dayjs from 'dayjs';
+
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const props = defineProps({ projectId: String, projectName: String });
   const isUpdate = ref(true);
+  const isRemedy = ref(false);
   const scheduleParams = ref({});
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
@@ -54,17 +57,21 @@
     await resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
+    isRemedy.value = !!data?.remedy;
     if (unref(isUpdate)) {
-      console.log(data.record);
       //表单赋值
       await setFieldsValue({
         ...data.record,
       });
     }
-    await setFieldsValue({ projectName: props.projectName });
+    await setFieldsValue({ projectName: props.projectName, remedy: unref(isRemedy) });
+    if (!unref(isRemedy) && !unref(isUpdate)) {
+      const currentDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
+      await setFieldsValue({ createTime: currentDate });
+    }
   });
   //设置标题
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增服务记录' : '编辑服务记录'));
+  const getTitle = computed(() => (unref(isRemedy) ? '补录服务记录' : !unref(isUpdate) ? '新增服务记录' : '编辑服务记录'));
   //表单提交事件
   async function handleSubmit() {
     try {
@@ -80,13 +87,5 @@
     } finally {
       setModalProps({ confirmLoading: false });
     }
-  }
-
-  function onChange(e){
-    console.log('selected:', e);
-  }
-  
-  function onOptionsChange(options){
-  console.log('get options', options.length, options);
   }
 </script>

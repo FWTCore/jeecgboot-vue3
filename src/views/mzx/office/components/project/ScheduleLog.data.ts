@@ -388,6 +388,12 @@ export const scheduleFormSchema: FormSchema[] = [
     show: false,
   },
   {
+    label: '',
+    field: 'remedy',
+    component: 'Switch',
+    show: false,
+  },
+  {
     label: '项目名称',
     field: 'projectId',
     required: true,
@@ -444,6 +450,46 @@ export const scheduleFormSchema: FormSchema[] = [
     componentProps: {
       dictCode: 'project_schedule_service_type',
       stringToNumber: true,
+    },
+  },
+  {
+    label: '服务时间',
+    field: 'createTime',
+    component: 'DatePicker',
+    required: true,
+    componentProps: ({ formModel }) => {
+      return {
+        valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        disabledDate: (current: Dayjs) => {
+          if (!!formModel.remedy) {
+            // Can not select days before today and today
+            if (!current) {
+              return false;
+            }
+            let day = current;
+            if (day > dayjs().endOf('day')) {
+              return true;
+            }
+            day = day.add(8, 'day');
+            if (day < dayjs().endOf('day')) {
+              return true;
+            }
+            return false;
+          } else {
+            return true;
+          }
+        },
+      };
+    },
+    dynamicDisabled: ({ values }) => {
+      if (!values.remedy) {
+        return true;
+      }
+      if (values.id && values && values.createTime) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   {

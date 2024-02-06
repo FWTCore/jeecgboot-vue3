@@ -32,7 +32,7 @@
 
 <script lang="ts" name="biz-project" setup>
   //ts语法
-  import { ref, computed, unref } from 'vue';
+  import { ref, computed, unref, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
@@ -41,7 +41,8 @@
   import PeojectScheduleList from './componets/PeojectScheduleList.vue';
   import ProjectCostList from './componets/ProjectCostList.vue';
   import { columns, searchFormSchema } from './Project.data';
-  import { list, deleteData, batchDeleteData } from './Project.api';
+  import { list, deleteData, batchDeleteData, finishData } from './Project.api';
+  import { useUserStore } from '/@/store/modules/user';
 
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
@@ -50,6 +51,7 @@
   const [registerMemberDrawer, { openDrawer: openMemberDrawer }] = useDrawer();
   const [registerScheduleDrawer, { openDrawer: openScheduleDrawer }] = useDrawer();
   const [registerCostDrawer, { openDrawer: openCostDrawer }] = useDrawer();
+  const userStore = useUserStore();
 
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
@@ -149,6 +151,12 @@
     });
   }
   /**
+   * 完成事件
+   */
+  async function handleFinish(record) {
+    await finishData({ id: record.id }, reload);
+  }
+  /**
    * 成功回调
    */
   function handleSuccess() {
@@ -159,12 +167,22 @@
    * 操作栏
    */
   function getTableAction(record) {
-    return [
-      {
-        label: '编辑',
-        onClick: handleEdit.bind(null, record),
-      },
-    ];
+    if (record.projectStatus === '1') {
+      let resultData = [
+        {
+          label: '编辑',
+          onClick: handleEdit.bind(null, record),
+        },
+      ];
+      if (record.leaderId === userStore.getUserInfo.id) {
+        resultData.push({
+          label: '已完结',
+          onClick: handleFinish.bind(null, record),
+        });
+      }
+      return resultData;
+    }
+    return null;
   }
 
   /**
@@ -197,5 +215,4 @@
       },
     ];
   }
-  
 </script>

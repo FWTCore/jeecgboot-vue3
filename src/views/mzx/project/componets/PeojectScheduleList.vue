@@ -3,6 +3,7 @@
     <BasicTable @register="registerTable" :rowClassName="getRowClassName">
       <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增</a-button>
+        <a-button type="primary" @click="handleRemedy"> 补录</a-button>
       </template>
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" />
@@ -28,6 +29,7 @@
 
   //字典配置model
   const [registerModal, { openModal }] = useModal();
+
   const [registerDrawer] = useDrawerInner(async (data) => {
     projectId.value = data.record.id;
     projectName.value = data.record.projectName;
@@ -89,6 +91,17 @@
   function handleCreate() {
     openModal(true, {
       isUpdate: false,
+      remedy: false,
+    });
+  }
+
+  /**
+   * 补录
+   */
+  function handleRemedy() {
+    openModal(true, {
+      isUpdate: false,
+      remedy: true,
     });
   }
   /**

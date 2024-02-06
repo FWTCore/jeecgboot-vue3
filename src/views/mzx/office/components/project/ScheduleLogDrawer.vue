@@ -4,6 +4,7 @@
       <template #remoteSearchProject="{ model, field }">
         <ApiSelect
           :api="getAllProject"
+          :params="projectParams"
           showSearch
           v-model:value="model[field]"
           :filterOption="true"
@@ -22,6 +23,7 @@
           :params="scheduleParams"
           showSearch
           v-model:value="model[field]"
+          :filterOption="true"
           optionFilterProp="label"
           resultField="list"
           labelField="scheduleName"
@@ -44,12 +46,15 @@
   import { ApiSelect } from '/@/components/Form/index';
   import { scheduleFormSchema } from './ScheduleLog.data';
   import { saveOrUpdateSchedule, getAllUsageSchedule, getAllProject } from './ScheduleLog.api';
+  import dayjs from 'dayjs';
   // 声明Emits
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
+  const isRemedy = ref(false);
   const userStore = useUserStore();
   const userinfo = computed(() => userStore.getUserInfo);
   const scheduleParams = ref({});
+  const projectParams = ref({});
   const immediate = ref(false);
 
   //表单配置
@@ -63,17 +68,26 @@
     await resetFields();
     setDrawerProps({ confirmLoading: false, showFooter: true });
     isUpdate.value = !!data?.isUpdate;
+    isRemedy.value = !!data?.remedy;
+    projectParams.value = {
+      remedy: isRemedy.value,
+    };
     if (unref(isUpdate)) {
       //表单赋值
       await setFieldsValue({
+        remedy: unref(isRemedy),
         ...data.record,
       });
     } else {
-      await setFieldsValue({ staff: userinfo.value.realname });
+      await setFieldsValue({ staff: userinfo.value.realname, remedy: unref(isRemedy) });
+      if (!unref(isRemedy)) {
+        const currentDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
+        await setFieldsValue({ createTime: currentDate });
+      }
     }
   });
   //设置标题
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增项目服务日志' : '编辑项目服务日志'));
+  const getTitle = computed(() => (unref(isRemedy) ? '补录服务记录' : !unref(isUpdate) ? '新增服务记录' : '编辑服务记录'));
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
   //表单提交事件
   async function handleSubmit() {

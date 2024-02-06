@@ -6,10 +6,12 @@ enum Api {
   edit = '/project/edit',
   deleteData = '/project/delete',
   deleteBatch = '/project/deleteBatch',
+  finishData = '/project/finish',
   duplicateCheck = '/sys/duplicate/check',
   allCustomerList = '/customer/queryall',
   allScheduleTemplateList = '/project/schedule/template/queryall',
   getScheduleTemplate = '/project/schedule/queryByProjectId',
+  getProjectType = '/project/type/queryall',
   memberList = '/project/member/list',
   deleteMember = '/project/member/delete',
   editMember = '/project/member/edit',
@@ -50,6 +52,15 @@ export const batchDeleteData = (params, handleSuccess) => {
     },
   });
 };
+
+/**
+ * 完成
+ */
+export const finishData = (params, handleSuccess) => {
+  return defHttp.post({ url: Api.finishData, params }).then(() => {
+    handleSuccess();
+  });
+};
 /**
  * 保存或者更新
  * @param params
@@ -78,6 +89,11 @@ export const getAllScheduleTemplateList = (params) => defHttp.get({ url: Api.all
  * @param params
  */
 export const getScheduleTemplate = (params) => defHttp.get({ url: Api.getScheduleTemplate, params });
+/**
+ * 获取项目类型
+ * @param params
+ */
+export const getAllProjectTypeList = (params) => defHttp.get({ url: Api.getProjectType, params });
 
 /**
  * 成员列表接口

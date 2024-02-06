@@ -28,17 +28,29 @@
           placeholder="请选择项目进度模板"
         />
       </template>
+      <template #remoteProjectType="{ model, field }">
+        <ApiSelect
+          :api="getAllProjectTypeList"
+          v-model:value="model[field]"
+          resultField="list"
+          labelField="projectTypeName"
+          valueField="id"
+          state="projectTypeName"
+          @change="change"
+        />
+      </template>
     </BasicForm>
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import { ref, computed, unref } from 'vue';
+  import { ref, computed, unref, toRaw} from 'vue';
   import { BasicForm, useForm } from '/src/components/Form';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import { ApiSelect } from '/@/components/Form/index';
   import { formSchema } from '../Project.data';
-  import { saveOrUpdateProject, getScheduleTemplate, getAllScheduleTemplateList, getAllCustomerList } from '../Project.api';
+  import { saveOrUpdateProject, getScheduleTemplate, getAllScheduleTemplateList, getAllCustomerList, getAllProjectTypeList } from '../Project.api';
+
   // 声明Emits
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
@@ -76,6 +88,10 @@
   //设置标题
   const getTitle = computed(() => (!unref(isUpdate) ? '新增项目' : '编辑项目'));
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
+  async function change(e) {
+    const selectObj = toRaw(e)[0];
+    await setFieldsValue({ lifeLine: selectObj.lifeLine, implementCommissionRatio: selectObj.commissionRatio });
+  }
   //表单提交事件
   async function handleSubmit() {
     try {

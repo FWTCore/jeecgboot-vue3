@@ -4,6 +4,7 @@
     <!--插槽:table标题-->
     <template #tableTitle>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleRemedy"> 补录</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -83,6 +84,16 @@
   function handleCreate() {
     openEditDrawer(true, {
       isUpdate: false,
+      remedy: false,
+    });
+  }
+  /**
+   * 补录事件
+   */
+  function handleRemedy() {
+    openEditDrawer(true, {
+      isUpdate: false,
+      remedy: true,
     });
   }
 
@@ -92,7 +103,7 @@
   async function handleEdit(record: Recordable) {
     openEditDrawer(true, {
       isUpdate: true,
-      showFooter: true,
+      remedy: false,
       record: record,
     });
   }

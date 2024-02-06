@@ -2,6 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { rules } from './validator';
 import dayjs, { Dayjs } from 'dayjs';
+import { getAllProjectTypeList } from './Project.api';
 
 export const columns: BasicColumn[] = [
   {
@@ -77,18 +78,18 @@ export const columns: BasicColumn[] = [
       }
     },
   },
-  {
-    title: '提成比例%',
-    dataIndex: 'commissionRatio',
-    width: 100,
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
-    },
-  },
+  // {
+  //   title: '提成比例%',
+  //   dataIndex: 'commissionRatio',
+  //   width: 100,
+  //   customRender({ text }) {
+  //     if (text) {
+  //       return text;
+  //     } else {
+  //       return '-';
+  //     }
+  //   },
+  // },
   {
     title: '销售提成比例%',
     dataIndex: 'saleCommissionRatio',
@@ -104,6 +105,30 @@ export const columns: BasicColumn[] = [
   {
     title: '实施提成比例%',
     dataIndex: 'implementCommissionRatio',
+    width: 150,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '项目类型',
+    dataIndex: 'projectTypeName',
+    width: 150,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '生命线%',
+    dataIndex: 'lifeLine',
     width: 150,
     customRender({ text }) {
       if (text) {
@@ -145,6 +170,18 @@ export const columns: BasicColumn[] = [
     customRender({ text }) {
       if (text) {
         return dayjs(text).format('YYYY-MM-DD');
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '项目状态',
+    dataIndex: 'projectStatus_dictText',
+    width: 200,
+    customRender({ text }) {
+      if (text) {
+        return text;
       } else {
         return '-';
       }
@@ -274,11 +311,13 @@ export const formSchema: FormSchema[] = [
     label: '合同金额',
     field: 'contractAmount',
     component: 'InputNumber',
+    required: true,
   },
   {
     label: '付款方式',
     field: 'paymentMethod',
     component: 'Input',
+    required: true,
   },
   {
     label: '签单人',
@@ -320,15 +359,15 @@ export const formSchema: FormSchema[] = [
       valueFormat: 'YYYY-MM-DD',
     },
   },
-  {
-    label: '提成比例%',
-    field: 'commissionRatio',
-    component: 'InputNumber',
-    defaultValue: '8',
-    dynamicDisabled: ({}) => {
-      return true;
-    },
-  },
+  // {
+  //   label: '提成比例%',
+  //   field: 'commissionRatio',
+  //   component: 'InputNumber',
+  //   defaultValue: '8',
+  //   dynamicDisabled: ({}) => {
+  //     return true;
+  //   },
+  // },
   {
     label: '销售提成比例%',
     field: 'saleCommissionRatio',
@@ -336,10 +375,44 @@ export const formSchema: FormSchema[] = [
     defaultValue: '8',
   },
   {
+    label: '项目类型',
+    field: 'projectTypeId',
+    required: true,
+    component: 'ApiSelect',
+    slot: 'remoteProjectType',
+    dynamicDisabled: ({ values }) => {
+      return !!values.projectTypeId;
+    },
+    show: ({ values }) => {
+      return !values.projectTypeId || !values.projectTypeName;
+    },
+  },
+  {
+    label: '项目类型',
+    field: 'projectTypeName',
+    component: 'Input',
+    show: ({ values }) => {
+      return !!values.projectTypeName;
+    },
+    dynamicDisabled: ({ values }) => {
+      return !!values.projectTypeName;
+    },
+  },
+  {
     label: '实施提成比例%',
     field: 'implementCommissionRatio',
     component: 'InputNumber',
-    defaultValue: '8',
+    dynamicDisabled: ({ values }) => {
+      return true;
+    },
+  },
+  {
+    label: '生命线%',
+    field: 'lifeLine',
+    component: 'InputNumber',
+    dynamicDisabled: ({ values }) => {
+      return true;
+    },
   },
   {
     label: '综合费用',
@@ -552,6 +625,12 @@ export const scheduleFormSchema: FormSchema[] = [
     show: false,
   },
   {
+    label: '',
+    field: 'remedy',
+    component: 'Switch',
+    show: false,
+  },
+  {
     label: '项目名称',
     field: 'projectName',
     required: false,
@@ -589,6 +668,46 @@ export const scheduleFormSchema: FormSchema[] = [
     label: '服务内容',
     field: 'serviceContent',
     component: 'InputTextArea',
+  },
+  {
+    label: '服务时间',
+    field: 'createTime',
+    component: 'DatePicker',
+    required: true,
+    componentProps: ({ formModel }) => {
+      return {
+        valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        disabledDate: (current: Dayjs) => {
+          if (!!formModel.remedy) {
+            // Can not select days before today and today
+            if (!current) {
+              return false;
+            }
+            let day = current;
+            if (day > dayjs().endOf('day')) {
+              return true;
+            }
+            day = day.add(8, 'day');
+            if (day < dayjs().endOf('day')) {
+              return true;
+            }
+            return false;
+          } else {
+            return true;
+          }
+        },
+      };
+    },
+    dynamicDisabled: ({ values }) => {
+      if (!values.remedy) {
+        return true;
+      }
+      if (values.id && values && values.createTime) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   {
     label: '工时',
