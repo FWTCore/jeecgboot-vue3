@@ -23,7 +23,8 @@
     </template>
     <!-- 插槽：行内操作按钮 -->
     <template #action="{ record }">
-      <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
+      <!-- :dropDownActions="getDropDownAction(record)" -->
+      <TableAction :actions="getTableAction(record)" />
     </template>
   </BasicTable>
   <TemplateStageModal @register="registerModal" @success="onUserDrawerSuccess" />
@@ -131,6 +132,14 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+      },
+      {
+        label: '删除',
+        color: 'error',
+        popConfirm: {
+          title: '是否确认删除',
+          confirm: handleDelete.bind(null, record),
+        },
       },
     ];
   }

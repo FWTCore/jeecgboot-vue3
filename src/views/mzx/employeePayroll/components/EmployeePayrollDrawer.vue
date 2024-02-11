@@ -9,12 +9,13 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   import { useUserStore } from '/@/store/modules/user';
-  import { formSchema } from '../EmployeeSalary.data';
-  import { saveOrUpdate } from '../EmployeeSalary.api';
-  import dayjs from 'dayjs';
+  import dayjs, { Dayjs } from 'dayjs';
+  import { formSchema } from '../EmployeePayroll.data';
+  import { saveOrUpdate } from '../EmployeePayroll.api';
   // 声明Emits
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
+  const isRemedy = ref(false);
   const userStore = useUserStore();
   const userinfo = computed(() => userStore.getUserInfo);
 
@@ -29,17 +30,17 @@
     await resetFields();
     setDrawerProps({ confirmLoading: false, showFooter: true });
     isUpdate.value = !!data?.isUpdate;
+    await setFieldsValue({ periodDate: dayjs().format('YYYY-MM') });
     if (unref(isUpdate)) {
       //表单赋值
       await setFieldsValue({
+        remedy: unref(isRemedy),
         ...data.record,
       });
-    } else {
-      await setFieldsValue({ staff: userinfo.value.realname });
     }
   });
   //设置标题
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增员工薪资' : '编辑员工薪资'));
+  const getTitle = computed(() => (!unref(isUpdate) ? '新增员工工资' : '编辑员工工资'));
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
   //表单提交事件
   async function handleSubmit() {

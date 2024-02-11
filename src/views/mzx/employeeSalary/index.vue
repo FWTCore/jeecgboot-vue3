@@ -24,7 +24,6 @@
       <TableAction :actions="getTableAction(record)" />
     </template>
   </BasicTable>
-  <EmployeeSalaryDetail @register="registerDrawer" />
   <EmployeeSalaryDrawer @register="registerEditDrawer" @success="handleSuccess" />
 </template>
 
@@ -34,13 +33,10 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/src/components/Table';
   import { useDrawer } from '/@/components/Drawer';
-  import EmployeeSalaryDetail from './components/EmployeeSalaryDetail.vue';
   import EmployeeSalaryDrawer from './components/EmployeeSalaryDrawer.vue';
   import { salaryColumns, searchSalaryColumns } from './EmployeeSalary.data';
   import { employeeSalaryList, employeeSalaryDelete, employeeSalaryBathDelete } from './EmployeeSalary.api';
 
-  //drawer
-  const [registerDrawer, { openDrawer }] = useDrawer();
   //drawer
   const [registerEditDrawer, { openDrawer: openEditDrawer }] = useDrawer();
 
@@ -61,7 +57,11 @@
         pageSize: 50,
       },
       actionColumn: {
-        width: 60,
+        title: '操作',
+        dataIndex: 'action',
+        slots: { customRender: 'action' },
+        fixed: 'right',
+        width: 100,
       },
     },
   });

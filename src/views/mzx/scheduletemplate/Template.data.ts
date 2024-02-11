@@ -69,8 +69,8 @@ export const stageColumns: BasicColumn[] = [
     width: 200,
   },
   {
-    title: '可选值',
-    dataIndex: 'defaultText',
+    title: '提成占比',
+    dataIndex: 'commission',
     width: 120,
   },
   {
@@ -104,8 +104,8 @@ export const detailColumns: BasicColumn[] = [
     width: 200,
   },
   {
-    title: '可选值',
-    dataIndex: 'defaultText',
+    title: '提成占比',
+    dataIndex: 'commission',
     width: 120,
   },
   {
@@ -129,12 +129,9 @@ export const stageFormSchema: FormSchema[] = [
     component: 'Input',
   },
   {
-    label: '可选值',
-    field: 'defaultText',
-    component: 'Input',
-    componentProps: {
-      placeholder: 'eg：["选项1","选项2"]',
-    },
+    label: '提成占比',
+    field: 'commission',
+    component: 'InputNumber',
   },
   {
     label: '排序',

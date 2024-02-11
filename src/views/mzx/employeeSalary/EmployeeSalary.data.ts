@@ -9,6 +9,7 @@ export const salaryColumns: BasicColumn[] = [
     title: '员工名称',
     dataIndex: 'employeeName',
     width: 60,
+    fixed: 'left',
   },
   {
     title: '基本工资',

@@ -52,7 +52,7 @@ export const duplicateCheck = (params) => defHttp.get({ url: Api.duplicateCheck,
  * 保存或者更新
  * @param params
  */
-export const saveOrUpdateMember = (params, isUpdate) => {
+export const saveOrUpdate = (params, isUpdate) => {
   const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params });
 };
