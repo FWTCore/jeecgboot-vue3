@@ -50,7 +50,7 @@
         ...data.record,
       });
     } else {
-      await setFieldsValue({ staff: userinfo.value.realname });
+      await setFieldsValue({ staff: userinfo.value.realname, workHours: 1 });
     }
   });
   //设置标题

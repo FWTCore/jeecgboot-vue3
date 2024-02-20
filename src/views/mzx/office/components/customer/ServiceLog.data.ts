@@ -124,7 +124,7 @@ export const descItems: DescItem[] = [
     },
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     render: (curVal, data) => {
       if (curVal) {
@@ -206,9 +206,10 @@ export const customerFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     component: 'InputNumber',
+    required: true,
   },
   {
     label: '服务内容',

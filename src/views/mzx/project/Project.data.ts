@@ -514,7 +514,7 @@ export const scheduleColumns: BasicColumn[] = [
     },
   },
   {
-    title: '工时',
+    title: '工时(天)',
     dataIndex: 'workHours',
     width: 50,
   },
@@ -540,7 +540,7 @@ export const scheduleColumns: BasicColumn[] = [
     },
   },
   {
-    title: '加班时长',
+    title: '加班时长(时)',
     dataIndex: 'overtime',
     width: 50,
   },
@@ -663,6 +663,7 @@ export const scheduleFormSchema: FormSchema[] = [
       dictCode: 'project_schedule_service_type',
       stringToNumber: true,
     },
+    // required: true,
   },
   {
     label: '服务内容',
@@ -710,9 +711,10 @@ export const scheduleFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     component: 'InputNumber',
+    required: true,
   },
   {
     label: '是否加班',
@@ -727,7 +729,7 @@ export const scheduleFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '加班时长',
+    label: '加班时长(时)',
     field: 'overtime',
     component: 'InputNumber',
     ifShow: ({ values }) => {
@@ -828,7 +830,7 @@ export const costColumns: BasicColumn[] = [
     width: 100,
   },
   {
-    title: '工时',
+    title: '工时(天)',
     dataIndex: 'workHours',
     width: 50,
   },
@@ -854,7 +856,7 @@ export const costColumns: BasicColumn[] = [
     },
   },
   {
-    title: '加班时长',
+    title: '加班时长(时)',
     dataIndex: 'overtime',
     width: 50,
   },
@@ -972,6 +974,7 @@ export const costFormSchema: FormSchema[] = [
       dictCode: 'project_schedule_service_type',
       stringToNumber: true,
     },
+    // required: true,
   },
   {
     label: '服务内容',
@@ -979,9 +982,11 @@ export const costFormSchema: FormSchema[] = [
     component: 'InputTextArea',
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     component: 'InputNumber',
+    required: true,
+    suffix: '天',
   },
   {
     label: '是否加班',
@@ -989,7 +994,7 @@ export const costFormSchema: FormSchema[] = [
     component: 'Switch',
   },
   {
-    label: '加班时长',
+    label: '加班时长(时)',
     field: 'overtime',
     component: 'InputNumber',
     ifShow: ({ values }) => {

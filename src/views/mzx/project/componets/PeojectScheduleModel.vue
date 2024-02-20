@@ -63,6 +63,8 @@
       await setFieldsValue({
         ...data.record,
       });
+    } else {
+      await setFieldsValue({ workHours: 1 });
     }
     await setFieldsValue({ projectName: props.projectName, remedy: unref(isRemedy) });
     if (!unref(isRemedy) && !unref(isUpdate)) {

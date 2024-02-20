@@ -79,7 +79,7 @@
         ...data.record,
       });
     } else {
-      await setFieldsValue({ staff: userinfo.value.realname, remedy: unref(isRemedy) });
+      await setFieldsValue({ staff: userinfo.value.realname, remedy: unref(isRemedy), workHours: 1 });
       if (!unref(isRemedy)) {
         const currentDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
         await setFieldsValue({ createTime: currentDate });

@@ -43,9 +43,10 @@
       await setFieldsValue({
         ...data.record,
       });
+    } else {
+      await setFieldsValue({ workHours: 1 });
     }
-    await setFieldsValue({ staff: userinfo.value.realname });
-    await setFieldsValue({ customerName: data.customerName });
+    await setFieldsValue({ staff: userinfo.value.realname, customerName: data.customerName });
   });
   //设置标题
   const getTitle = computed(() => (!unref(isUpdate) ? '新增客户服务记录' : '编辑客户服务记录'));

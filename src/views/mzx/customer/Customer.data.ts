@@ -108,7 +108,7 @@ export const serviceLogColumns: BasicColumn[] = [
     width: 100,
   },
   {
-    title: '工时',
+    title: '工时(天)',
     dataIndex: 'workHours',
     width: 100,
   },
@@ -179,9 +179,10 @@ export const serviceLogFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     component: 'InputNumber',
+    required: true,
   },
   {
     label: '服务内容',

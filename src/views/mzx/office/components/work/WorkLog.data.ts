@@ -22,7 +22,7 @@ export const workLogColumns: BasicColumn[] = [
     },
   },
   {
-    title: '工时',
+    title: '工时(天)',
     dataIndex: 'workHours',
     width: 100,
     customRender({ text }) {
@@ -115,7 +115,7 @@ export const descItems: DescItem[] = [
     },
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     render: (curVal, data) => {
       if (curVal) {
@@ -176,9 +176,10 @@ export const workLogFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     component: 'InputNumber',
+    required: true,
   },
   {
     label: '服务内容',

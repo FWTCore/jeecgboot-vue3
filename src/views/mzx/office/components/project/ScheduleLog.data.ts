@@ -257,7 +257,7 @@ export const scheduleDescItems: DescItem[] = [
   },
   {
     label: '服务方式',
-    field: 'serviceType',
+    field: 'serviceType_dictText',
     render: (curVal, data) => {
       if (curVal) {
         return curVal;
@@ -278,7 +278,7 @@ export const scheduleDescItems: DescItem[] = [
     },
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     render: (curVal, data) => {
       if (curVal) {
@@ -316,7 +316,7 @@ export const scheduleDescItems: DescItem[] = [
     },
   },
   {
-    label: '加班时长',
+    label: '加班时长(时)',
     field: 'overtime',
     render: (curVal, data) => {
       if (curVal) {
@@ -451,6 +451,7 @@ export const scheduleFormSchema: FormSchema[] = [
       dictCode: 'project_schedule_service_type',
       stringToNumber: true,
     },
+    // required: true,
   },
   {
     label: '服务时间',
@@ -493,9 +494,10 @@ export const scheduleFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '工时',
+    label: '工时(天)',
     field: 'workHours',
     component: 'InputNumber',
+    required: true,
   },
   {
     label: '服务内容',
@@ -518,7 +520,7 @@ export const scheduleFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '加班时长',
+    label: '加班时长(时)',
     field: 'overtime',
     component: 'InputNumber',
     ifShow: ({ values }) => {
