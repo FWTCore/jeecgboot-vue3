@@ -4,6 +4,7 @@
     <!--插槽:table标题-->
     <template #tableTitle>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+      <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handleCreate" v-auth="'project:payment'"> 结算</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -43,7 +44,9 @@
   import { columns, searchFormSchema } from './Project.data';
   import { list, deleteData, batchDeleteData, finishData } from './Project.api';
   import { useUserStore } from '/@/store/modules/user';
-
+  import { usePermission } from '/@/hooks/web/usePermission';
+  
+  const { hasPermission } = usePermission();
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
 

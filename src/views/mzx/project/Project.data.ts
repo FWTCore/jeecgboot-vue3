@@ -209,6 +209,15 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
+    label: '项目状态',
+    field: 'projectStatus',
+    component: 'JDictSelectTag',
+    componentProps: {
+      dictCode: 'project_project_status',
+      stringToNumber: true,
+    },
+  },
+  {
     label: '客户名称',
     field: 'customerName',
     component: 'Input',
@@ -230,16 +239,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '付款方式',
     field: 'paymentMethod',
     component: 'Input',
-  },
-  {
-    label: '删除状态',
-    field: 'delFlag',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'del_flag',
-      stringToNumber: true,
-    },
-  },
+  }
 ];
 
 export const formSchema: FormSchema[] = [
