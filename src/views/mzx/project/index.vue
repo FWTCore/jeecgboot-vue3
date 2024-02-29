@@ -4,7 +4,7 @@
     <!--插槽:table标题-->
     <template #tableTitle>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
-      <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handleCreate" v-auth="'project:payment'"> 结算</a-button>
+      <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handlePayment" v-auth="'project:payment'"> 回款</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -42,9 +42,10 @@
   import PeojectScheduleList from './componets/PeojectScheduleList.vue';
   import ProjectCostList from './componets/ProjectCostList.vue';
   import { columns, searchFormSchema } from './Project.data';
-  import { list, deleteData, batchDeleteData, finishData } from './Project.api';
+  import { list, deleteData, batchDeleteData, finishData, batchPaymentData } from './Project.api';
   import { useUserStore } from '/@/store/modules/user';
   import { usePermission } from '/@/hooks/web/usePermission';
+  import { useMessage } from '/@/hooks/web/useMessage';
   
   const { hasPermission } = usePermission();
   //drawer
@@ -81,8 +82,9 @@
   });
 
   //注册table数据
-  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
 
+  const { createMessage } = useMessage();
   /**
    * 新增事件
    */
@@ -92,6 +94,25 @@
       showFooter: true,
     });
   }
+  // 回款
+  async function handlePayment() {
+    let selectedDatas = toRaw(selectedRows.value);
+    if (selectedDatas.length > 0) {
+      for (let val of selectedDatas) {
+        if (val.projectStatus != '10') {
+          createMessage.error('选中数据中存在状态不是已完结的项目');
+          break;
+        }
+      }
+      await batchPaymentData({ ids: selectedRowKeys.value }, () => {
+        selectedRowKeys.value = [];
+        reload();
+      });
+    } else {
+      createMessage.warn('请选择需要结算的项目');
+    }
+  }
+
   /**
    * 编辑事件
    */

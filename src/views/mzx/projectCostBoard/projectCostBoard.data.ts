@@ -124,3 +124,61 @@ export const searchFormSchema: FormSchema[] = [
     },
   },
 ];
+
+export const detailColumns: BasicColumn[] = [
+  {
+    title: '周期',
+    dataIndex: 'period',
+    width: 60,
+    fixed: 'left',
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '员工',
+    dataIndex: 'employeeName',
+    width: 100,
+    fixed: 'left',
+  },
+  {
+    title: '综合补助',
+    dataIndex: 'comprehensiveSubsidy',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '人力成本',
+    dataIndex: 'laborCost',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '工作天数',
+    dataIndex: 'workDays',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+];

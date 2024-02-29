@@ -54,18 +54,6 @@ export const columns: BasicColumn[] = [
       }
     },
   },
-  // {
-  //   title: '付款方式',
-  //   dataIndex: 'paymentMethod',
-  //   width: 100,
-  //   customRender({ text }) {
-  //     if (text) {
-  //       return text;
-  //     } else {
-  //       return '-';
-  //     }
-  //   },
-  // },
   {
     title: '合同金额',
     dataIndex: 'contractAmount',
@@ -78,18 +66,6 @@ export const columns: BasicColumn[] = [
       }
     },
   },
-  // {
-  //   title: '提成比例%',
-  //   dataIndex: 'commissionRatio',
-  //   width: 100,
-  //   customRender({ text }) {
-  //     if (text) {
-  //       return text;
-  //     } else {
-  //       return '-';
-  //     }
-  //   },
-  // },
   {
     title: '销售提成比例%',
     dataIndex: 'saleCommissionRatio',
@@ -239,7 +215,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '付款方式',
     field: 'paymentMethod',
     component: 'Input',
-  }
+  },
 ];
 
 export const formSchema: FormSchema[] = [

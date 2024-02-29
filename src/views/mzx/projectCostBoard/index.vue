@@ -3,20 +3,20 @@
   <BasicTable @register="registerTable">
     <!--插槽:table标题-->
     <template #tableTitle>
-      <div>截至统计到2024-01-02日的数据</div>
+      <div>截至统计到{{ dayjs().add(-1, 'day').format('YYYY-MM-DD') }}日的数据</div>
     </template>
     <template #projectCost="{ record }">
       <a-button type="link" class="ml-2" @click="handleProjectCost(record)"> {{ record.projectCost }} </a-button>
     </template>
     <template #superLifeline="{ record }">
-      <Tag color="red" v-if="record.superLifeline === 1">是</Tag>
-      <Tag color="brea" v-if="record.superLifeline != 1">否</Tag>
+      <a-button color="success" v-if="record.superLifeline != 1"> 否 </a-button>
+      <a-button color="error" v-if="record.superLifeline === 1"> 是 </a-button>
     </template>
   </BasicTable>
   <ProjectCostDetail @register="registerModal" />
 </template>
 
-<script lang="ts" name="biz-project" setup>
+<script lang="ts" name="project-cost-board" setup>
   //ts语法
   import { ref, computed, unref, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';
@@ -26,6 +26,7 @@
   import { columns, searchFormSchema } from './projectCostBoard.data';
   import { list } from './projectCostBoard.api';
   import { Tag } from 'ant-design-vue';
+  import dayjs, { Dayjs } from 'dayjs';
   //弹窗model
   const [registerModal, { openModal }] = useModal();
 
@@ -33,7 +34,7 @@
   const { tableContext } = useListPage({
     designScope: 'project-cost-board',
     tableProps: {
-      title: '项目列表',
+      title: '项目成本核算列表',
       api: list,
       size: 'small',
       columns: columns,
@@ -55,11 +56,9 @@
    * 项目人力成本明细
    */
   function handleProjectCost(record) {
-    console.log(record);
-    // openModal(true, {
-    //   record,
-    //   isUpdate: true,
-    //   showFooter: true,
-    // });
+    openModal(true, {
+      record,
+      showFooter: false,
+    });
   }
 </script>
