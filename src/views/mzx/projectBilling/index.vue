@@ -3,7 +3,10 @@
   <BasicTable @register="registerTable" :rowSelection="rowSelection">
     <!--插槽:table标题-->
     <template #tableTitle>
-      <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handlePayment" v-auth="'project:payment'"> 发放项目</a-button>
+      <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handlePayment" v-auth="'project:payment'"> 发放实施提成</a-button>
+    </template>
+    <template #implementCommission="{ record }">
+      <a-button type="link" class="ml-2"> {{ record.implementCommission }} </a-button>
     </template>
     <!--操作栏-->
     <template #action="{ record }">
@@ -11,9 +14,6 @@
     </template>
   </BasicTable>
   <ProjectBillingDetail @register="registerDrawer" @success="handleSuccess" />
-  <ProjectMemberList @register="registerMemberDrawer" />
-  <PeojectScheduleList @register="registerScheduleDrawer" />
-  <ProjectCostList @register="registerCostDrawer" />
 </template>
 
 <script lang="ts" name="biz-project" setup>
@@ -27,7 +27,7 @@
   import { list, batchPaymentData, auditData } from './projectBilling.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '/@/hooks/web/useMessage';
-  
+
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
 
@@ -101,10 +101,6 @@
     if (record.billingStatus === '1') {
       let resultData = [
         {
-          label: '设置提成比例',
-          onClick: handleAudit.bind(null, record),
-        },
-        {
           label: '审核通过',
           onClick: handleAudit.bind(null, record),
         },
@@ -113,7 +109,7 @@
     } else if (record.billingStatus === '10') {
       let resultData = [
         {
-          label: '设置提成比例',
+          label: '调整提成比例',
           onClick: handleAudit.bind(null, record),
         },
       ];

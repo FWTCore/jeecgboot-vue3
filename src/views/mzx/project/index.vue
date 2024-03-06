@@ -4,7 +4,7 @@
     <!--插槽:table标题-->
     <template #tableTitle>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
-      <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handlePayment" v-auth="'project:payment'"> 回款</a-button>
+      <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handleBilling" v-auth="'project:billing'"> 回款</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -42,7 +42,7 @@
   import PeojectScheduleList from './componets/PeojectScheduleList.vue';
   import ProjectCostList from './componets/ProjectCostList.vue';
   import { columns, searchFormSchema } from './Project.data';
-  import { list, deleteData, batchDeleteData, finishData, batchPaymentData } from './Project.api';
+  import { list, deleteData, batchDeleteData, finishData, batchBillingData } from './Project.api';
   import { useUserStore } from '/@/store/modules/user';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -95,7 +95,7 @@
     });
   }
   // 回款
-  async function handlePayment() {
+  async function handleBilling() {
     let selectedDatas = toRaw(selectedRows.value);
     if (selectedDatas.length > 0) {
       for (let val of selectedDatas) {
@@ -104,7 +104,7 @@
           break;
         }
       }
-      await batchPaymentData({ ids: selectedRowKeys.value }, () => {
+      await batchBillingData({ ids: selectedRowKeys.value }, () => {
         selectedRowKeys.value = [];
         reload();
       });

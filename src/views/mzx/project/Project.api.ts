@@ -7,7 +7,7 @@ enum Api {
   deleteData = '/project/delete',
   deleteBatch = '/project/deleteBatch',
   finishData = '/project/finish',
-  paymentBatch = '/project/paymentBatch',
+  billingBatch = '/project/billingBatch',
   duplicateCheck = '/sys/duplicate/check',
   allCustomerList = '/customer/queryall',
   allScheduleTemplateList = '/project/schedule/template/queryall',
@@ -67,14 +67,14 @@ export const finishData = (params, handleSuccess) => {
  * 批量回款
  * @param params
  */
-export const batchPaymentData = (params, handleSuccess) => {
+export const batchBillingData = (params, handleSuccess) => {
   Modal.confirm({
     title: '确认回款',
     content: '是否确定选中项目已回款，并开启项目费用结算流程',
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.post({ url: Api.paymentBatch, data: params }, { joinParamsToUrl: true }).then(() => {
+      return defHttp.post({ url: Api.billingBatch, data: params }, { joinParamsToUrl: true }).then(() => {
         handleSuccess();
       });
     },

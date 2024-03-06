@@ -29,7 +29,7 @@ export const columns: BasicColumn[] = [
   {
     title: '参与人员',
     dataIndex: 'participants',
-    width: 70,
+    width: 200,
     customRender({ text }) {
       if (text) {
         return text;
@@ -61,10 +61,10 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     label: '项目状态',
-    field: 'projectStatus',
+    field: 'projectBillingStatus',
     component: 'JDictSelectTag',
     componentProps: {
-      dictCode: 'project_project_status',
+      dictCode: 'project_billing_status',
       stringToNumber: true,
     },
   },
@@ -79,5 +79,63 @@ export const searchFormSchema: FormSchema[] = [
     field: 'participants',
     component: 'Input',
     colProps: { span: 6 },
+  },
+];
+
+export const detailColumns: BasicColumn[] = [
+  {
+    title: '周期',
+    dataIndex: 'period',
+    width: 60,
+    fixed: 'left',
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '员工',
+    dataIndex: 'employeeName',
+    width: 100,
+    fixed: 'left',
+  },
+  {
+    title: '综合补助',
+    dataIndex: 'comprehensiveSubsidy',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '人力成本',
+    dataIndex: 'laborCost',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '工作天数',
+    dataIndex: 'workDays',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
   },
 ];
