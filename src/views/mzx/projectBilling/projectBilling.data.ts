@@ -60,8 +60,8 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
-    label: '项目状态',
-    field: 'projectBillingStatus',
+    label: '状态',
+    field: 'billingStatus',
     component: 'JDictSelectTag',
     componentProps: {
       dictCode: 'project_billing_status',
@@ -74,68 +74,54 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Input',
     colProps: { span: 6 },
   },
-  {
-    label: '参与人员',
-    field: 'participants',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
 ];
 
-export const detailColumns: BasicColumn[] = [
-  {
-    title: '周期',
-    dataIndex: 'period',
-    width: 60,
-    fixed: 'left',
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
+export function getStaffColumns(data): BasicColumn[] {
+  const result: BasicColumn[] = [
+    {
+      title: '工作步骤',
+      dataIndex: 'scheduleName',
+      width: 200,
+      fixed: 'left',
     },
-  },
-  {
-    title: '员工',
-    dataIndex: 'employeeName',
-    width: 100,
-    fixed: 'left',
-  },
-  {
-    title: '综合补助',
-    dataIndex: 'comprehensiveSubsidy',
-    width: 100,
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
+    {
+      title: '比例',
+      dataIndex: 'itemCommission',
+      width: 200,
+      fixed: 'left',
     },
-  },
-  {
-    title: '人力成本',
-    dataIndex: 'laborCost',
-    width: 100,
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
-    },
-  },
-  {
-    title: '工作天数',
-    dataIndex: 'workDays',
-    width: 100,
-    customRender({ text }) {
-      if (text) {
-        return text;
-      } else {
-        return '-';
-      }
-    },
-  },
-];
+  ];
+  data.forEach((value) => {
+    result.push({
+      title: value.staff,
+      dataIndex: value.staffId,
+      children: [
+        {
+          title: '是否参与',
+          dataIndex: 'serviceFlag_' + value.staffId,
+          width: 120,
+          customRender({ text }) {
+            if (text) {
+              if (text === 1) {
+                return '是';
+              } else {
+                return '否';
+              }
+            } else {
+              return '-';
+            }
+          },
+        },
+        {
+          title: '提成比例',
+          dataIndex: 'commission_' + value.staffId,
+          edit: true,
+          editRule: true,
+          editComponent: 'InputNumber',
+          width: 120,
+        },
+      ],
+    });
+  });
+  return result;
+}

@@ -6,7 +6,12 @@
       <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handlePayment" v-auth="'project:payment'"> 发放实施提成</a-button>
     </template>
     <template #implementCommission="{ record }">
-      <a-button type="link" class="ml-2"> {{ record.implementCommission }} </a-button>
+      <Tag v-if="record.billingStatus === 1">
+        {{ record.implementCommission }}
+      </Tag>
+      <Tag v-if="record.billingStatus != 1">
+        <a-button type="link" class="ml-2"> {{ record.implementCommission }} </a-button>
+      </Tag>
     </template>
     <!--操作栏-->
     <template #action="{ record }">
@@ -102,14 +107,6 @@
       let resultData = [
         {
           label: '审核通过',
-          onClick: handleAudit.bind(null, record),
-        },
-      ];
-      return resultData;
-    } else if (record.billingStatus === '10') {
-      let resultData = [
-        {
-          label: '调整提成比例',
           onClick: handleAudit.bind(null, record),
         },
       ];

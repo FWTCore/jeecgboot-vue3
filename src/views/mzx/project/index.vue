@@ -101,7 +101,7 @@
       for (let val of selectedDatas) {
         if (val.projectStatus != '10') {
           createMessage.error('选中数据中存在状态不是已完结的项目');
-          break;
+          return;
         }
       }
       await batchBillingData({ ids: selectedRowKeys.value }, () => {
