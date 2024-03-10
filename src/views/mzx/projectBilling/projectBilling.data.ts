@@ -29,7 +29,7 @@ export const columns: BasicColumn[] = [
   {
     title: '参与人员',
     dataIndex: 'participants',
-    width: 200,
+    width: 300,
     customRender({ text }) {
       if (text) {
         return text;
@@ -76,8 +76,14 @@ export const searchFormSchema: FormSchema[] = [
   },
 ];
 
-export function getStaffColumns(data): BasicColumn[] {
+export function getStaffColumns(data, billingStatus): BasicColumn[] {
   const result: BasicColumn[] = [
+    {
+      title: '工作步骤id',
+      dataIndex: 'projectScheduleUsageItemId',
+      width: 50,
+      fixed: 'left',
+    },
     {
       title: '工作步骤',
       dataIndex: 'scheduleName',
@@ -85,42 +91,60 @@ export function getStaffColumns(data): BasicColumn[] {
       fixed: 'left',
     },
     {
-      title: '比例',
+      title: '比例%',
       dataIndex: 'itemCommission',
-      width: 200,
+      width: 40,
       fixed: 'left',
+      customRender({ text }) {
+        if (text) {
+          return text;
+        } else {
+          return '0';
+        }
+      },
     },
   ];
+  // data.forEach((value) => {
+  //   result.push({
+  //     title: value.staff,
+  //     dataIndex: value.staffId,
+  //     children: [
+  //       {
+  //         title: '是否参与',
+  //         dataIndex: 'serviceFlag_' + value.staffId,
+  //         width: 80,
+  //         customRender({ text }) {
+  //           if (text === true) {
+  //             return '是';
+  //           } else {
+  //             return '否';
+  //           }
+  //         },
+  //       },
+  //       {
+  //         title: '提成比例',
+  //         dataIndex: 'commission_' + value.staffId,
+  //         edit: true,
+  //         editRule: true,
+  //         editComponent: 'InputNumber',
+  //         width: 150,
+  //       },
+  //     ],
+  //   });
+  // });
+  let isEdit = true;
+  if (billingStatus != 1) {
+    isEdit = false;
+  }
   data.forEach((value) => {
     result.push({
       title: value.staff,
-      dataIndex: value.staffId,
-      children: [
-        {
-          title: '是否参与',
-          dataIndex: 'serviceFlag_' + value.staffId,
-          width: 120,
-          customRender({ text }) {
-            if (text) {
-              if (text === 1) {
-                return '是';
-              } else {
-                return '否';
-              }
-            } else {
-              return '-';
-            }
-          },
-        },
-        {
-          title: '提成比例',
-          dataIndex: 'commission_' + value.staffId,
-          edit: true,
-          editRule: true,
-          editComponent: 'InputNumber',
-          width: 120,
-        },
-      ],
+      dataIndex: 'commission_' + value.staffId,
+      edit: isEdit,
+      editRule: true,
+      editable: isEdit,
+      editComponent: 'InputNumber',
+      width: 150,
     });
   });
   return result;

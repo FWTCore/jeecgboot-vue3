@@ -6,19 +6,17 @@
       <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handlePayment" v-auth="'project:payment'"> 发放实施提成</a-button>
     </template>
     <template #implementCommission="{ record }">
-      <Tag v-if="record.billingStatus === 1">
+      <div v-if="record.billingStatus === 1">{{ record.implementCommission }}</div>
+      <a-button type="link" class="ml-2" v-if="record.billingStatus != 1" @click="handleProjectBillingDetail(record, false)">
         {{ record.implementCommission }}
-      </Tag>
-      <Tag v-if="record.billingStatus != 1">
-        <a-button type="link" class="ml-2"> {{ record.implementCommission }} </a-button>
-      </Tag>
+      </a-button>
     </template>
     <!--操作栏-->
     <template #action="{ record }">
       <TableAction :actions="getTableAction(record)" />
     </template>
   </BasicTable>
-  <ProjectBillingDetail @register="registerDrawer" @success="handleSuccess" />
+  <ProjectBillingDetail @register="registerModal" @success="handleSuccess" />
 </template>
 
 <script lang="ts" name="biz-project" setup>
@@ -26,15 +24,16 @@
   import { ref, computed, unref, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/src/components/Table';
-  import { useDrawer } from '/@/components/Drawer';
+  import { useModal } from '/@/components/Modal';
   import ProjectBillingDetail from './componets/ProjectBillingDetail.vue';
   import { columns, searchFormSchema } from './projectBilling.data';
   import { list, batchPaymentData, auditData } from './projectBilling.api';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { Modal } from 'ant-design-vue';
 
-  //drawer
-  const [registerDrawer, { openDrawer }] = useDrawer();
+  //弹窗model
+  const [registerModal, { openModal }] = useModal();
 
   const userStore = useUserStore();
 
@@ -57,7 +56,7 @@
         dataIndex: 'action',
         slots: { customRender: 'action' },
         fixed: 'right',
-        width: 200,
+        width: 70,
       },
     },
   });
@@ -73,7 +72,7 @@
       for (let val of selectedDatas) {
         if (val.billingStatus != '20') {
           createMessage.error('选中数据中存在状态不是待发放的项目');
-          break;
+          return;
         }
       }
       await batchPaymentData({ ids: selectedRowKeys.value }, () => {
@@ -96,14 +95,34 @@
    * 审核事件
    */
   async function handleAudit(record: Recordable) {
-    await auditData({ id: record.id }, reload);
+    Modal.confirm({
+      title: '提示',
+      content: '是否设置人员提成比例',
+      okText: '设置',
+      cancelText: '审批',
+      onOk: () => {
+        return handleProjectBillingDetail(record, true);
+      },
+      onCancel: () => {
+        return auditData({ id: record.id }, reload);
+      },
+    });
+  }
+  /**
+   * 明细
+   */
+  function handleProjectBillingDetail(record, showFooter) {
+    openModal(true, {
+      record,
+      showFooter: showFooter,
+    });
   }
 
   /**
    * 操作栏
    */
   function getTableAction(record) {
-    if (record.billingStatus === '1') {
+    if (record.billingStatus === 1) {
       let resultData = [
         {
           label: '审核通过',

@@ -17,27 +17,28 @@
   const columns = ref<any[]>([]);
   const columnsStaff = ref<any[]>([]);
   const implementCommission = ref<any[]>([]);
-
-  const [registerModal] = useModalInner(async (data) => {
-    projectName.value = data.record.projectName;
-    projectId.value = data.record.projectId;
-    implementCommission.value = data.record.implementCommission;
-    setProps({ searchInfo: { projectId: unref(data.record.id) } });
-    reload();
-  });
-
-  //设置标题  title="项目成本明细"
-  const getTitle = computed(() => unref(projectName) + '--项目成本明细');
+  const billingStatus = ref<any[]>([]);
 
   async function initStaffData(): Promise<[]> {
     return participantsList({ projectId: toRaw(projectId.value) });
   }
 
-  //初始化字典选项
-  initStaffData().then((res) => {
-    columnsStaff.value = res;
-    columns.value = getStaffColumns(res);
+  const [registerModal] = useModalInner(async (data) => {
+    projectName.value = data.record.projectName;
+    projectId.value = data.record.projectId;
+    implementCommission.value = data.record.implementCommission;
+    billingStatus.value = data.record.billingStatus;
+    setProps({ searchInfo: { projectId: unref(data.record.projectId) } });
+
+    initStaffData().then((res) => {
+      columnsStaff.value = res;
+      columns.value = getStaffColumns(res, toRaw(billingStatus.value));
+    });
+    reload();
   });
+
+  //设置标题  title="项目成本明细"
+  const getTitle = computed(() => unref(projectName) + '--项目成本明细');
 
   const { createMessage } = useMessage();
 
@@ -89,8 +90,8 @@
     if (isNaN(commission)) {
       commission = 0;
     }
-    let totals: any = { _row: '', key: -1, scheduleName: '合计' };
-    let commissions: any = { _row: '', key: -2, scheduleName: '提成金额', itemCommission: commission };
+    let totals: any = { key: -1, scheduleName: '合计' };
+    let commissions: any = { key: -2, scheduleName: '提成金额', itemCommission: commission };
 
     totals['itemCommission'] = tableData.reduce((prev, next) => {
       if (!!next['itemCommission']) {
@@ -107,7 +108,7 @@
         }
         return prev;
       }, 0);
-      commissions[key] = (totals[key] * commission).toFixed(2);
+      commissions[key] = (totals[key] * (commission / 100)).toFixed(2);
     });
     return [totals, commissions];
   }
@@ -115,28 +116,25 @@
   function getFieldKeys() {
     const fieldKeys = toRaw(columnsStaff.value).reduce((prev, next) => {
       if (next) {
-        prev.push('serviceFlag_' + next['staffId']);
+        prev.push('commission_' + next['staffId']);
       }
       return prev;
     }, []);
     return fieldKeys;
   }
-  async function beforeEditSubmit({ record, key, value }) {
-    const fieldKeys = getFieldKeys();
-    let totalCommission = 0;
-    fieldKeys.forEach((fieldKey) => {
-      totalCommission = totalCommission + record[fieldKey];
-    });
-    if (Number(totalCommission) > Number(record.itemCommission)) {
-      createMessage.error(record.scheduleName + '人员设置分配比例超过了最大值[' + record.itemCommission + '%]');
-      return;
+  async function beforeEditSubmit({ record, index, key, value }) {
+    let totalCommission = record.itemCommission ? record.itemCommission : 0;
+    if (Number(totalCommission) < Number(value)) {
+      createMessage.error(record.scheduleName + '人员设置分配比例超过了最大值[' + totalCommission + '%]');
+      return false;
     } else {
-      return await saveProjectBilling(
-        { projectId: record.projectId, projectScheduleUsageItemId: record.projectScheduleUsageItemId, key, value },
+      await saveProjectBilling(
+        { projectId: toRaw(projectId.value), projectScheduleUsageItemId: record.projectScheduleUsageItemId, key, value },
         () => {
           reload();
         }
       );
+      return true;
     }
   }
 </script>
