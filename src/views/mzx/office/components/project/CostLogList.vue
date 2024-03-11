@@ -120,12 +120,13 @@
 
     let totals: any = { _row: '', projectName: '合计' };
     fieldKeys.forEach((key) => {
-      totals[key] = tableData.reduce((prev, next) => {
+      let tempValue = tableData.reduce((prev, next) => {
         if (!!next[key]) {
           prev += next[key];
         }
         return prev;
       }, 0);
+      totals[key] = Number(tempValue).toFixed(2);
     });
     return [totals];
   }
