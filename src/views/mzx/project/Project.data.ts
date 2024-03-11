@@ -3,6 +3,7 @@ import { FormSchema } from '/@/components/Table';
 import { rules } from './validator';
 import dayjs, { Dayjs } from 'dayjs';
 import { getAllProjectTypeList } from './Project.api';
+import { toRaw } from 'vue';
 
 export const columns: BasicColumn[] = [
   {
@@ -318,6 +319,20 @@ export const formSchema: FormSchema[] = [
       showSelectTable: false,
       isRadioSelection: true,
     },
+    show: ({ values }) => {
+      return !values.id;
+    },
+  },
+  {
+    label: '负责人',
+    field: 'leaderName',
+    component: 'Input',
+    show: ({ values }) => {
+      return !!values.id;
+    },
+    dynamicDisabled: ({ values }) => {
+      return !!values.id;
+    },
   },
   {
     label: '预计结束时间',
@@ -352,27 +367,44 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '项目类型',
-    field: 'projectTypeId',
+    field: 'projectType',
     required: true,
     component: 'ApiSelect',
-    slot: 'remoteProjectType',
-    dynamicDisabled: ({ values }) => {
-      return !!values.projectTypeId;
+    componentProps: ({ formActionType, formModel }) => {
+      const resultdata = {
+        numberToString: true,
+        api: getAllProjectTypeList,
+        // params: { id: formModel.projectTypeId }, // 这不能少
+        labelField: 'projectTypeName',
+        valueField: 'id',
+        immediate: true,
+        onChange: (e) => {
+          const selectObj = toRaw(e)[0];
+          formActionType.setFieldsValue({
+            lifeLine: selectObj.lifeLine,
+            implementCommissionRatio: selectObj.commissionRatio,
+            projectTypeId: selectObj.value,
+          });
+        },
+        // atfer request callback
+        onOptionsChange: (options) => {
+          //console.log('get options', options.length, options);
+        },
+      };
+      return resultdata;
     },
-    show: ({ values }) => {
-      return !values.projectTypeId || !values.projectTypeName;
-    },
+  },
+  {
+    label: '项目类型',
+    field: 'projectTypeId',
+    component: 'Input',
+    show: false,
   },
   {
     label: '项目类型',
     field: 'projectTypeName',
     component: 'Input',
-    show: ({ values }) => {
-      return !!values.projectTypeName;
-    },
-    dynamicDisabled: ({ values }) => {
-      return !!values.projectTypeName;
-    },
+    show: false,
   },
   {
     label: '实施提成比例%',

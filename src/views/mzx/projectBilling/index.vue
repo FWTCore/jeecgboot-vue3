@@ -123,13 +123,15 @@
    */
   function getTableAction(record) {
     if (record.billingStatus === 1) {
-      let resultData = [
-        {
-          label: '审核通过',
-          onClick: handleAudit.bind(null, record),
-        },
-      ];
-      return resultData;
+      if (record.leaderId === userStore.getUserInfo.id) {
+        let resultData = [
+          {
+            label: '审核通过',
+            onClick: handleAudit.bind(null, record),
+          },
+        ];
+        return resultData;
+      }
     }
     return null;
   }

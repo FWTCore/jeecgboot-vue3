@@ -37,6 +37,7 @@
   import { useDrawer } from '/@/components/Drawer';
   import { initDictOptions } from '/@/utils/dict';
   import { mapTableTotalSummary } from '/@/utils/common/compUtils';
+  import dayjs, { Dayjs } from 'dayjs';
   import CostLogDetail from './CostLogDetail.vue';
   import CostLogDrawer from './CostLogDrawer.vue';
   import { searchFormSchema, getScheduleColumns } from './CostLog.data';
@@ -120,12 +121,13 @@
 
     let totals: any = { _row: '', projectName: '合计' };
     fieldKeys.forEach((key) => {
-      totals[key] = tableData.reduce((prev, next) => {
+      let tempValue = tableData.reduce((prev, next) => {
         if (!!next[key]) {
           prev += next[key];
         }
         return prev;
       }, 0);
+      totals[key] = Number(tempValue).toFixed(2);
     });
     return [totals];
   }
@@ -183,7 +185,9 @@
    * 操作栏
    */
   function getTableAction(record) {
-    return [
+    let currentPeriod = parseInt(dayjs().format('YYYYMM'));
+    let dataPeriod = parseInt(record.period / 100);
+    let resultData = [
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
@@ -200,6 +204,20 @@
         },
       },
     ];
+    // 非本月
+    if (currentPeriod - dataPeriod != 0) {
+      // 上一个月
+      if (currentPeriod - dataPeriod === 1) {
+        // 判定当前时间是否本月1号
+        currentPeriod = currentPeriod * 100 + 1;
+        if (currentPeriod != parseInt(dayjs().format('YYYYMMDD'))) {
+          resultData.splice(0, 1);
+        }
+      } else {
+        resultData.splice(0, 1);
+      }
+    }
+    return resultData;
   }
 </script>
 <style>

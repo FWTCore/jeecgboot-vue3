@@ -107,7 +107,7 @@
       {
         label: '编辑',
         popConfirm: {
-          title: '是否确认删除',
+          title: '是否确认编辑',
           confirm: handleDelete.bind(null, record),
         },
       },

@@ -26,6 +26,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { initDictOptions } from '/@/utils/dict';
   import { ApiSelect } from '/@/components/Form/index';
+  import dayjs, { Dayjs } from 'dayjs';
   import { getScheduleFormSchema } from './CostLog.data';
   import { saveOrUpdateCost, getAllProject } from './CostLog.api';
   // 声明Emits
@@ -70,7 +71,7 @@
         ...data.record,
       });
     } else {
-      await setFieldsValue({ staff: userinfo.value.realname, createTime: new Date().toString() });
+      await setFieldsValue({ staff: userinfo.value.realname, createTime: dayjs() });
     }
   });
   //设置标题

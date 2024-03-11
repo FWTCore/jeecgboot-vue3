@@ -28,9 +28,10 @@
           placeholder="请选择项目进度模板"
         />
       </template>
-      <template #remoteProjectType="{ model, field }">
+      <!-- <template #remoteProjectType="{ model, field }">
         <ApiSelect
           :api="getAllProjectTypeList"
+          :numberToString="true"
           v-model:value="model[field]"
           resultField="list"
           labelField="projectTypeName"
@@ -38,7 +39,7 @@
           state="projectTypeName"
           @change="change"
         />
-      </template>
+      </template> -->
     </BasicForm>
   </BasicDrawer>
 </template>
@@ -70,32 +71,35 @@
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
       rowId.value = data.record.id;
+      //提交表单
       try {
         const template = await getScheduleTemplate({ projectId: data.record.id });
         if (template) {
           data.record.projectScheduleTemplateId = template.projectScheduleTemplateId;
           data.record.scheduleTemplateName = template.scheduleTemplateName;
         }
+        let projectType = await getAllProjectTypeList({ id: data.record.projectTypeId });
+        data.record.projectType = projectType[0].projectTypeName;
       } catch (error) {}
       //表单赋值
       await setFieldsValue({
         ...data.record,
       });
-      data.record.projectScheduleTemplateId && (await setFieldsValue({ projectScheduleTemplateId: data.record.projectScheduleTemplateId }));
       setProps({ disabled: !showFooter.value });
     }
   });
   //设置标题
   const getTitle = computed(() => (!unref(isUpdate) ? '新增项目' : '编辑项目'));
   const { adaptiveWidth } = useDrawerAdaptiveWidth();
-  async function change(e) {
-    const selectObj = toRaw(e)[0];
-    await setFieldsValue({ lifeLine: selectObj.lifeLine, implementCommissionRatio: selectObj.commissionRatio });
-  }
+  // async function change(e) {
+  //   const selectObj = toRaw(e)[0];
+  //   await setFieldsValue({ lifeLine: selectObj.lifeLine, implementCommissionRatio: selectObj.commissionRatio });
+  // }
   //表单提交事件
   async function handleSubmit() {
     try {
       let values = await validate();
+      console.log(values);
       setDrawerProps({ confirmLoading: true });
       //提交表单
       await saveOrUpdateProject(values, isUpdate.value);
