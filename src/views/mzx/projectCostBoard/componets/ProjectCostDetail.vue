@@ -22,7 +22,7 @@
 
   const [registerModal] = useModalInner(async (data) => {
     projectName.value = data.record.projectName;
-    setProps({ searchInfo: { projectId: unref(data.record.id) } });
+    setProps({ searchInfo: { projectId: unref(data.record.projectId) } });
     reload();
   });
 
@@ -75,25 +75,44 @@
   function handleSummary(tableData: Recordable[]) {
     let totals: any = { _row: '', key: -1, period: '分项合计' };
 
-    totals['comprehensiveSubsidy'] = tableData.reduce((prev, next) => {
+    let tempValue = tableData.reduce((prev, next) => {
+      if (!!next['projectSubsidy']) {
+        prev += next['projectSubsidy'];
+      }
+      return prev;
+    }, 0);
+    totals['projectSubsidy'] = Number(tempValue).toFixed(2);
+    tempValue = tableData.reduce((prev, next) => {
       if (!!next['comprehensiveSubsidy']) {
         prev += next['comprehensiveSubsidy'];
       }
       return prev;
     }, 0);
-    totals['laborCost'] = tableData.reduce((prev, next) => {
+    totals['comprehensiveSubsidy'] = Number(tempValue).toFixed(2);
+    tempValue = tableData.reduce((prev, next) => {
       if (!!next['laborCost']) {
         prev += next['laborCost'];
       }
       return prev;
     }, 0);
-    totals['workDays'] = tableData.reduce((prev, next) => {
+    totals['laborCost'] = Number(tempValue).toFixed(2);
+    tempValue = tableData.reduce((prev, next) => {
       if (!!next['workDays']) {
         prev += next['workDays'];
       }
       return prev;
     }, 0);
-    return [totals, { _row: '', key: -1, period: '合计', comprehensiveSubsidy: totals['comprehensiveSubsidy'] + totals['laborCost'] }];
+    totals['workDays'] = Number(tempValue).toFixed(2);
+    tempValue = Number(totals['projectSubsidy']) + Number(totals['comprehensiveSubsidy']) + Number(totals['laborCost']);
+    return [
+      totals,
+      {
+        _row: '',
+        key: -2,
+        period: '合计',
+        comprehensiveSubsidy: Number(tempValue).toFixed(2),
+      },
+    ];
   }
 
   function getRowClassName(record) {

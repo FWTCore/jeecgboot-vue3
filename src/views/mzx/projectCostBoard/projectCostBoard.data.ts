@@ -146,6 +146,18 @@ export const detailColumns: BasicColumn[] = [
     fixed: 'left',
   },
   {
+    title: '项目补助',
+    dataIndex: 'projectSubsidy',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
     title: '综合补助',
     dataIndex: 'comprehensiveSubsidy',
     width: 100,
