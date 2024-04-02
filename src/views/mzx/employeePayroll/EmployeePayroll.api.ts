@@ -10,6 +10,7 @@ enum Api {
   duplicateCheck = '/employee/payroll/check',
   edit = '/employee/payroll/edit',
   save = '/employee/payroll/add',
+  exportXls = '/employee/payroll/exportXls',
 }
 
 /**
@@ -86,3 +87,8 @@ export const saveOrUpdate = (params, isUpdate) => {
   const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params });
 };
+/**
+ * 导出api
+ * @param params
+ */
+export const getExportUrl = Api.exportXls;

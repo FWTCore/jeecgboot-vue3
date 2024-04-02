@@ -4,6 +4,7 @@
     <!--插槽:table标题-->
     <template #tableTitle>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -41,7 +42,7 @@
   import EmployeePayrollDetail from './components/EmployeePayrollDetail.vue';
   import EmployeePayrollDrawer from './components/EmployeePayrollDrawer.vue';
   import { payrollColumns, searchpayrollColumns } from './EmployeePayroll.data';
-  import { employeePayrollList, employeePayrollDelete, employeePayrollBathDelete, employeePayrollEffect, employeePayrollBathEffect } from './EmployeePayroll.api';
+  import { employeePayrollList, employeePayrollDelete, employeePayrollBathDelete, employeePayrollEffect, employeePayrollBathEffect, getExportUrl } from './EmployeePayroll.api';
 
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
@@ -49,7 +50,7 @@
   const [registerEditDrawer, { openDrawer: openEditDrawer }] = useDrawer();
 
   // 列表页面公共参数、方法
-  const { tableContext } = useListPage({
+  const { tableContext, onExportXls } = useListPage({
     designScope: 'employee-payroll-page',
     tableProps: {
       title: '员工工资列表',
@@ -71,6 +72,10 @@
         fixed: 'right',
         width: 100,
       },
+    },
+    exportConfig: {
+      name: '员工工资列表',
+      url: getExportUrl,
     },
   });
 
