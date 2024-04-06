@@ -204,17 +204,23 @@
         },
       },
     ];
+    let resultNoData = [
+      {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+    ];
     // 非本月
     if (currentPeriod - dataPeriod != 0) {
       // 上一个月
       if (currentPeriod - dataPeriod === 1) {
         // 判定当前时间是否本月1号
-        currentPeriod = currentPeriod * 100 + 1;
-        if (currentPeriod != parseInt(dayjs().format('YYYYMMDD'))) {
-          resultData.splice(0, 1);
+        currentPeriod = currentPeriod * 100 + 8;
+        if (currentPeriod < parseInt(dayjs().format('YYYYMMDD'))) {
+          return resultNoData;
         }
       } else {
-        resultData.splice(0, 1);
+        return resultNoData;
       }
     }
     return resultData;
