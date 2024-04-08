@@ -185,8 +185,6 @@
    * 操作栏
    */
   function getTableAction(record) {
-    let currentPeriod = parseInt(dayjs().format('YYYYMM'));
-    let dataPeriod = parseInt(record.period / 100);
     let resultData = [
       {
         label: '编辑',
@@ -210,16 +208,23 @@
         onClick: handleDetail.bind(null, record),
       },
     ];
-    // 非本月
+    let currentPeriod = parseInt(dayjs().format('YYYYMM'));
+    let dataPeriod = parseInt(record.period / 100);
+    // 非本月 currentPeriod - dataPeriod != 0
+    // todo 202403 限制到10号修改
     if (currentPeriod - dataPeriod != 0) {
-      // 上一个月
-      if (currentPeriod - dataPeriod === 1) {
-        // 判定当前时间是否本月1号
-        currentPeriod = currentPeriod * 100 + 8;
-        if (currentPeriod < parseInt(dayjs().format('YYYYMMDD'))) {
+      if (dataPeriod === 202403) {
+        // 上一个月
+        if (currentPeriod - dataPeriod === 1) {
+          // 判定当前时间是否本月10号
+          currentPeriod = currentPeriod * 100 + 10;
+          if (currentPeriod < parseInt(dayjs().format('YYYYMMDD'))) {
+            return resultNoData;
+          }
+        } else {
           return resultNoData;
         }
-      } else {
+      } else if (dataPeriod != 202401 && dataPeriod != 202402) {
         return resultNoData;
       }
     }
