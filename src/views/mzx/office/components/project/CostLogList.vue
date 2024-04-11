@@ -213,18 +213,14 @@
     // 非本月 currentPeriod - dataPeriod != 0
     // todo 202403 限制到10号修改
     if (currentPeriod - dataPeriod != 0) {
-      if (dataPeriod === 202403) {
-        // 上一个月
-        if (currentPeriod - dataPeriod === 1) {
-          // 判定当前时间是否本月10号
-          currentPeriod = currentPeriod * 100 + 10;
-          if (currentPeriod < parseInt(dayjs().format('YYYYMMDD'))) {
-            return resultNoData;
-          }
-        } else {
+      // 上一个月
+      if (currentPeriod - dataPeriod === 1) {
+        // 判定当前时间是否本月10号
+        currentPeriod = currentPeriod * 100 + 10;
+        if (currentPeriod < parseInt(dayjs().format('YYYYMMDD'))) {
           return resultNoData;
         }
-      } else if (dataPeriod != 202401 && dataPeriod != 202402) {
+      } else {
         return resultNoData;
       }
     }
