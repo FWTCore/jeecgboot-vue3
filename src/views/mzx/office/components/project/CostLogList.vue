@@ -42,7 +42,9 @@
   import CostLogDrawer from './CostLogDrawer.vue';
   import { searchFormSchema, getScheduleColumns } from './CostLog.data';
   import { costList, deleteCost, batchCostDelete, getExportUrl } from './CostLog.api';
+  import { useUserStore } from '/@/store/modules/user';
 
+  const userStore = useUserStore();
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
   //drawer
@@ -208,6 +210,9 @@
         onClick: handleDetail.bind(null, record),
       },
     ];
+    if (userStore.getUserInfo.username === '880') {
+      return resultData;
+    }
     let currentPeriod = parseInt(dayjs().format('YYYYMM'));
     let dataPeriod = parseInt(record.period / 100);
     // 非本月 currentPeriod - dataPeriod != 0
