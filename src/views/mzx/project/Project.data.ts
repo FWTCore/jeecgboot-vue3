@@ -379,12 +379,18 @@ export const formSchema: FormSchema[] = [
         valueField: 'id',
         immediate: true,
         onChange: (e) => {
-          const selectObj = toRaw(e)[0];
+          const selectValue = toRaw(e);
+          if (selectValue === formModel.projectTypeId) {
+            return true;
+          }
+          const selectObj = selectValue[0];
+          console.log(selectObj);
           formActionType.setFieldsValue({
             lifeLine: selectObj.lifeLine,
             implementCommissionRatio: selectObj.commissionRatio,
             projectTypeId: selectObj.value,
           });
+          return true;
         },
         // atfer request callback
         onOptionsChange: (options) => {
