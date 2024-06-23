@@ -19,7 +19,7 @@
   <ProjectBillingDetail @register="registerModal" @success="handleSuccess" />
 </template>
 
-<script lang="ts" name="biz-project" setup>
+<script lang="ts" name="mzx-project-billing" setup>
   //ts语法
   import { ref, computed, unref, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';

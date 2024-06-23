@@ -29,7 +29,7 @@
   <CostLogDrawer @register="registerEditDrawer" @success="handleSuccess" />
 </template>
 
-<script lang="ts" name="cost-log" setup>
+<script lang="ts" setup>
   //ts语法
   import { onBeforeMount, ref, computed, unref, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';

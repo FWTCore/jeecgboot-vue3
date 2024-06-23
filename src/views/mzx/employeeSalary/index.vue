@@ -27,7 +27,7 @@
   <EmployeeSalaryDrawer @register="registerEditDrawer" @success="handleSuccess" />
 </template>
 
-<script lang="ts" name="work-log" setup>
+<script lang="ts" name="mzx-employee-salary" setup>
   //ts语法
   import { ref, computed, unref } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';

@@ -31,7 +31,7 @@
   <ProjectCostList @register="registerCostDrawer" />
 </template>
 
-<script lang="ts" name="biz-project" setup>
+<script lang="ts" setup name="mzx-project">
   //ts语法
   import { ref, computed, unref, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';
@@ -46,7 +46,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useMessage } from '/@/hooks/web/useMessage';
-  
+
   const { hasPermission } = usePermission();
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();

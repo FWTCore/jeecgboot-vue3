@@ -14,7 +14,7 @@
   <CustomerServcieLogList @register="registerDrawer" />
 </template>
 
-<script lang="ts" name="system-dict" setup>
+<script lang="ts" name="mzx-customer" setup>
   //ts语法
   import { ref, computed, unref } from 'vue';
   import { BasicTable, TableAction, ActionItem } from '/src/components/Table';

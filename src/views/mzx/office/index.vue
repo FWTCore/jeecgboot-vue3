@@ -11,7 +11,7 @@
     </a-card>
   </div>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="mzx-office-workspaces">
   import { ref, computed } from 'vue';
   import WorkLogList from './components/work/WorkLogList.vue';
   import ServiceLogList from './components/customer/ServiceLogList.vue';

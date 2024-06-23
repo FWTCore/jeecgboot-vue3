@@ -29,7 +29,7 @@
   <TemplateModal @register="registerModal" @success="handleSuccess" />
 </template>
 
-<script lang="ts" name="system-dict" setup>
+<script lang="ts" setup>
   //ts语法
   import { provide } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';

@@ -18,7 +18,7 @@
   </a-row>
 </template>
 
-<script lang="ts" setup name="schedule-template">
+<script lang="ts" setup name="mzx-schedule-template">
   import { ref } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import TemplateList from './components/TemplateList.vue';

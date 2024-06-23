@@ -16,7 +16,7 @@
   <ProjectCostDetail @register="registerModal" />
 </template>
 
-<script lang="ts" name="project-cost-board" setup>
+<script lang="ts" name="mzx-project-cost-board" setup>
   //ts语法
   import { ref, computed, unref, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';
