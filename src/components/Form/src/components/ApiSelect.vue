@@ -1,5 +1,5 @@
 <template>
-  <Select @dropdownVisibleChange="handleFetch" v-bind="$attrs" @change="handleChange" :options="getOptions" v-model="state">
+  <Select @dropdownVisibleChange="handleFetch" v-bind="$attrs" @change="handleChange" :options="getOptions" v-model:value="state">
     <template #[item]="data" v-for="item in Object.keys($slots)">
       <slot :name="item" v-bind="data || {}"></slot>
     </template>
@@ -17,6 +17,7 @@
 <script lang="ts">
   import { defineComponent, PropType, ref, watchEffect, computed, unref, watch } from 'vue';
   import { Select } from 'ant-design-vue';
+  import type { SelectValue } from 'ant-design-vue/es/select';
   import { isFunction } from '/@/utils/is';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useAttrs } from '/@/hooks/core/useAttrs';
@@ -53,7 +54,7 @@
       immediate: propTypes.bool.def(true),
       auto: propTypes.bool.def(true),
     },
-    emits: ['options-change', 'change'],
+    emits: ['options-change', 'change', 'update:value'],
     setup(props, { emit }) {
       const options = ref<OptionsItem[]>([]);
       const loading = ref(false);
@@ -83,7 +84,12 @@
       watchEffect(() => {
         props.immediate && fetch();
       });
-
+      watch(
+        () => state.value,
+        (v) => {
+          emit('update:value', v);
+        }
+      );
       watch(
         () => props.params,
         () => {
