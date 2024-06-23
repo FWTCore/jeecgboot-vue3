@@ -5,6 +5,7 @@
     <template #tableTitle>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
       <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handleBilling" v-auth="'project:billing'"> 回款</a-button>
+      <a-button type="primary" preIcon="ant-design:stop-filled" @click="handleNoSettlement" v-auth="'project:noSettlement'"> 非结算</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -42,7 +43,7 @@
   import PeojectScheduleList from './componets/PeojectScheduleList.vue';
   import ProjectCostList from './componets/ProjectCostList.vue';
   import { columns, searchFormSchema } from './Project.data';
-  import { list, deleteData, batchDeleteData, finishData, batchBillingData } from './Project.api';
+  import { list, deleteData, batchDeleteData, finishData, batchBillingData, batchNoSettlementData } from './Project.api';
   import { useUserStore } from '/@/store/modules/user';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -110,6 +111,24 @@
       });
     } else {
       createMessage.warn('请选择需要结算的项目');
+    }
+  }
+  // 标记非结算项目
+  async function handleNoSettlement() {
+    let selectedDatas = toRaw(selectedRows.value);
+    if (selectedDatas.length > 0) {
+      for (let val of selectedDatas) {
+        if (val.projectStatus != '10' && val.projectStatus != '1') {
+          createMessage.error('选中数据中存在状态不是已完结的项目');
+          return;
+        }
+      }
+      await batchNoSettlementData({ ids: selectedRowKeys.value }, () => {
+        selectedRowKeys.value = [];
+        reload();
+      });
+    } else {
+      createMessage.warn('请选择需要非结算的项目');
     }
   }
 

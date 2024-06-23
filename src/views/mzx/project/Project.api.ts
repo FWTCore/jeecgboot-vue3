@@ -8,6 +8,7 @@ enum Api {
   deleteBatch = '/project/deleteBatch',
   finishData = '/project/finish',
   billingBatch = '/project/billingBatch',
+  noSettlementBatch = '/project/noSettlementBatch',
   duplicateCheck = '/sys/duplicate/check',
   allCustomerList = '/customer/queryall',
   allScheduleTemplateList = '/project/schedule/template/queryall',
@@ -75,6 +76,24 @@ export const batchBillingData = (params, handleSuccess) => {
     cancelText: '取消',
     onOk: () => {
       return defHttp.post({ url: Api.billingBatch, data: params }, { joinParamsToUrl: true }).then(() => {
+        handleSuccess();
+      });
+    },
+  });
+};
+
+/**
+ * 批量标记非结算
+ * @param params
+ */
+export const batchNoSettlementData = (params, handleSuccess) => {
+  Modal.confirm({
+    title: '确认标记非结算',
+    content: '是否确定将选中项目标记成非结算，项目将不走结算流程',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      return defHttp.post({ url: Api.noSettlementBatch, data: params }, { joinParamsToUrl: true }).then(() => {
         handleSuccess();
       });
     },
