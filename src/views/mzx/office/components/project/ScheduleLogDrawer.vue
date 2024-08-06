@@ -106,10 +106,12 @@
   }
 
   function onChange(data) {
-    scheduleParams.value = {
-      projectId: toRaw(data)[0].value,
-    };
-    immediate.value = true;
+    if (typeof data === 'string') {
+      scheduleParams.value = {
+        projectId: toRaw(data),
+      };
+      immediate.value = true;
+    }
   }
 
   function onChangeSchedule(data) {

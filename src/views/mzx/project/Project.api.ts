@@ -21,7 +21,7 @@ enum Api {
   listSchedule = '/project/schedule/scheduleLoglist',
   saveSchedule = '/project/schedule/add',
   editSchedule = '/project/schedule/edit',
-  deleteSchedule = '/project/schedule/edit',
+  deleteSchedule = '/project/schedule/delete',
   allUsageSchedule = '/project/schedule/queryusageschedule',
 }
 /**

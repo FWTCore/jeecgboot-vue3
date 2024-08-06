@@ -6,7 +6,7 @@ enum Api {
   scheduleSave = '/project/schedule/add',
   scheduleEdit = '/project/schedule/edit',
   scheduleDelete = '/project/schedule/delete',
-  batchScheduleDelete = '/project/schedule/delete',
+  batchScheduleDelete = '/project/schedule/deleteBatch',
   allUsageSchedule = '/project/schedule/queryusageschedule',
   allProject = '/project/queryall',
 }

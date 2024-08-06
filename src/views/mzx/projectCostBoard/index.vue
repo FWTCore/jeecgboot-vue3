@@ -3,6 +3,7 @@
   <BasicTable @register="registerTable">
     <!--插槽:table标题-->
     <template #tableTitle>
+      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
       <div>截至统计到{{ dayjs().add(-1, 'day').format('YYYY-MM-DD') }}日的数据</div>
     </template>
     <template #projectCost="{ record }">
@@ -24,14 +25,14 @@
   import { useModal } from '/@/components/Modal';
   import ProjectCostDetail from './componets/ProjectCostDetail.vue';
   import { columns, searchFormSchema } from './projectCostBoard.data';
-  import { list } from './projectCostBoard.api';
+  import { list, getExportUrl } from './projectCostBoard.api';
   import { Tag } from 'ant-design-vue';
   import dayjs, { Dayjs } from 'dayjs';
   //弹窗model
   const [registerModal, { openModal }] = useModal();
 
   // 列表页面公共参数、方法
-  const { tableContext } = useListPage({
+  const { tableContext, onExportXls } = useListPage({
     designScope: 'project-cost-board',
     tableProps: {
       title: '项目成本核算列表',
@@ -46,6 +47,10 @@
       },
       showActionColumn: false,
       showTableSetting: false,
+    },
+    exportConfig: {
+      name: '项目成本看板',
+      url: getExportUrl,
     },
   });
 
