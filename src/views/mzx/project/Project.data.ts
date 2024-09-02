@@ -319,21 +319,21 @@ export const formSchema: FormSchema[] = [
       showSelectTable: false,
       isRadioSelection: true,
     },
-    show: ({ values }) => {
-      return !values.id;
-    },
+    // show: ({ values }) => {
+    //   return !values.id;
+    // },
   },
-  {
-    label: '负责人',
-    field: 'leaderName',
-    component: 'Input',
-    show: ({ values }) => {
-      return !!values.id;
-    },
-    dynamicDisabled: ({ values }) => {
-      return !!values.id;
-    },
-  },
+  // {
+  //   label: '负责人',
+  //   field: 'leaderName',
+  //   component: 'Input',
+  //   show: ({ values }) => {
+  //     return !!values.id;
+  //   },
+  //   dynamicDisabled: ({ values }) => {
+  //     return !!values.id;
+  //   },
+  // },
   {
     label: '预计结束时间',
     field: 'estimatedEndTime',

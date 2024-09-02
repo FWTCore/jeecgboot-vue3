@@ -58,6 +58,12 @@ export const payrollColumns: BasicColumn[] = [
     width: 40,
   },
   {
+    title: '项目提成',
+    dataIndex: 'implementCommission',
+    width: 70,
+    slots: { customRender: 'implementCommission' },
+  },
+  {
     title: '工资状态',
     dataIndex: 'payrollStatusDesc',
     width: 40,

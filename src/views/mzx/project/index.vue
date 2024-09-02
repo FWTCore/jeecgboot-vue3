@@ -3,10 +3,10 @@
   <BasicTable @register="registerTable" :rowSelection="rowSelection">
     <!--插槽:table标题-->
     <template #tableTitle>
-      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate" v-auth="'project:modify'"> 新增</a-button>
       <a-button type="primary" preIcon="ant-design:dollar-circle-outlined" @click="handleBilling" v-auth="'project:billing'"> 回款</a-button>
       <a-button type="primary" preIcon="ant-design:stop-filled" @click="handleNoSettlement" v-auth="'project:noSettlement'"> 非结算</a-button>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
+      <a-dropdown v-if="selectedRowKeys.length > 0 && hasPermission('project:modify')">
         <template #overlay>
           <a-menu>
             <a-menu-item key="1" @click="batchHandleDelete">
@@ -211,12 +211,13 @@
    */
   function getTableAction(record) {
     if (record.projectStatus === '1') {
-      let resultData = [
-        {
+      let resultData = [];
+      if (hasPermission('project:modify')) {
+        resultData.push({
           label: '编辑',
           onClick: handleEdit.bind(null, record),
-        },
-      ];
+        });
+      }
       if (record.leaderId === userStore.getUserInfo.id) {
         resultData.push({
           label: '已完结',
@@ -232,7 +233,7 @@
    * 操作栏
    */
   function getDropDownAction(record) {
-    return [
+    let resultData = [
       {
         label: '项目成员',
         onClick: handleMember.bind(null, record),
@@ -249,13 +250,16 @@
         label: '详情',
         onClick: handleDetail.bind(null, record),
       },
-      {
+    ];
+    if (hasPermission('project:modify')) {
+      resultData.push({
         label: '删除',
         popConfirm: {
           title: '确定删除吗?',
           confirm: handleDelete.bind(null, record),
         },
-      },
-    ];
+      });
+    }
+    return resultData;
   }
 </script>
