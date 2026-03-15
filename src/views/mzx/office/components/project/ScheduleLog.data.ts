@@ -548,6 +548,14 @@ export const scheduleFormSchema: FormSchema[] = [
     required: true,
   },
   {
+    label: '服务内容',
+    field: 'serviceContent',
+    component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
+  },
+  {
     label: '问题',
     field: 'problem',
     component: 'InputTextArea',
@@ -558,14 +566,6 @@ export const scheduleFormSchema: FormSchema[] = [
   {
     label: '解决方案',
     field: 'solution',
-    component: 'InputTextArea',
-    componentProps: {
-      rows: 10,
-    },
-  },
-  {
-    label: '服务内容',
-    field: 'serviceContent',
     component: 'InputTextArea',
     componentProps: {
       rows: 10,
