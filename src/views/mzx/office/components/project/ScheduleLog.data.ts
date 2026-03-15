@@ -88,6 +88,32 @@ export const scheduleColumns: BasicColumn[] = [
       }
     },
   },
+  {
+    title: '问题',
+    dataIndex: 'problem',
+    width: 200,
+    align: 'left',
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    title: '解决方案',
+    dataIndex: 'solution',
+    width: 200,
+    align: 'left',
+    customRender({ text }) {
+      if (text) {
+        return text;
+      } else {
+        return '-';
+      }
+    },
+  },
   // {
   //   title: '是否加班',
   //   dataIndex: 'overtimeFlag',
@@ -498,6 +524,22 @@ export const scheduleFormSchema: FormSchema[] = [
     field: 'workHours',
     component: 'InputNumber',
     required: true,
+  },
+  {
+    label: '问题',
+    field: 'problem',
+    component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
+  },
+  {
+    label: '解决方案',
+    field: 'solution',
+    component: 'InputTextArea',
+    componentProps: {
+      rows: 10,
+    },
   },
   {
     label: '服务内容',

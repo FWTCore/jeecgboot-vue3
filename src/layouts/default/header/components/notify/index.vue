@@ -7,7 +7,7 @@
     <DynamicNotice ref="dynamicNoticeRef" v-bind="dynamicNoticeProps" />
     <DetailModal @register="registerDetail" />
 
-    <sys-message-modal @register="registerMessageModal" @refresh="reloadCount"></sys-message-modal>
+    <SysMessageModal @register="registerMessageModal" @refresh="reloadCount" />
   </div>
 </template>
 <script lang="ts">

@@ -290,7 +290,7 @@
 
       const [registerDetail, { openModal: openDetailModal }] = useModal();
       function showDetailModal(record){
-        console.error(123, record)
+        // console.error(123, record)
         openDetailModal(true, {record: unref(record), isUpdate: true})
       }
       return {

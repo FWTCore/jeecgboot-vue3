@@ -70,6 +70,7 @@
     let selectedDatas = toRaw(selectedRows.value);
     if (selectedDatas.length > 0) {
       for (let val of selectedDatas) {
+        console.log(val.billingStatus);
         if (val.billingStatus != '20') {
           createMessage.error('选中数据中存在状态不是待发放的项目');
           return;
