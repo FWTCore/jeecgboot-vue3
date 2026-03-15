@@ -326,6 +326,28 @@ export const scheduleDescItems: DescItem[] = [
     },
   },
   {
+    label: '问题',
+    field: 'problem',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
+    label: '解决方案',
+    field: 'solution',
+    render: (curVal, data) => {
+      if (curVal) {
+        return curVal;
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
     label: '是否加班',
     field: 'overtimeFlag',
     render: (curVal, data) => {
