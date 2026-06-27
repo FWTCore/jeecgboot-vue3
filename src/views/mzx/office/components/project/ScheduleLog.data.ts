@@ -552,7 +552,7 @@ export const scheduleFormSchema: FormSchema[] = [
     field: 'serviceContent',
     component: 'InputTextArea',
     componentProps: {
-      rows: 10,
+      rows: 3,
     },
   },
   {
@@ -560,7 +560,7 @@ export const scheduleFormSchema: FormSchema[] = [
     field: 'problem',
     component: 'InputTextArea',
     componentProps: {
-      rows: 10,
+      rows: 3,
     },
   },
   {
@@ -568,7 +568,7 @@ export const scheduleFormSchema: FormSchema[] = [
     field: 'solution',
     component: 'InputTextArea',
     componentProps: {
-      rows: 10,
+      rows: 3,
     },
   },
   {
@@ -643,7 +643,7 @@ export const scheduleFormSchema: FormSchema[] = [
     field: 'nextPlanContent',
     component: 'InputTextArea',
     componentProps: {
-      rows: 10,
+      rows: 3,
     },
     dynamicDisabled: ({ values }) => {
       if (values.id && values && values.nextPlanTime) {
