@@ -571,26 +571,26 @@ export const scheduleFormSchema: FormSchema[] = [
       rows: 3,
     },
   },
-  {
-    label: '是否加班',
-    field: 'overtimeFlag',
-    component: 'Switch',
-    defaultValue: 0,
-    componentProps: {
-      checkedChildren: '是',
-      unCheckedChildren: '否',
-      checkedValue: 1,
-      unCheckedValue: 0,
-    },
-  },
-  {
-    label: '加班时长(时)',
-    field: 'overtime',
-    component: 'InputNumber',
-    ifShow: ({ values }) => {
-      return values.overtimeFlag === 1 ? true : false;
-    },
-  },
+  // {
+  //   label: '是否加班',
+  //   field: 'overtimeFlag',
+  //   component: 'Switch',
+  //   defaultValue: 0,
+  //   componentProps: {
+  //     checkedChildren: '是',
+  //     unCheckedChildren: '否',
+  //     checkedValue: 1,
+  //     unCheckedValue: 0,
+  //   },
+  // },
+  // {
+  //   label: '加班时长(时)',
+  //   field: 'overtime',
+  //   component: 'InputNumber',
+  //   ifShow: ({ values }) => {
+  //     return values.overtimeFlag === 1 ? true : false;
+  //   },
+  // },
   {
     label: '是否完成',
     field: 'doneFlag',
