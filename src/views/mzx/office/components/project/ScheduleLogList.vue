@@ -5,6 +5,7 @@
     <template #tableTitle>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleRemedy"> 补录</a-button>
+      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleOvertime"> 加班</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -27,6 +28,7 @@
   </BasicTable>
   <ScheduleLogDetail @register="registerDrawer" />
   <ScheduleLogDrawer @register="registerEditDrawer" @success="handleSuccess" />
+  <OvertimeRecordDrawer @register="registerOvertimeDrawer" @success="handleOvertimeSuccess" />
 </template>
 
 <script lang="ts" setup>
@@ -37,13 +39,19 @@
   import { useDrawer } from '/@/components/Drawer';
   import ScheduleLogDetail from './ScheduleLogDetail.vue';
   import ScheduleLogDrawer from './ScheduleLogDrawer.vue';
+  import OvertimeRecordDrawer from '../overtime/OvertimeRecordDrawer.vue';
   import { scheduleColumns, searchScheduleFormSchema } from './ScheduleLog.data';
   import { scheduleList, deleteSchedule, batchScheduleDelete } from './ScheduleLog.api';
+
+  // 定义 emit 用于通知父组件切换 tab
+  const emit = defineEmits(['switchTab']);
 
   //drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
   //drawer
   const [registerEditDrawer, { openDrawer: openEditDrawer }] = useDrawer();
+  //overtime drawer
+  const [registerOvertimeDrawer, { openDrawer: openOvertimeDrawer }] = useDrawer();
 
   // 列表页面公共参数、方法
   const { tableContext } = useListPage({
@@ -70,7 +78,7 @@
         // dataIndex: 'action',
         // slots: { customRender: 'action' },
         // fixed: 'right',
-        width: 60,
+        width: 180,
       },
     },
   });
@@ -139,10 +147,48 @@
   }
 
   /**
+   * 从按钮区打开加班表单（空白新增）
+   */
+  function handleOvertime() {
+    openOvertimeDrawer(true, {
+      isUpdate: false,
+    });
+  }
+
+  /**
+   * 从操作列打开加班表单（带入数据）
+   */
+  function handleOvertimeFromRow(record: Recordable) {
+    openOvertimeDrawer(true, {
+      isUpdate: false,
+      record: {
+        projectId: record.projectId,
+        projectName: record.projectName,
+        projectScheduleUsageItemId: record.projectScheduleUsageItemId,
+        scheduleName: record.scheduleName,
+        staffName: record.staff,
+        serviceType: record.serviceType,
+        overtimeDate: record.createTime,
+      },
+    });
+  }
+
+  /**
+   * 加班保存成功后的回调，跳转到"我的加班"tab
+   */
+  function handleOvertimeSuccess() {
+    emit('switchTab', 'OvertimeRecordList');
+  }
+
+  /**
    * 操作栏
    */
   function getTableAction(record) {
     return [
+      {
+        label: '加班',
+        onClick: handleOvertimeFromRow.bind(null, record),
+      },
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
