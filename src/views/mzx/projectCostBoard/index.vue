@@ -9,12 +9,23 @@
     <template #projectCost="{ record }">
       <a-button type="link" class="ml-2" @click="handleProjectCost(record)"> {{ record.projectCost }} </a-button>
     </template>
+    <template #overtimeHours="{ record }">
+      <a-button
+        type="link"
+        class="ml-2"
+        @click="handleOvertimeHours(record)"
+        :disabled="!record.overtimeHours || record.overtimeHours === 0"
+      >
+        {{ record.overtimeHours || 0 }}
+      </a-button>
+    </template>
     <template #superLifeline="{ record }">
       <a-button color="success" v-if="record.superLifeline != 1"> 否 </a-button>
       <a-button color="error" v-if="record.superLifeline === 1"> 是 </a-button>
     </template>
   </BasicTable>
   <ProjectCostDetail @register="registerModal" />
+  <OvertimeRecordModal @register="registerOvertimeModal" />
 </template>
 
 <script lang="ts" name="mzx-project-cost-board" setup>
@@ -24,12 +35,15 @@
   import { BasicTable } from '/src/components/Table';
   import { useModal } from '/@/components/Modal';
   import ProjectCostDetail from './componets/ProjectCostDetail.vue';
+  import OvertimeRecordModal from './componets/OvertimeRecordModal.vue';
   import { columns, searchFormSchema } from './projectCostBoard.data';
   import { list, getExportUrl } from './projectCostBoard.api';
   import { Tag } from 'ant-design-vue';
   import dayjs, { Dayjs } from 'dayjs';
   //弹窗model
   const [registerModal, { openModal }] = useModal();
+  //加班记录弹窗
+  const [registerOvertimeModal, { openModal: openOvertimeModal }] = useModal();
 
   // 列表页面公共参数、方法
   const { tableContext, onExportXls } = useListPage({
@@ -64,6 +78,16 @@
     openModal(true, {
       record,
       showFooter: false,
+    });
+  }
+
+  /**
+   * 查看项目加班记录
+   */
+  function handleOvertimeHours(record) {
+    openOvertimeModal(true, {
+      projectId: record.projectId,
+      projectName: record.projectName,
     });
   }
 </script>

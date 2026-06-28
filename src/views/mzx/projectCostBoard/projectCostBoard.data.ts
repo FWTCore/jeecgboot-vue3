@@ -52,6 +52,12 @@ export const columns: BasicColumn[] = [
     slots: { customRender: 'projectCost' },
   },
   {
+    title: '加班时长(h)',
+    dataIndex: 'overtimeHours',
+    width: 70,
+    slots: { customRender: 'overtimeHours' },
+  },
+  {
     title: '销售提成',
     dataIndex: 'saleCommission',
     width: 70,
