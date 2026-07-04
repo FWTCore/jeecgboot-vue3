@@ -62,6 +62,13 @@
     staffName.value = data.staffName || '';
     confirmStatus.value = data.confirmStatus || null;
 
+    // 根据 confirmStatus 设置列
+    if (data.confirmStatus === '0') {
+      setColumns(overtimeModalColumnsWithAction);
+    } else {
+      setColumns(overtimeModalColumns);
+    }
+
     // 重新加载表格数据
     await reload();
     setModalProps({ loading: false });
