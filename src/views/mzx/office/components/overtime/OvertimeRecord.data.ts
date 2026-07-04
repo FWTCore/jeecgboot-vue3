@@ -337,6 +337,12 @@ export const overtimeFormSchema: FormSchema[] = [
     show: false,
   },
   {
+    label: '',
+    field: 'staffId',
+    component: 'Input',
+    show: false,
+  },
+  {
     label: '项目名称',
     field: 'projectId',
     required: true,

@@ -166,6 +166,7 @@
         projectName: record.projectName,
         projectScheduleUsageItemId: record.projectScheduleUsageItemId,
         scheduleName: record.scheduleName,
+        staffId: record.staffId,
         staffName: record.staff,
         serviceType: record.serviceType,
         overtimeDate: record.createTime,
