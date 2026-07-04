@@ -234,8 +234,26 @@ export const leaveRecordFormSchema: FormSchema[] = [
     field: 'leaveHours',
     component: 'InputNumber',
     required: true,
+    rules: [
+      { required: true, message: '请输入调休时长' },
+      {
+        validator: async (_rule, value) => {
+          if (value !== undefined && value !== null && value !== '') {
+            if (value < 0.5) {
+              return Promise.reject('调休时长不能小于0.5小时');
+            }
+            const remainder = (value * 10) % 5;
+            if (remainder !== 0) {
+              return Promise.reject('调休时长必须是0.5的整数倍');
+            }
+          }
+          return Promise.resolve();
+        },
+        trigger: 'change',
+      },
+    ],
     componentProps: {
-      min: 0.1,
+      min: 0.5,
       max: 8,
       step: 0.5,
       precision: 1,
