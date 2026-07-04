@@ -34,7 +34,7 @@
         ...data.record,
       });
     } else {
-      await setFieldsValue({ staff: userinfo.value.realname, workHours: 1 });
+      await setFieldsValue({ staff: userinfo.value.realname, workHoursHour: 8 });
     }
   });
   //设置标题
