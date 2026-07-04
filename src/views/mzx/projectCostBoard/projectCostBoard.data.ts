@@ -199,4 +199,16 @@ export const detailColumns: BasicColumn[] = [
       }
     },
   },
+  {
+    title: '工作小时',
+    dataIndex: 'workDays',
+    width: 100,
+    customRender({ text }) {
+      if (text) {
+        return (text * 8).toFixed(1);
+      } else {
+        return '-';
+      }
+    },
+  },
 ];

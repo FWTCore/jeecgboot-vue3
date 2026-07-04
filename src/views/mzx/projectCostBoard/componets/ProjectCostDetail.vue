@@ -103,6 +103,8 @@
       return prev;
     }, 0);
     totals['workDays'] = Number(tempValue).toFixed(2);
+    // 工作小时 = 工作天数 * 8
+    totals['workHours'] = (Number(totals['workDays']) * 8).toFixed(1);
     tempValue = Number(totals['projectSubsidy']) + Number(totals['comprehensiveSubsidy']) + Number(totals['laborCost']);
     return [
       totals,
