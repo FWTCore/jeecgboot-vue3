@@ -48,7 +48,7 @@ export const scheduleColumns: BasicColumn[] = [
   //   },
   // },
   {
-    title: '工时(小时)',
+    title: '工时',
     dataIndex: 'workHoursHour',
     width: 60,
     customRender({ text }) {

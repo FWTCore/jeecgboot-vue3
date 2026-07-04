@@ -118,7 +118,7 @@ export const overtimeColumns: BasicColumn[] = [
     },
   },
   {
-    title: '企业微信打卡匹配',
+    title: '企微打卡匹配',
     dataIndex: 'weworkClockMatchFlag',
     width: 120,
     customRender({ text }) {
@@ -415,8 +415,27 @@ export const overtimeFormSchema: FormSchema[] = [
     field: 'overtimeHours',
     component: 'InputNumber',
     required: true,
+    rules: [
+      { required: true, message: '请输入加班时长' },
+      {
+        validator: async (_rule, value) => {
+          if (value !== undefined && value !== null && value !== '') {
+            // 检查是否是0.5的整数倍
+            if (value < 0.5) {
+              return Promise.reject('加班时长不能小于0.5小时');
+            }
+            const remainder = (value * 10) % 5;
+            if (remainder !== 0) {
+              return Promise.reject('加班时长必须是0.5的整数倍');
+            }
+          }
+          return Promise.resolve();
+        },
+        trigger: 'change',
+      },
+    ],
     componentProps: {
-      min: 0.1,
+      min: 0.5,
       max: 8,
       step: 0.5,
       precision: 1,
@@ -438,7 +457,7 @@ export const overtimeFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '企业微信打卡匹配',
+    label: '企微打卡匹配',
     field: 'weworkClockMatchFlag',
     component: 'Checkbox',
     defaultValue: false,

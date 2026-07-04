@@ -1,6 +1,6 @@
 <template>
   <!--引用表格-->
-  <BasicTable @register="registerTable" :rowSelection="rowSelection">
+  <BasicTable @register="registerTable" :rowSelection="rowSelection" @fetch-success="loadLeaveStats">
     <!--插槽:table标题-->
     <template #tableTitle>
       <div class="leave-stats-wrapper">
@@ -90,6 +90,7 @@
 
   // 加载调休统计信息
   async function loadLeaveStats() {
+    console.log('加载调休统计信息');
     try {
       const userId = userinfo.value.id;
       const result = await getStatisticsList({ employeeId: userId, pageNo: 1, pageSize: 1 });
@@ -198,8 +199,6 @@
   async function handleConfirm(record) {
     await confirmOvertime({ id: record.id });
     reload();
-    // 确认后刷新统计信息
-    loadLeaveStats();
   }
 
   /**
@@ -207,8 +206,6 @@
    */
   function handleSuccess() {
     reload();
-    // 新增/编辑后刷新统计信息
-    loadLeaveStats();
   }
 
   /**
