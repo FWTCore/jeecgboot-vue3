@@ -258,3 +258,25 @@ export const leaveRecordFormSchema: FormSchema[] = [
     },
   },
 ];
+
+/**
+ * 加班记录弹窗搜索表单 Schema
+ */
+export const overtimeModalSearchFormSchema: FormSchema[] = [
+  {
+    label: '项目名称',
+    field: 'projectName',
+    component: 'Input',
+    colProps: { span: 8 },
+  },
+  {
+    label: '加班日期',
+    field: 'overtimeDate',
+    component: 'RangePicker',
+    componentProps: {
+      valueType: 'Date',
+      valueFormat: 'YYYY-MM-DD',
+    },
+    colProps: { span: 8 },
+  },
+];

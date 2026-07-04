@@ -19,7 +19,11 @@
   import { ref, computed, unref, watch } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { overtimeModalColumns, overtimeModalColumnsWithAction } from '../EmployeeLeave.data';
+  import {
+    overtimeModalColumns,
+    overtimeModalColumnsWithAction,
+    overtimeModalSearchFormSchema,
+  } from '../EmployeeLeave.data';
   import { getOvertimeList, confirmOvertime } from '../EmployeeLeave.api';
 
   const emit = defineEmits(['register', 'success']);
@@ -70,7 +74,14 @@
     size: 'small',
     pagination: { pageSize: 10 },
     showTableSetting: false,
-    useSearchForm: false,
+    useSearchForm: true,
+    formConfig: {
+      labelWidth: 80,
+      schemas: overtimeModalSearchFormSchema,
+      showActionButtonGroup: true,
+      showResetButton: true,
+      fieldMapToTime: [['overtimeDate', ['overtimeDateBegin', 'overtimeDateEnd'], 'YYYY-MM-DD']],
+    },
     beforeFetch: (params) => {
       params.staffId = unref(staffId);
       if (unref(confirmStatus) !== null) {
