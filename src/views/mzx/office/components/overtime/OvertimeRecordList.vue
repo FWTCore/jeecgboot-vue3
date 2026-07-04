@@ -24,6 +24,10 @@
               <Icon icon="ant-design:delete-outlined" />
               删除
             </a-menu-item>
+            <a-menu-item key="2" @click="batchHandleConfirm" v-if="hasPermission('office:management')">
+              <Icon icon="ant-design:check-outlined" />
+              批量确认
+            </a-menu-item>
           </a-menu>
         </template>
         <a-button>
@@ -46,7 +50,7 @@
 
 <script lang="ts" setup>
   //ts语法
-  import { ref, computed, onMounted } from 'vue';
+  import { ref, computed, onMounted, toRaw } from 'vue';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useDrawer } from '/@/components/Drawer';
@@ -54,11 +58,12 @@
   import { useUserStore } from '/@/store/modules/user';
   import { Icon } from '/@/components/Icon';
   import { useModal } from '/@/components/Modal';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import OvertimeRecordDetail from './OvertimeRecordDetail.vue';
   import OvertimeRecordDrawer from './OvertimeRecordDrawer.vue';
   import LeaveRecordModal from '/@/views/mzx/employeeLevel/components/LeaveRecordModal.vue';
   import { overtimeColumns, searchOvertimeFormSchema } from './OvertimeRecord.data';
-  import { overtimeList, deleteOvertime, batchDeleteOvertime, confirmOvertime } from './OvertimeRecord.api';
+  import { overtimeList, deleteOvertime, batchDeleteOvertime, confirmOvertime, batchConfirmOvertime } from './OvertimeRecord.api';
   import { getStatisticsList } from '/@/views/mzx/employeeLevel/EmployeeLeave.api';
 
   //drawer
@@ -70,6 +75,9 @@
 
   // 权限判断
   const { hasPermission } = usePermission();
+
+  // 消息提示
+  const { createMessage } = useMessage();
 
   // 用户信息
   const userStore = useUserStore();
@@ -146,7 +154,7 @@
   });
 
   //注册table数据
-  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
 
   /**
    * 新增事件
@@ -191,6 +199,28 @@
       selectedRowKeys.value = [];
       reload();
     });
+  }
+
+  /**
+   * 批量确认事件
+   */
+  async function batchHandleConfirm() {
+    const selectedDatas = toRaw(selectedRows.value);
+    if (selectedDatas.length > 0) {
+      // 校验状态：只能确认待确认状态(confirmStatus === 0)的记录
+      for (const val of selectedDatas) {
+        if (val.confirmStatus !== 0) {
+          createMessage.error('选中数据中存在非待确认状态的记录，请重新选择');
+          return;
+        }
+      }
+      await batchConfirmOvertime(selectedRowKeys.value, () => {
+        selectedRowKeys.value = [];
+        reload();
+      });
+    } else {
+      createMessage.warn('请选择需要确认的加班记录');
+    }
   }
 
   /**

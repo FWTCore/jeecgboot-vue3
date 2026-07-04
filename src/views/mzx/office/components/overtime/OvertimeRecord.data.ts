@@ -73,7 +73,7 @@ export const overtimeColumns: BasicColumn[] = [
   {
     title: '加班时长(小时)',
     dataIndex: 'overtimeHours',
-    width: 100,
+    width: 140,
   },
   {
     title: '加班原因',
