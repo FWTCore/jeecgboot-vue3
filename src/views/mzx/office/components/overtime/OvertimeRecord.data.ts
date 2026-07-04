@@ -118,6 +118,20 @@ export const overtimeColumns: BasicColumn[] = [
     },
   },
   {
+    title: '企业微信打卡匹配',
+    dataIndex: 'weworkClockMatchFlag',
+    width: 120,
+    customRender({ text }) {
+      if (text === 1 || text === true) {
+        return '是';
+      } else if (text === 0 || text === false) {
+        return '否';
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
     title: '录入时间',
     dataIndex: 'createTime',
     width: 150,
@@ -290,6 +304,19 @@ export const overtimeDescItems: DescItem[] = [
     },
   },
   {
+    label: '企业微信打卡匹配',
+    field: 'weworkClockMatchFlag',
+    render: (curVal, data) => {
+      if (curVal === 1 || curVal === true) {
+        return '是';
+      } else if (curVal === 0 || curVal === false) {
+        return '否';
+      } else {
+        return '-';
+      }
+    },
+  },
+  {
     label: '创建时间',
     field: 'createTime',
     render: (curVal, data) => {
@@ -403,5 +430,25 @@ export const overtimeFormSchema: FormSchema[] = [
       maxlength: 500,
       showCount: true,
     },
+  },
+  {
+    label: '企业微信打卡匹配',
+    field: 'weworkClockMatchFlag',
+    component: 'Checkbox',
+    defaultValue: false,
+    required: true,
+    rules: [
+      {
+        required: true,
+        validator: async (_rule, value) => {
+          if (value !== true) {
+            return Promise.reject('请确认企业微信打卡匹配');
+          }
+          return Promise.resolve();
+        },
+        trigger: 'change',
+      },
+    ],
+    renderComponentContent: '已核对企微打卡记录',
   },
 ];

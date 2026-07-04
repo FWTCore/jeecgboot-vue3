@@ -111,6 +111,12 @@
     try {
       let values = await validate();
       setDrawerProps({ confirmLoading: true });
+
+      // 转换 Checkbox 的布尔值为数字
+      if (typeof values.weworkClockMatchFlag === 'boolean') {
+        values.weworkClockMatchFlag = values.weworkClockMatchFlag ? 1 : 0;
+      }
+
       //提交表单
       await saveOrUpdateOvertime(values, isUpdate.value);
       //关闭弹窗
