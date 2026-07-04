@@ -26,18 +26,18 @@ export const customerColumns: BasicColumn[] = [
     dataIndex: 'customerName',
     width: 100,
   },
-  // {
-  //   title: '工时',
-  //   dataIndex: 'workHours',
-  //   width: 100,
-  //   customRender({ text }) {
-  //     if (text) {
-  //       return text;
-  //     } else {
-  //       return '-';
-  //     }
-  //   },
-  // },
+  {
+    title: '工时',
+    dataIndex: 'workHoursHour',
+    width: 60,
+    customRender({ text }) {
+      if (text) {
+        return text + '小时';
+      } else {
+        return '-';
+      }
+    },
+  },
   {
     title: '服务内容',
     dataIndex: 'serviceContent',
@@ -124,11 +124,11 @@ export const descItems: DescItem[] = [
     },
   },
   {
-    label: '工时(天)',
-    field: 'workHours',
+    label: '工时(小时)',
+    field: 'workHoursHour',
     render: (curVal, data) => {
       if (curVal) {
-        return curVal;
+        return curVal + '小时';
       } else {
         return '-';
       }
@@ -206,10 +206,27 @@ export const customerFormSchema: FormSchema[] = [
     },
   },
   {
-    label: '工时(天)',
-    field: 'workHours',
+    label: '工时(小时)',
+    field: 'workHoursHour',
     component: 'InputNumber',
     required: true,
+    rules: [
+      { required: true, message: '请输入工时' },
+      {
+        validator: async (rule, value) => {
+          if (value && value % 0.5 !== 0) {
+            return Promise.reject('工时必须是0.5的整数倍');
+          }
+          return Promise.resolve();
+        },
+      },
+    ],
+    componentProps: {
+      min: 0,
+      max: 8,
+      precision: 1,
+      step: 0.5,
+    },
   },
   {
     label: '服务内容',
